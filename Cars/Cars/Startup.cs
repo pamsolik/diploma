@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Mapster;
+
 
 namespace Cars
 {
@@ -59,6 +59,8 @@ namespace Cars
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,6 +97,9 @@ namespace Cars
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseSpa(spa =>
             {
