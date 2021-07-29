@@ -8,5 +8,8 @@ namespace Cars.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        //TODO: Add user properties
+        
+        
     }
 }
