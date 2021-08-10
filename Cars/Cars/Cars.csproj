@@ -29,7 +29,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
     <PackageReference Include="NSwag.AspNetCore" Version="13.12.1" />
-    <PackageReference Include="NSwag.Core" Version="13.12.1" />
+    <PackageReference Include="NSwag.Core" Version="13.13.2" />
   </ItemGroup>
 
   <ItemGroup>
