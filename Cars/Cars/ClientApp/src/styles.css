@@ -14,3 +14,21 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.nav_color {
+  background-color: #6247AA;
+}
+
+
+main {
+  display: flex;
+  flex-direction: column;
+  min-height: 76vh;
+}
+
+
+
+[footer] {
+  height: 150px;
+  margin-top: -150px;
+}

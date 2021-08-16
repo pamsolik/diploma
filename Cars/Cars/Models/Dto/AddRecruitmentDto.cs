@@ -1,24 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Cars.Models.Enums;
 
-namespace Cars.Models
+namespace Cars.Models.Dto
 {
-    public class Recruitment
+    public class AddRecruitmentDto
     {
-        //TODO: Add recruitment properties
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        [ForeignKey("Recruiter")]
-        public string RecruiterId { get; set; }
-        public ApplicationUser Recruiter { get; set; }
-
         [StringLength(500, ErrorMessage = "Title cannot be longer than 500 characters.")]
         public string Title {get; set;}
 
@@ -32,13 +19,10 @@ namespace Cars.Models
         public DateTime EndDate { get; set; }
 
         public RecruitmentType Type { get; set; }
-
-        //TODO: Maybe change to enum
+        
         public string JobType { get; set; }
         public JobLevel JobLevel { get; set; }
 
-       
-
-         public ICollection<RecruitmentApplication> Applications { get; set; }
+        public string RecruiterId { get; set; }
     }
 }

@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CounterComponent } from './counter.component';
+import { RecruitmentComponent } from './recruitment.component';
 
-describe('CounterComponent', () => {
-  let fixture: ComponentFixture<CounterComponent>;
+describe('RecruitmentComponent', () => {
+  let fixture: ComponentFixture<RecruitmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CounterComponent ]
+      declarations: [ RecruitmentComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CounterComponent);
+    fixture = TestBed.createComponent(RecruitmentComponent);
     fixture.detectChanges();
   });
 

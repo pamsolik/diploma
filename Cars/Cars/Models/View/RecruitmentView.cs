@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Cars.Models;
 using Cars.Models.Enums;
 
-namespace Cars.Models.Dto
+namespace Cars.Models.View
 {
-    public class RecruitmentDto
+    public class RecruitmentView
     {
         //TODO: Add recruitment properties
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
