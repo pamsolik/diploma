@@ -12,7 +12,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 {
     public class TwoFactorAuthenticationModel : PageModel
     {
-        private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
+        private const string AuthenticatorsUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}";
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -33,7 +33,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         public int RecoveryCodesLeft { get; set; }
 
         [BindProperty]
-        public bool Is2faEnabled { get; set; }
+        public bool Is2FaEnabled { get; set; }
 
         public bool IsMachineRemembered { get; set; }
 
@@ -49,7 +49,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             }
 
             HasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) != null;
-            Is2faEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+            Is2FaEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
             IsMachineRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
             RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
 
@@ -65,7 +65,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.ForgetTwoFactorClientAsync();
-            StatusMessage = "The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.";
+            StatusMessage = "Brak danych dla aktualnej przeglądarki. Po ponownym zalogowaniu się z tej przeglądarki zostaniesz poproszony o podanie kodu uwierzytelniania dwustopniowego.";
             return RedirectToPage();
         }
     }

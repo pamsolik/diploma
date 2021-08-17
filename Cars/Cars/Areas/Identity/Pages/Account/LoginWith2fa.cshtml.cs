@@ -13,12 +13,12 @@ using Cars.Models;
 namespace Cars.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class LoginWith2faModel : PageModel
+    public class LoginWith2FaModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ILogger<LoginWith2faModel> _logger;
+        private readonly ILogger<LoginWith2FaModel> _logger;
 
-        public LoginWith2faModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginWith2faModel> logger)
+        public LoginWith2FaModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginWith2FaModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -34,12 +34,12 @@ namespace Cars.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [StringLength(7, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(7, ErrorMessage = "{0} musi składać się z od {2} do {1} znaków.", MinimumLength = 6)]
             [DataType(DataType.Text)]
-            [Display(Name = "Authenticator code")]
+            [Display(Name = "Kod uwierzytelniający")]
             public string TwoFactorCode { get; set; }
 
-            [Display(Name = "Remember this machine")]
+            [Display(Name = "Zapamiętaj to urządzenie")]
             public bool RememberMachine { get; set; }
         }
 
@@ -50,7 +50,7 @@ namespace Cars.Areas.Identity.Pages.Account
 
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException($"Nie można załadować użytkownika uwierzytelniania dwuskładnikowego.");
             }
 
             ReturnUrl = returnUrl;
@@ -66,12 +66,12 @@ namespace Cars.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
 
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
-                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+                throw new InvalidOperationException($"Nie można załadować użytkownika uwierzytelniania dwuskładnikowego.");
             }
 
             var authenticatorCode = Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
@@ -80,18 +80,18 @@ namespace Cars.Areas.Identity.Pages.Account
 
             if (result.Succeeded)
             {
-                _logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", user.Id);
+                _logger.LogInformation("User with ID '{UserId}' logged in with 2fa", user.Id);
                 return LocalRedirect(returnUrl);
             }
             else if (result.IsLockedOut)
             {
-                _logger.LogWarning("User with ID '{UserId}' account locked out.", user.Id);
+                _logger.LogWarning("User with ID '{UserId}' account locked out", user.Id);
                 return RedirectToPage("./Lockout");
             }
             else
             {
-                _logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'.", user.Id);
-                ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
+                _logger.LogWarning("Invalid authenticator code entered for user with ID '{UserId}'", user.Id);
+                ModelState.AddModelError(string.Empty, "Nieprawidłowy kod uwierzytelniający.");
                 return Page();
             }
         }

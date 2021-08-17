@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage
 {
-    public class DeletePersonalDataModel : PageModel
+    public abstract class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -28,7 +28,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public class InputModel
+        public abstract class InputModel
         {
             [Required]
             [DataType(DataType.Password)]
@@ -62,7 +62,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             {
                 if (!await _userManager.CheckPasswordAsync(user, Input.Password))
                 {
-                    ModelState.AddModelError(string.Empty, "Incorrect password.");
+                    ModelState.AddModelError(string.Empty, "Niepoprawne hasło.");
                     return Page();
                 }
             }
@@ -76,7 +76,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.SignOutAsync();
 
-            _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+            _logger.LogInformation("User with ID '{UserId}' deleted themselves", userId);
 
             return Redirect("~/");
         }

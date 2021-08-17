@@ -59,12 +59,12 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             var result = await _userManager.RemoveLoginAsync(user, loginProvider, providerKey);
             if (!result.Succeeded)
             {
-                StatusMessage = "The external login was not removed.";
+                StatusMessage = "Login zewnętrzny nie został usunięty.";
                 return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "The external login was removed.";
+            StatusMessage = "Login zewnętrzny został usunięty.";
             return RedirectToPage();
         }
 
@@ -96,14 +96,14 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             var result = await _userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
-                StatusMessage = "The external login was not added. External logins can only be associated with one account.";
+                StatusMessage = "Login zewnętrzny nie został dodany. Loginy zewnętrzne można powiązać tylko z jednym kontem.";
                 return RedirectToPage();
             }
 
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            StatusMessage = "The external login was added.";
+            StatusMessage = "Dodano zewnętrzny login.";
             return RedirectToPage();
         }
     }

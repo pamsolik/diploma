@@ -8,12 +8,14 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { RecruitmentComponent } from './recruitment/recruitment.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { RecruiterComponent } from './recruiter/recruiter.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import {FooterComponent} from "./footer/footer.component";
 import {MatCardModule} from "@angular/material/card";
+import {RecruitmentDetailsComponent} from "./recruitment-details/recruitment-details.component";
+import {RecruitmentSettingsComponent} from "./recruitment-settings/recruitment-settings.component";
 
 @NgModule({
   declarations: [
@@ -21,7 +23,7 @@ import {MatCardModule} from "@angular/material/card";
     NavMenuComponent,
     HomeComponent,
     RecruitmentComponent,
-    FetchDataComponent,
+    RecruiterComponent,
     FooterComponent
   ],
   imports: [
@@ -31,8 +33,11 @@ import {MatCardModule} from "@angular/material/card";
     ApiAuthorizationModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent, pathMatch: 'full'},
-      {path: 'recruitments', component: RecruitmentComponent},
-      {path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard]},
+      {path: 'recruitments', component: RecruitmentComponent, canActivate: [AuthorizeGuard]},
+      {path: 'recruitments/:id', component: RecruitmentDetailsComponent, canActivate: [AuthorizeGuard]},
+
+      {path: 'recruiter', component: RecruiterComponent, canActivate: [AuthorizeGuard]},
+      {path: 'recruiter/:id', component: RecruitmentSettingsComponent, canActivate: [AuthorizeGuard]},
     ]),
     MatCardModule
   ],

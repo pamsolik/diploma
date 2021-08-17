@@ -12,9 +12,9 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        UserManager<ApplicationUser> _userManager;
+        readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        ILogger<ResetAuthenticatorModel> _logger;
+        readonly ILogger<ResetAuthenticatorModel> _logger;
 
         public ResetAuthenticatorModel(
             UserManager<ApplicationUser> userManager,
@@ -50,10 +50,10 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
-            _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key.", user.Id);
+            _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key", user.Id);
             
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.";
+            StatusMessage = "Twój klucz aplikacji uwierzytelniającej został zresetowany, musisz skonfigurować aplikację uwierzytelniającą przy użyciu nowego klucza.";
 
             return RedirectToPage("./EnableAuthenticator");
         }

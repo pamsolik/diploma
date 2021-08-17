@@ -36,18 +36,18 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         {
             [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Current password")]
+            [Display(Name = "Aktualne hasło")]
             public string OldPassword { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} musi musi składać sie z od {2} do {1} znaków.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Nowe hasło")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Potwierdź nowe hasło")]
+            [Compare("NewPassword", ErrorMessage = "Hasła nie są takie same.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -92,8 +92,8 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+            _logger.LogInformation("User changed their password successfully");
+            StatusMessage = "Twoje hasło zostało zmienione.";
 
             return RedirectToPage();
         }

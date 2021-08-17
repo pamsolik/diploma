@@ -32,14 +32,14 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} musi składać się z od {2} do {1} znaków.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "New password")]
+            [Display(Name = "Nowe hasło")]
             public string NewPassword { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm new password")]
-            [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+            [Display(Name = "Potwierdź nowe hasło")]
+            [Compare("NewPassword", ErrorMessage = "Hasła nie są takie same.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -85,7 +85,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your password has been set.";
+            StatusMessage = "Twoje hasło zostało ustawione.";
 
             return RedirectToPage();
         }
