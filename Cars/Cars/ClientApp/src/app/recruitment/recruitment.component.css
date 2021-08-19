@@ -22,6 +22,25 @@ img {
 }
 
 .mat-card{
-  background: gray;
+  background: white;
+  color: black;
   height: 20vh;
+}
+
+.mat-card:hover {
+  background: gray;
+  color: white;
+  cursor: pointer;
+}
+
+.cont{
+  display: flex;
+}
+
+.first {
+  width: 30%;
+}
+
+.second {
+  flex-grow: 1;
 }

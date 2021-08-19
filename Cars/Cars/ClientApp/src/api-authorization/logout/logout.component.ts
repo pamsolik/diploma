@@ -37,7 +37,7 @@ export class LogoutComponent implements OnInit {
         await this.processLogoutCallback();
         break;
       case LogoutActions.LoggedOut:
-        this.message.next('You successfully logged out!');
+        this.message.next('Wylogowano!');
         break;
       default:
         throw new Error(`Invalid action '${action}'`);
@@ -46,10 +46,10 @@ export class LogoutComponent implements OnInit {
 
   private async logout(returnUrl: string): Promise<void> {
     const state: INavigationState = { returnUrl };
-    const isauthenticated = await this.authorizeService.isAuthenticated().pipe(
+    const isAuthenticated = await this.authorizeService.isAuthenticated().pipe(
       take(1)
     ).toPromise();
-    if (isauthenticated) {
+    if (isAuthenticated) {
       const result = await this.authorizeService.signOut(state);
       switch (result.status) {
         case AuthenticationResultStatus.Redirect:
@@ -64,7 +64,7 @@ export class LogoutComponent implements OnInit {
           throw new Error('Invalid authentication result status.');
       }
     } else {
-      this.message.next('You successfully logged out!');
+      this.message.next('Wylogowano!');
     }
   }
 

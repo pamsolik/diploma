@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./recruitment.component.css']
 })
 export class RecruitmentComponent {
-  offers: string[] = ["A", "B", "C", "D"];
+  offers: string[] = ["1", "2", "3", "4"];
 
   public incrementCounter() {
     //this.currentCount++;
