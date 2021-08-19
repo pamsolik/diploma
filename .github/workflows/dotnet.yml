@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ main ]
 
-defaults:
-  run:
-    shell: bash
-    working-directory: /Cars
 
 jobs:
   build:
@@ -22,9 +18,13 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+      working-directory: ./Cars
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: ./Cars
     - name: Build
       run: dotnet build --no-restore
+      working-directory: ./Cars
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: ./Cars
