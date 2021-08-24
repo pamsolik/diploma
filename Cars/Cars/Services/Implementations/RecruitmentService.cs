@@ -14,6 +14,7 @@ using Cars.Models.Dto;
 using Cars.Services.Interfaces;
 using Mapster;
 using Cars.Models.View;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cars.Services.Implementations
 {
@@ -34,6 +35,13 @@ namespace Cars.Services.Implementations
             var dest = addRecruitmentDto.Adapt<Recruitment>();
             var res = await _context.Recruitments.AddAsync(dest);
             return true;
+        }
+
+        public async Task<List<RecruitmentView>> GetRecruitments()
+        {
+            var res = await _context.Recruitments.ToListAsync();
+            var dest = res.Adapt<List<RecruitmentView>>();
+            return dest;
         }
 
         public RecruitmentView Test(){

@@ -1,6 +1,33 @@
-<ul class="navbar-nav" *ngIf="isAuthenticated | async">
+<ul class="navbar-nav" *ngIf="isAuthenticated | async" (mouseenter) ="mouseEnter()" (mouseleave) ="mouseLeave()">
     <li class="nav-item">
-        <a  class="nav-link text-dark" [routerLink]='["/authentication/profile"]' title="Manage">Witaj, {{ userName | async }}</a>
+        <a  class="nav-link text-dark user_name"
+
+            [routerLink]='["/authentication/profile"]'
+            title="Manage"
+        >
+          Witaj, {{ userName | async }}
+        </a>
+
+      <div class="user_c" *ngIf="displayProfile">
+
+          <div class="user_info l">
+            <img src="https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg" alt="user" class="info_img">
+            <p>Patryk Amsolik</p>
+            <p>{{ userName | async }}</p>
+            <p><a href="#">Dashboard</a></p>
+          </div>
+
+          <div class="u_menu r">
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">My Games</a></li>
+              <li><a href="#">Store</a></li>
+              <li><a href="#">Profile</a></li>
+              <li><a href="#">Logout</a></li>
+            </ul>
+          </div>
+
+        </div>
     </li>
     <li class="nav-item">
         <a  class="nav-link text-dark" [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Logout">Wyloguj</a>

@@ -19,7 +19,7 @@
         class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
         [ngClass]="{ show: isExpanded }"
       >
-        <ul class="navbar-nav flex-grow">
+        <ul class="navbar-nav flex-grow" *ngIf="authorizeService.isAuthenticated()">
           <li
             class="nav-item"
             [routerLinkActive]="['link-active']"

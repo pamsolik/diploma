@@ -13,6 +13,8 @@ namespace Cars.Data
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
 
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        
         public DbSet<RecruitmentApplication> Applications { get; set; }
         public DbSet<Recruitment> Recruitments { get; set; }
 

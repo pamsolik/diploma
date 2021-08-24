@@ -30,5 +30,12 @@ namespace Cars.Controllers
             var res =  await _recruitmentService.AddRecruitment(addRecruitmentDto);
             return Ok(res);
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetRecruitments()
+        {
+            var res =  await _recruitmentService.GetRecruitments();
+            return Ok(res);
+        }
     }
 }
