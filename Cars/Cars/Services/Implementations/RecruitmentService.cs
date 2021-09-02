@@ -32,12 +32,28 @@ namespace Cars.Services.Implementations
 
         public async Task<bool> AddRecruitment(AddRecruitmentDto addRecruitmentDto)
         {
-            var dest = addRecruitmentDto.Adapt<Recruitment>();
-            var res = await _context.Recruitments.AddAsync(dest);
+            var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
+            var res = _context.Recruitments.Add(dest);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        
+        public async Task<bool> EditRecruitment(EditRecruitmentDto addRecruitmentDto)
+        {
+            var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
+            var res =  _context.Recruitments.Update(dest);
+            await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task<List<RecruitmentView>> GetRecruitments()
+        {
+            var res = await _context.Recruitments.ToListAsync();
+            var dest = res.Adapt<List<RecruitmentView>>();
+            return dest;
+        }
+        
+        public async Task<List<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto recruitmentFilterDto) //TODO: FILTERS AND PAGINATION
         {
             var res = await _context.Recruitments.ToListAsync();
             var dest = res.Adapt<List<RecruitmentView>>();

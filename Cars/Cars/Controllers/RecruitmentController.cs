@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Cars.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("recruitment")]
     public class RecruitmentController : ControllerBase
@@ -25,17 +25,59 @@ namespace Cars.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRecruitment(AddRecruitmentDto addRecruitmentDto)
+        public async Task<IActionResult> AddRecruitment([FromBody] AddRecruitmentDto addRecruitmentDto)
         {
-            var res =  await _recruitmentService.AddRecruitment(addRecruitmentDto);
-            return Ok(res);
+            try
+            {
+                var res =  await _recruitmentService.AddRecruitment(addRecruitmentDto);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+        
+        [HttpPut]
+        public async Task<IActionResult> EditRecruitment([FromBody] EditRecruitmentDto editRecruitment)
+        {
+            try
+            {
+                var res =  await _recruitmentService.EditRecruitment(editRecruitment);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
         
         [HttpGet]
         public async Task<IActionResult> GetRecruitments()
         {
-            var res =  await _recruitmentService.GetRecruitments();
-            return Ok(res);
+            try
+            {
+                var res =  await _recruitmentService.GetRecruitments();
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+        
+        [HttpPost("filtered")]
+        public async Task<IActionResult> GetRecruitmentsFiltered([FromBody] RecruitmentFilterDto recruitmentFilterDto)
+        {
+            try
+            {
+                var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }

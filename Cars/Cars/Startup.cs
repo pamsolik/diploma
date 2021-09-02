@@ -63,6 +63,11 @@ namespace Cars
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
 
             services.AddSwaggerDocument();
         }
@@ -104,7 +109,7 @@ namespace Cars
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
-
+            
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
