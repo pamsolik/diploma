@@ -6,7 +6,9 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Cars.Models.Exceptions;
 
 namespace Cars.Controllers
 {
@@ -27,57 +29,29 @@ namespace Cars.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRecruitment([FromBody] AddRecruitmentDto addRecruitmentDto)
         {
-            try
-            {
-                var res =  await _recruitmentService.AddRecruitment(addRecruitmentDto);
-                return Ok(res);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var res =  await _recruitmentService.AddRecruitment(addRecruitmentDto);
+            return Ok(res);
         }
         
         [HttpPut]
         public async Task<IActionResult> EditRecruitment([FromBody] EditRecruitmentDto editRecruitment)
         {
-            try
-            {
-                var res =  await _recruitmentService.EditRecruitment(editRecruitment);
-                return Ok(res);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var res =  await _recruitmentService.EditRecruitment(editRecruitment);
+            return Ok(res);
         }
         
         [HttpGet]
         public async Task<IActionResult> GetRecruitments()
         {
-            try
-            {
-                var res =  await _recruitmentService.GetRecruitments();
-                return Ok(res);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var res =  await _recruitmentService.GetRecruitments();
+            return Ok(res);
         }
         
         [HttpPost("filtered")]
         public async Task<IActionResult> GetRecruitmentsFiltered([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
-            try
-            {
-                var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto);
-                return Ok(res);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
+            var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto);
+            return Ok(res);
         }
     }
 }
