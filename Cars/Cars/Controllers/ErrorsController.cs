@@ -1,4 +1,5 @@
-﻿using Cars.Data;
+﻿using System.Diagnostics;
+using Cars.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace Cars.Controllers
             _logger = logger;
         }
 
-        [Route("error-message")]
-        public ErrorDetails ErrorMessage()
+        [Route("error")]
+        public ErrorDetails Error()
         {
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
             var exception = context.Error; // Your exception
@@ -30,9 +31,9 @@ namespace Cars.Controllers
             //else if (exception is MyException)         code = 400; // Bad Request
 
             Response.StatusCode = code; // You can use HttpStatusCode enum instead
-
-            _logger.LogError($"Something went wrong: {exception.Message}");
             
+            _logger.LogError($"Exception thrown: {exception.Message}");
+
             return new ErrorDetails(exception); // Your error model
         }
     }

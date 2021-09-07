@@ -22,8 +22,7 @@ namespace Cars.Services.Implementations
     {
        
         private readonly ApplicationDbContext _context;
-
-
+        
         public RecruitmentService(ApplicationDbContext context)
         {
             _context = context;
@@ -60,10 +59,20 @@ namespace Cars.Services.Implementations
             return dest;
         }
 
-        public RecruitmentView Test(){
-            var src = _context.Recruitments.FirstOrDefault();
-            var destinationObject = (src ?? throw new InvalidOperationException()).Adapt<RecruitmentView>();
-            return destinationObject;
+        public async Task<bool> AddApplication(AddApplicationDto addApplicationDto)
+        {
+            var dest = addApplicationDto.Adapt<RecruitmentApplication>(); //TODO: check if valid and respond accordingly
+            var res =  _context.Applications.Add(dest);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<List<ApplicationView>> GetApplications(int recruitmentId)
+        {
+            var res = await _context.Applications
+                .Where(a => a.RecruitmentId == recruitmentId).ToListAsync();
+            var dest = res.Adapt<List<ApplicationView>>();
+            return dest;
         }
     }
 }
