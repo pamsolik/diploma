@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Linq;
 using System.Threading.Tasks;
+using Cars.Models.DataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Cars.Models;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage
 {
-    public partial class EmailModel : PageModel
+    public class EmailModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public EmailModel(
             UserManager<ApplicationUser> userManager,
@@ -32,24 +29,13 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 
         public string Username { get; set; }
 
-        [Display(Name = "E-mail")]
-        public string Email { get; set; }
+        [Display(Name = "E-mail")] public string Email { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
 
-        [TempData]
-        public string StatusMessage { get; set; }
+        [TempData] public string StatusMessage { get; set; }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Nowy adres e-mail")]
-            public string NewEmail { get; set; }
-        }
+        [BindProperty] public InputModel Input { get; set; }
 
         private async Task LoadAsync(ApplicationUser user)
         {
@@ -58,7 +44,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                NewEmail = email,
+                NewEmail = email
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -67,10 +53,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             await LoadAsync(user);
             return Page();
@@ -79,10 +62,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostChangeEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             if (!ModelState.IsValid)
             {
@@ -98,9 +78,9 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmailChange",
-                    pageHandler: null,
-                    values: new { userId = userId, email = Input.NewEmail, code = code },
-                    protocol: Request.Scheme);
+                    null,
+                    new { userId, email = Input.NewEmail, code },
+                    Request.Scheme);
                 await _emailSender.SendEmailAsync(
                     Input.NewEmail,
                     "Potwierdź swój e-mail",
@@ -117,10 +97,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             if (!ModelState.IsValid)
             {
@@ -134,9 +111,9 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { area = "Identity", userId = userId, code = code },
-                protocol: Request.Scheme);
+                null,
+                new { area = "Identity", userId, code },
+                Request.Scheme);
             await _emailSender.SendEmailAsync(
                 email,
                 "Potwierdź swój email",
@@ -144,6 +121,14 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 
             StatusMessage = "E-mail weryfikacyjny został wysłany. Proszę sprawdzić email.";
             return RedirectToPage();
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Nowy adres e-mail")]
+            public string NewEmail { get; set; }
         }
     }
 }

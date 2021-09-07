@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Cars.Models;
+﻿using System.Threading.Tasks;
+using Cars.Models.DataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,9 +9,9 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<ResetAuthenticatorModel> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        readonly ILogger<ResetAuthenticatorModel> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public ResetAuthenticatorModel(
             UserManager<ApplicationUser> userManager,
@@ -26,16 +23,12 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             _logger = logger;
         }
 
-        [TempData]
-        public string StatusMessage { get; set; }
+        [TempData] public string StatusMessage { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             return Page();
         }
@@ -43,17 +36,15 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
             _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key", user.Id);
-            
+
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Twój klucz aplikacji uwierzytelniającej został zresetowany, musisz skonfigurować aplikację uwierzytelniającą przy użyciu nowego klucza.";
+            StatusMessage =
+                "Twój klucz aplikacji uwierzytelniającej został zresetowany, musisz skonfigurować aplikację uwierzytelniającą przy użyciu nowego klucza.";
 
             return RedirectToPage("./EnableAuthenticator");
         }

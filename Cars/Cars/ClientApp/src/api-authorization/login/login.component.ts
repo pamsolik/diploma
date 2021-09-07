@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthorizeService, AuthenticationResultStatus } from '../authorize.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { LoginActions, QueryParameterNames, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationResultStatus, AuthorizeService} from '../authorize.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BehaviorSubject} from 'rxjs';
+import {ApplicationPaths, LoginActions, QueryParameterNames, ReturnUrlType} from '../api-authorization.constants';
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
@@ -19,7 +19,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authorizeService: AuthorizeService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router) {
+  }
 
   async ngOnInit() {
     const action = this.activatedRoute.snapshot.url[1];
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
 
 
   private async login(returnUrl: string): Promise<void> {
-    const state: INavigationState = { returnUrl };
+    const state: INavigationState = {returnUrl};
     const result = await this.authorizeService.signIn(state);
     this.message.next(undefined);
     switch (result.status) {
@@ -58,7 +59,7 @@ export class LoginComponent implements OnInit {
         break;
       case AuthenticationResultStatus.Fail:
         await this.router.navigate(ApplicationPaths.LoginFailedPathComponents, {
-          queryParams: { [QueryParameterNames.Message]: result.message }
+          queryParams: {[QueryParameterNames.Message]: result.message}
         });
         break;
       default:

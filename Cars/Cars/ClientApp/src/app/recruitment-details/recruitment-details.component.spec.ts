@@ -1,7 +1,3 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { RecruitmentDetailsComponent } from './recruitment-details.component';
-
 //TODO: TESTS
 /*describe('RecruitmentComponent', () => {
   let fixture: ComponentFixture<RecruitmentComponent>;

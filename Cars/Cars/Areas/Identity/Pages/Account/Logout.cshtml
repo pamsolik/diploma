@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Diagnostics
 @model LogoutModel
 @{
     ViewData["Title"] = "Wyloguj";
@@ -7,7 +8,7 @@
 <header>
     <h1>@ViewData["Title"]</h1>
     @{
-        System.Diagnostics.Debug.Assert(User.Identity != null, "User.Identity != null");
+        Debug.Assert(User.Identity != null, "User.Identity != null");
         if (User.Identity.IsAuthenticated)
         {
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">

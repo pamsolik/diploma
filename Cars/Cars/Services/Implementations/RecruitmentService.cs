@@ -1,28 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
 using Cars.Data;
-using Cars.Models;
+using Cars.Models.DataModels;
 using Cars.Models.Dto;
+using Cars.Models.View;
 using Cars.Services.Interfaces;
 using Mapster;
-using Cars.Models.View;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cars.Services.Implementations
 {
     public class RecruitmentService : IRecruitmentService
     {
-       
         private readonly ApplicationDbContext _context;
-        
+
         public RecruitmentService(ApplicationDbContext context)
         {
             _context = context;
@@ -36,11 +28,11 @@ namespace Cars.Services.Implementations
             await _context.SaveChangesAsync();
             return true;
         }
-        
+
         public async Task<bool> EditRecruitment(EditRecruitmentDto addRecruitmentDto)
         {
             var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
-            var res =  _context.Recruitments.Update(dest);
+            var res = _context.Recruitments.Update(dest);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -51,8 +43,9 @@ namespace Cars.Services.Implementations
             var dest = res.Adapt<List<RecruitmentView>>();
             return dest;
         }
-        
-        public async Task<List<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto recruitmentFilterDto) //TODO: FILTERS AND PAGINATION
+
+        public async Task<List<RecruitmentView>>
+            GetRecruitmentsFiltered(RecruitmentFilterDto recruitmentFilterDto) //TODO: FILTERS AND PAGINATION
         {
             var res = await _context.Recruitments.ToListAsync();
             var dest = res.Adapt<List<RecruitmentView>>();
@@ -62,7 +55,7 @@ namespace Cars.Services.Implementations
         public async Task<bool> AddApplication(AddApplicationDto addApplicationDto)
         {
             var dest = addApplicationDto.Adapt<RecruitmentApplication>(); //TODO: check if valid and respond accordingly
-            var res =  _context.Applications.Add(dest);
+            var res = _context.Applications.Add(dest);
             await _context.SaveChangesAsync();
             return true;
         }

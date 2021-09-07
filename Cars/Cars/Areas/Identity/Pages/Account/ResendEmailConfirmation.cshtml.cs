@@ -1,23 +1,22 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Cars.Models.DataModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Cars.Models;
 
 namespace Cars.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ResendEmailConfirmationModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public ResendEmailConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
@@ -25,15 +24,7 @@ namespace Cars.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
-        }
+        [BindProperty] public InputModel Input { get; set; }
 
         public void OnGet()
         {
@@ -41,15 +32,13 @@ namespace Cars.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+            if (!ModelState.IsValid) return Page();
 
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "E-mail weryfikacyjny został wysłany. Proszę sprawdź swój e-mail.");
+                ModelState.AddModelError(string.Empty,
+                    "E-mail weryfikacyjny został wysłany. Proszę sprawdź swój e-mail.");
                 return Page();
             }
 
@@ -58,9 +47,9 @@ namespace Cars.Areas.Identity.Pages.Account
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { userId = userId, code = code },
-                protocol: Request.Scheme);
+                null,
+                new { userId, code },
+                Request.Scheme);
             await _emailSender.SendEmailAsync(
                 Input.Email,
                 "Potwierdź e-mail",
@@ -68,6 +57,11 @@ namespace Cars.Areas.Identity.Pages.Account
 
             ModelState.AddModelError(string.Empty, "E-mail weryfikacyjny został wysłany. Proszę sprawdź swój e-mail.");
             return Page();
+        }
+
+        public class InputModel
+        {
+            [Required] [EmailAddress] public string Email { get; set; }
         }
     }
 }

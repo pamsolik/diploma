@@ -1,5 +1,5 @@
 .job-desc {
-  flex:1;
+  flex: 1;
 }
 
 .img {
@@ -16,12 +16,12 @@ img {
   max-width: 90%;
 }
 
-.job-wrapper{
-  display:flex;
-  justify-content:center;
+.job-wrapper {
+  display: flex;
+  justify-content: center;
 }
 
-.mat-card{
+.mat-card {
   background: white;
   color: black;
   height: 20vh;
@@ -33,7 +33,7 @@ img {
   cursor: pointer;
 }
 
-.cont{
+.cont {
   display: flex;
 }
 

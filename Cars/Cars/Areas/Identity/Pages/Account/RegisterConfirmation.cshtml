@@ -6,7 +6,7 @@
 
 <h1>@ViewData["Title"]</h1>
 @{
-    if (@Model.DisplayConfirmAccountLink)
+    if (Model.DisplayConfirmAccountLink)
     {
         //TODO: MAIL SENDER
         <p>
@@ -16,8 +16,8 @@
     }
     else
     {
-<p>
-        Sprawdź pocztę e-mail, aby potwierdzić swoje konto.
-</p>
+        <p>
+            Sprawdź pocztę e-mail, aby potwierdzić swoje konto.
+        </p>
     }
 }

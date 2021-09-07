@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
-import { LoginMenuComponent } from './login-menu.component';
+import {LoginMenuComponent} from './login-menu.component';
 
 describe('LoginMenuComponent', () => {
   let component: LoginMenuComponent;
@@ -8,9 +8,9 @@ describe('LoginMenuComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginMenuComponent ]
+      declarations: [LoginMenuComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

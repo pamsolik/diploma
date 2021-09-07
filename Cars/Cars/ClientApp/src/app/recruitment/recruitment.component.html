@@ -18,20 +18,20 @@
               <div class="form-row">
                 <div class="form-group">
                   <label>Oferta</label>
-                  <input type="text" class="form-control" placeholder="Wyszukaj oferty">
+                  <input class="form-control" placeholder="Wyszukaj oferty" type="text">
                 </div>
 
                 <div class="border-top my-3"></div>
 
                 <div class="form-group">
                   <label>Lokalizacja</label>
-                  <input type="text" class="form-control" placeholder="Wprowadź lokalizację">
+                  <input class="form-control" placeholder="Wprowadź lokalizację" type="text">
                 </div>
 
                 <div class="border-top my-3"></div>
 
                 <div class="form-group">
-                  <label >Kategoria</label>
+                  <label>Kategoria</label>
                   <select class="form-control">
                     <option>Wybierz</option>
                     <option>1</option>
@@ -98,17 +98,19 @@
     </div>
     <div class="second p-1">
 
-<!--      <mat-paginator [length]="100"
-                     [pageSize]="10"
-                     [pageSizeOptions]="[5, 10, 25, 100]"
-                     aria-label="Select page">
+      <!--      <mat-paginator [length]="100"
+                           [pageSize]="10"
+                           [pageSizeOptions]="[5, 10, 25, 100]"
+                           aria-label="Select page">
 
-      </mat-paginator>-->
+            </mat-paginator>-->
 
-      <mat-card class="mb-1" *ngFor="let offer of offers" [routerLink]="['/recruitments/' + offer]">
+      <mat-card *ngFor="let offer of offers" [routerLink]="['/recruitments/' + offer]" class="mb-1">
         <div class="job-wrapper">
           <div class="img">
-            <img src="https://media.istockphoto.com/photos/apply-now-jobs-job-working-recruitment-employees-business-desk-picture-id643778458?k=6&m=643778458&s=612x612&w=0&h=42rZTES6oeZFldaS0TgZ3grMiaDYx_cZLw_pljZ5U6w=" alt="Blank">
+            <img
+              alt="Blank"
+              src="https://media.istockphoto.com/photos/apply-now-jobs-job-working-recruitment-employees-business-desk-picture-id643778458?k=6&m=643778458&s=612x612&w=0&h=42rZTES6oeZFldaS0TgZ3grMiaDYx_cZLw_pljZ5U6w=">
           </div>
           <div class="job-desc">
             <h5 class="card-title">TITLE</h5>

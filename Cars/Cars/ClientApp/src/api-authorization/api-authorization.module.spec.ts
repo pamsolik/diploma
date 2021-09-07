@@ -1,4 +1,4 @@
-import { ApiAuthorizationModule } from './api-authorization.module';
+import {ApiAuthorizationModule} from './api-authorization.module';
 
 describe('ApiAuthorizationModule', () => {
   let apiAuthorizationModule: ApiAuthorizationModule;

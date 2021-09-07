@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Cars.Models;
+using Cars.Models.DataModels;
 using Cars.Models.Enums;
 
 namespace Cars.Models.View
@@ -14,10 +14,10 @@ namespace Cars.Models.View
         public int Id { get; set; }
 
         [StringLength(500, ErrorMessage = "Title cannot be longer than 500 characters.")]
-        public string Title {get; set;}
+        public string Title { get; set; }
 
         [StringLength(10000, ErrorMessage = "Description cannot be longer than 10000 characters.")]
-        public string Description {get; set;}
+        public string Description { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
@@ -28,16 +28,15 @@ namespace Cars.Models.View
         public RecruitmentType Type { get; set; }
 
         //TODO: Maybe change to enum
-        public String JobType { get; set; }
+        public string JobType { get; set; }
         public JobLevel JobLevel { get; set; }
 
 
-        [ForeignKey("ApplicationID")]
-        public ICollection<RecruitmentApplication> Applications { get; set; }
+        [ForeignKey("ApplicationID")] public ICollection<RecruitmentApplication> Applications { get; set; }
 
 
-        [ForeignKey("Recruiter")]
-        public string RecruiterId { get; set; }
+        [ForeignKey("Recruiter")] public string RecruiterId { get; set; }
+
         public ApplicationUser Recruiter { get; set; }
     }
 }

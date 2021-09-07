@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace CarsTests
@@ -8,7 +7,6 @@ namespace CarsTests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationResultStatus, AuthorizeService } from '../authorize.service';
-import { BehaviorSubject } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
-import { LogoutActions, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import {Component, OnInit} from '@angular/core';
+import {AuthenticationResultStatus, AuthorizeService} from '../authorize.service';
+import {BehaviorSubject} from 'rxjs';
+import {ActivatedRoute, Router} from '@angular/router';
+import {take} from 'rxjs/operators';
+import {ApplicationPaths, LogoutActions, ReturnUrlType} from '../api-authorization.constants';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
@@ -19,7 +19,8 @@ export class LogoutComponent implements OnInit {
   constructor(
     private authorizeService: AuthorizeService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router) {
+  }
 
   async ngOnInit() {
     const action = this.activatedRoute.snapshot.url[1];
@@ -45,7 +46,7 @@ export class LogoutComponent implements OnInit {
   }
 
   private async logout(returnUrl: string): Promise<void> {
-    const state: INavigationState = { returnUrl };
+    const state: INavigationState = {returnUrl};
     const isAuthenticated = await this.authorizeService.isAuthenticated().pipe(
       take(1)
     ).toPromise();
