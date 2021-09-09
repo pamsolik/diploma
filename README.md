@@ -9,7 +9,7 @@ Patryk Amsolik
 ## Promotor
 
 dr inż. Łukasz Chomątek
-
+ 
 |              |              |
 | ------------ | ------------ |
 | Semestr: | VII |
