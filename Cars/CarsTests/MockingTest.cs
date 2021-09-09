@@ -30,23 +30,5 @@ namespace CarsTests
             Assert.NotEmpty(result);  
         }
         
-        [Fact]
-        public async void MockingTest2()
-        {
-            var dbContext = SetupDbContext();
-  
-            await dbContext.Recruitments.AddRangeAsync( 
-                new Recruitment() { Id = 1, Description = "Desc 1", Title = "Rec 1", Type = RecruitmentType.Open, JobType = "Normal"}, 
-                new Recruitment() { Id = 2, Description = "Desc 2", Title = "Rec 2", Type = RecruitmentType.InviteOnly, JobType = "Not Normal"} 
-            );  
-            await dbContext.SaveChangesAsync();  
-  
-            //Act  
-            var result = await dbContext.Recruitments.Select(p => p).ToArrayAsync();  
-  
-            //Assert  
-            Assert.Null(result);  
-            Assert.Empty(result);  
-        }
     }
 }
