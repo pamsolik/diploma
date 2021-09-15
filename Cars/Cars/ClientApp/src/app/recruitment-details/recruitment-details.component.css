@@ -1,0 +1,8 @@
+
+img {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  max-height: 90%;
+  max-width: 90%;
+}

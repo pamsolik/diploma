@@ -40,10 +40,12 @@ import {AdminComponent} from "./admin/admin.component";
     RouterModule.forRoot([
       {path: '', component: HomeComponent, pathMatch: 'full'},
       {path: 'recruitments', component: RecruitmentComponent, canActivate: [AuthorizeGuard]},
-      {path: 'recruitments/:id', component: RecruitmentDetailsComponent, canActivate: [AuthorizeGuard]},
+      {path: 'recruitment-details/:id', component: RecruitmentDetailsComponent, canActivate: [AuthorizeGuard]},
 
       {path: 'recruiter', component: RecruiterComponent, canActivate: [AuthorizeGuard]},
       {path: 'recruiter/:id', component: RecruitmentSettingsComponent, canActivate: [AuthorizeGuard]},
+      {path: 'recruitment-settings/:id', component: RecruitmentSettingsComponent, canActivate: [AuthorizeGuard]},
+      {path: 'recruitment-settings', component: RecruitmentSettingsComponent, canActivate: [AuthorizeGuard]},
 
       {path: 'admin', component: AdminComponent, canActivate: [AuthorizeGuard]},
     ]),

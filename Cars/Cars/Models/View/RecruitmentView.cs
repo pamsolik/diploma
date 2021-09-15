@@ -9,8 +9,6 @@ namespace Cars.Models.View
 {
     public class RecruitmentView
     {
-        //TODO: Add recruitment properties
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [StringLength(500, ErrorMessage = "Title cannot be longer than 500 characters.")]
@@ -22,19 +20,14 @@ namespace Cars.Models.View
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime EndDate { get; set; }
+        public RecruitmentStatus Status { get; set; }
 
         public RecruitmentType Type { get; set; }
 
         //TODO: Maybe change to enum
         public string JobType { get; set; }
         public JobLevel JobLevel { get; set; }
-
-
-        [ForeignKey("ApplicationID")] public ICollection<RecruitmentApplication> Applications { get; set; }
-
-
+        
         [ForeignKey("Recruiter")] public string RecruiterId { get; set; }
 
         public ApplicationUser Recruiter { get; set; }

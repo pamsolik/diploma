@@ -55,4 +55,10 @@ main {
   min-height: 75vh;
 }
 
+.center-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 

@@ -32,15 +32,3 @@ img {
   color: white;
   cursor: pointer;
 }
-
-.cont {
-  display: flex;
-}
-
-.first {
-  width: 30%;
-}
-
-.second {
-  flex-grow: 1;
-}

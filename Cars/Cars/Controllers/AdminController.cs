@@ -8,7 +8,7 @@ namespace Cars.Controllers
 {
     //[Authorize(Roles = "Admin")]
     [ApiController]
-    [Route("admin")]
+    [Route("api/admin")]
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;

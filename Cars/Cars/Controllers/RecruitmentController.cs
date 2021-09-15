@@ -8,7 +8,7 @@ namespace Cars.Controllers
 {
     //[Authorize(Roles = "Admin")]
     [ApiController]
-    [Route("recruitment")]
+    [Route("api/recruitments")]
     public class RecruitmentController : ControllerBase
     {
         private readonly ILogger<RecruitmentController> _logger;
@@ -55,7 +55,7 @@ namespace Cars.Controllers
             return Ok(res);
         }
 
-        [HttpGet("applications/:id")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetApplications([FromRoute] int id)
         {
             var res = await _recruitmentService.GetApplications(id);

@@ -14,9 +14,8 @@ namespace Cars.Models.Dto
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime EndDate { get; set; }
+        
+        public RecruitmentStatus Status { get; set; }
 
         public RecruitmentType Type { get; set; }
 

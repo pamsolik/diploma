@@ -17,7 +17,7 @@ namespace Cars.Controllers
             _logger = logger;
         }
 
-        [Route("error")]
+        [Route("api/error")]
         public ErrorDetails Error()
         {
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
