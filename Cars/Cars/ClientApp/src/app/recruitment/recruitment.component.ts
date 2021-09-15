@@ -22,9 +22,7 @@ interface RecruitmentOffer {
   id :number,
   title: string,
   description: string,
-  startDate: Date,
-  status: number,
   type: number,
   jobType: string,
-  recruiter: any
+  jobLevel: number
 }

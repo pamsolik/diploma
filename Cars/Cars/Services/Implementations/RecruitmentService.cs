@@ -44,6 +44,18 @@ namespace Cars.Services.Implementations
             return dest;
         }
 
+        public Task<RecruitmentDetailsView> GetRecruitmentDetails()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
+        {
+            var res = await _context.Recruitments.FindAsync(recruitmentId);
+            var dest = res.Adapt<RecruitmentDetailsView>();
+            return dest;
+        }
+
         public async Task<List<RecruitmentView>>
             GetRecruitmentsFiltered(RecruitmentFilterDto recruitmentFilterDto) //TODO: FILTERS AND PAGINATION
         {

@@ -14,23 +14,23 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Mapster" Version="7.2.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.10"/>
-        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.10"/>
-        <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.10"/>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.10"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.10"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.10"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.10"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10"/>
+        <PackageReference Include="Mapster" Version="7.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.10">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2"/>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10"/>
-        <PackageReference Include="NSwag.AspNetCore" Version="13.13.2"/>
-        <PackageReference Include="NSwag.Core" Version="13.13.2"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
+        <PackageReference Include="NSwag.AspNetCore" Version="13.13.2" />
+        <PackageReference Include="NSwag.Core" Version="13.13.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -38,6 +38,11 @@
         <Content Remove="$(SpaRoot)**" />
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ClientApp\src\pipes" />
+      <Folder Include="ClientApp\src\services" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -234,7 +234,7 @@ _Pvt_Extensions
 # compiled output
 /dist
 /tmp
-/out-tsc
+**/out-tsc
 # Only exists if Bazel was run
 /bazel-out
 
@@ -281,3 +281,4 @@ Thumbs.db
 # SonarQube config
 .sonarqube
 *.sonarqube
+

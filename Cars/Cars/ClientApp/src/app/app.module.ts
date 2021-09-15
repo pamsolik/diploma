@@ -20,6 +20,7 @@ import {RecruitmentSettingsComponent} from "./recruitment-settings/recruitment-s
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {AdminComponent} from "./admin/admin.component";
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -27,12 +28,15 @@ import {AdminComponent} from "./admin/admin.component";
     NavMenuComponent,
     HomeComponent,
     RecruitmentComponent,
+    RecruitmentDetailsComponent,
+    RecruitmentSettingsComponent,
     RecruiterComponent,
     AdminComponent,
     FooterComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
+    BrowserModule,//.withServerTransition({appId: 'ng-cli-universal'}),
+    CommonModule,
     HttpClientModule,
     FormsModule,
     ApiAuthorizationModule,

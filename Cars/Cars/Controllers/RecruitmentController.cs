@@ -55,10 +55,17 @@ namespace Cars.Controllers
             return Ok(res);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("applications/{id:int}")]
         public async Task<IActionResult> GetApplications([FromRoute] int id)
         {
             var res = await _recruitmentService.GetApplications(id);
+            return Ok(res);
+        }
+        
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetRecruitmentDetails([FromRoute] int id)
+        {
+            var res = await _recruitmentService.GetRecruitmentDetails(id);
             return Ok(res);
         }
     }

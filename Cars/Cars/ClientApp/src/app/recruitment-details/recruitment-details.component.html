@@ -1,19 +1,28 @@
 <div class="card mb-4 box-shadow container-lg p-0">
 
-  <div class="card-header">
-    <h4 class="my-0 font-weight-normal">Title</h4>
-  </div>
-  <div class="card-body row">
-    <div class="col-3">
-      <img
-        alt="Blank"
-        src="https://media.istockphoto.com/photos/apply-now-jobs-job-working-recruitment-employees-business-desk-picture-id643778458?k=6&m=643778458&s=612x612&w=0&h=42rZTES6oeZFldaS0TgZ3grMiaDYx_cZLw_pljZ5U6w="/>
+  <h1 *ngIf="!details else loading">Wczytywanie</h1>
 
-
+  <ng-template #loading>
+    <div class="card-header">
+      <h4 class="my-0 font-weight-normal">{{details.title}}</h4>
     </div>
+    <div class="card-body row">
+      <div class="col-5">
+          <img class="w-100"
+            alt="Blank"
+            src="https://media.istockphoto.com/photos/apply-now-jobs-job-working-recruitment-employees-business-desk-picture-id643778458?k=6&m=643778458&s=612x612&w=0&h=42rZTES6oeZFldaS0TgZ3grMiaDYx_cZLw_pljZ5U6w="/>
 
-    <div class="col">
-      <p>OPIS</p>
+        <ul>
+          <li>Poziom: {{details.jobLevel}}</li>
+          <li>Typ: {{details.jobType}}</li>
+          <li>Rozpoczęcie rekrutacji: {{details.startDate}}</li>
+        </ul>
+
+      </div>
+
+      <div class="col">
+        <p>{{details.description}}</p>
+      </div>
     </div>
-  </div>
+  </ng-template>
 </div>

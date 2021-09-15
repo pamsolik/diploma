@@ -16,6 +16,9 @@
           <div class="filter-content">
             <div class="card-body">
               <div class="form-row">
+
+                <a class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry </a>
+
                 <div class="form-group">
                   <label>Oferta</label>
                   <input class="form-control" placeholder="Wyszukaj oferty" type="text">
@@ -56,42 +59,42 @@
                 </div>
 
               </div>
-            </div> <!-- card-body.// -->
+            </div>
           </div>
-        </article> <!-- card-group-item.// -->
+        </article>
 
-        <!--<article class="card-group-item">
-          <header class="card-header">
-            <h6 class="title">Selection </h6>
-          </header>
-          <div class="filter-content">
-            <div class="card-body">
-              <div class="custom-control custom-checkbox">
-                <span class="float-right badge badge-light round">52</span>
-                <input type="checkbox" class="custom-control-input" id="Check1">
-                <label class="custom-control-label" for="Check1">Samsung</label>
-              </div> &lt;!&ndash; form-check.// &ndash;&gt;
+<!--        <article class="card-group-item">-->
+<!--          <header class="card-header">-->
+<!--            <h6 class="title">Selection </h6>-->
+<!--          </header>-->
+<!--          <div class="filter-content">-->
+<!--            <div class="card-body">-->
+<!--              <div class="custom-control custom-checkbox">-->
+<!--                <span class="float-right badge badge-light round">52</span>-->
+<!--                <input type="checkbox" class="custom-control-input" id="Check1">-->
+<!--                <label class="custom-control-label" for="Check1">Samsung</label>-->
+<!--              </div>-->
 
-              <div class="custom-control custom-checkbox">
-                <span class="float-right badge badge-light round">132</span>
-                <input type="checkbox" class="custom-control-input" id="Check2">
-                <label class="custom-control-label" for="Check2">Black berry</label>
-              </div> &lt;!&ndash; form-check.// &ndash;&gt;
+<!--              <div class="custom-control custom-checkbox">-->
+<!--                <span class="float-right badge badge-light round">132</span>-->
+<!--                <input type="checkbox" class="custom-control-input" id="Check2">-->
+<!--                <label class="custom-control-label" for="Check2">Black berry</label>-->
+<!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
 
-              <div class="custom-control custom-checkbox">
-                <span class="float-right badge badge-light round">17</span>
-                <input type="checkbox" class="custom-control-input" id="Check3">
-                <label class="custom-control-label" for="Check3">Samsung</label>
-              </div> &lt;!&ndash; form-check.// &ndash;&gt;
+<!--              <div class="custom-control custom-checkbox">-->
+<!--                <span class="float-right badge badge-light round">17</span>-->
+<!--                <input type="checkbox" class="custom-control-input" id="Check3">-->
+<!--                <label class="custom-control-label" for="Check3">Samsung</label>-->
+<!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
 
-              <div class="custom-control custom-checkbox">
-                <span class="float-right badge badge-light round">7</span>
-                <input type="checkbox" class="custom-control-input" id="Check4">
-                <label class="custom-control-label" for="Check4">Other Brand</label>
-              </div> &lt;!&ndash; form-check.// &ndash;&gt;
-            </div> &lt;!&ndash; card-body.// &ndash;&gt;
-          </div>
-        </article> &lt;!&ndash; card-group-item.// &ndash;&gt;-->
+<!--              <div class="custom-control custom-checkbox">-->
+<!--                <span class="float-right badge badge-light round">7</span>-->
+<!--                <input type="checkbox" class="custom-control-input" id="Check4">-->
+<!--                <label class="custom-control-label" for="Check4">Other Brand</label>-->
+<!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
+<!--            </div> &lt;!&ndash; card-body.// &ndash;&gt;-->
+<!--          </div>-->
+<!--        </article>-->
 
 
       </div>
@@ -105,19 +108,24 @@
 
             </mat-paginator>-->
 
-      <mat-card *ngFor="let offer of offers" [routerLink]="['/recruitment-details/' + offer.id]" class="mb-1">
-        <div class="job-wrapper">
-          <div class="img">
-            <img
-              alt="Blank"
-              src="https://media.istockphoto.com/photos/apply-now-jobs-job-working-recruitment-employees-business-desk-picture-id643778458?k=6&m=643778458&s=612x612&w=0&h=42rZTES6oeZFldaS0TgZ3grMiaDYx_cZLw_pljZ5U6w=">
+      <h1 *ngIf="!offers else loaded">Wczytywanie</h1>
+
+      <ng-template #loaded>
+        <mat-card *ngFor="let offer of offers" [routerLink]="['/recruitment-details/' + offer.id]">
+          <div class="row">
+            <div class="col-4">
+              <img
+                alt="Blank"
+                src="https://media.istockphoto.com/photos/apply-now-jobs-job-working-recruitment-employees-business-desk-picture-id643778458?k=6&m=643778458&s=612x612&w=0&h=42rZTES6oeZFldaS0TgZ3grMiaDYx_cZLw_pljZ5U6w=">
+            </div>
+            <div class="job-desc col">
+              <h5 class="card-title">{{offer.title}}</h5>
+              <p>{{offer.description}}</p>
+            </div>
           </div>
-          <div class="job-desc">
-            <h5 class="card-title">{{offer.title}}</h5>
-            <p>{{offer.description}}</p>
-          </div>
-        </div>
-      </mat-card>
+        </mat-card>
+      </ng-template>
+
     </div>
   </div>
 </div>

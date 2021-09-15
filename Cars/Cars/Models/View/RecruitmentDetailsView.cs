@@ -7,7 +7,7 @@ using Cars.Models.Enums;
 
 namespace Cars.Models.View
 {
-    public class RecruitmentView
+    public class RecruitmentDetailsView
     {
         public int Id { get; set; }
 
@@ -16,8 +16,19 @@ namespace Cars.Models.View
 
         [StringLength(10000, ErrorMessage = "Description cannot be longer than 10000 characters.")]
         public string Description { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime StartDate { get; set; }
+
+        public RecruitmentStatus Status { get; set; }
+
+        public RecruitmentType Type { get; set; }
         
         public string JobType { get; set; }
         public JobLevel JobLevel { get; set; }
+        
+        [ForeignKey("Recruiter")] public string RecruiterId { get; set; }
+
+        public ApplicationUser Recruiter { get; set; }
     }
 }
