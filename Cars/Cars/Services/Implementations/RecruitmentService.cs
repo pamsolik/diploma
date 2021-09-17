@@ -65,8 +65,8 @@ namespace Cars.Services.Implementations
 
             if (!string.IsNullOrEmpty(filter.SearchString))
             {
-                recruitments = recruitments.Where(s => s.Title.Contains(filter.SearchString)
-                                     || s.Description.Contains(filter.SearchString));
+                recruitments = recruitments.Where(s => s.Title.Contains(filter.SearchString) 
+                                                       || s.Description.Contains(filter.SearchString));
             }
             //TODO: Rest of the filters
             

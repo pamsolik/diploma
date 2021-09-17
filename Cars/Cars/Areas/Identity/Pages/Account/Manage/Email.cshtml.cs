@@ -70,9 +70,18 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var email = await _userManager.GetEmailAsync(user);
-            if (Input.NewEmail != email)
+            var currentEmail = await _userManager.GetEmailAsync(user);
+            
+            if (Input.NewEmail != currentEmail)
             {
+                var exists = await _userManager.FindByEmailAsync(Input.NewEmail);
+            
+                if (exists != null)
+                    if (exists.Id != user.Id)
+                    {
+                        StatusMessage = $"Użytkownik o adresie e-mail {Input.NewEmail} już istnieje.";
+                        return RedirectToPage();
+                    }
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -86,7 +95,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
                     "Potwierdź swój e-mail",
                     $"Potwierdź swój e-mail <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
 
-                StatusMessage = "Wysłano link potwierdzający zmianę e-maila. Proszę sprawdzić email.";
+                StatusMessage = "Wysłano link potwierdzający zmianę e-maila. Proszę sprawdzić e-mail.";
                 return RedirectToPage();
             }
 
@@ -119,7 +128,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
                 "Potwierdź swój email",
                 $"Potwierdź swój e-mail <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
 
-            StatusMessage = "E-mail weryfikacyjny został wysłany. Proszę sprawdzić email.";
+            StatusMessage = "E-mail weryfikacyjny został wysłany. Proszę sprawdzić e-mail.";
             return RedirectToPage();
         }
 

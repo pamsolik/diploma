@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage
 {
-    public abstract class DeletePersonalDataModel : PageModel
+    public class DeletePersonalDataModel : PageModel
     {
         private readonly ILogger<DeletePersonalDataModel> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -63,7 +63,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             return Redirect("~/");
         }
 
-        public abstract class InputModel
+        public class InputModel
         {
             [Required]
             [DataType(DataType.Password)]

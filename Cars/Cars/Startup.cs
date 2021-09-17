@@ -1,13 +1,16 @@
+using System;
 using Cars.Data;
 using Cars.Models.DataModels;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
+using Cars.Services.Options;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -61,7 +64,21 @@ namespace Cars
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 );
+            
+            //Email Sender
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
+            //Cookies and data protection token lifespan
+            
+            // services.ConfigureApplicationCookie(o => {
+            //     o.ExpireTimeSpan = TimeSpan.FromDays(5);
+            //     o.SlidingExpiration = true;
+            // });
+            //
+            // services.Configure<DataProtectionTokenProviderOptions>(o => 
+            //     o.TokenLifespan = TimeSpan.FromHours(3));
+            
             services.AddSwaggerDocument();
         }
 
