@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cars.Data;
 using Cars.Models.DataModels;
 using Cars.Models.Dto;
+using Cars.Models.Enums;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
 using Mapster;
@@ -56,12 +58,33 @@ namespace Cars.Services.Implementations
             return dest;
         }
 
-        public async Task<List<RecruitmentView>>
-            GetRecruitmentsFiltered(RecruitmentFilterDto recruitmentFilterDto) //TODO: FILTERS AND PAGINATION
+        public async Task<PaginatedList<RecruitmentView>>
+            GetRecruitmentsFiltered(RecruitmentFilterDto filter) //TODO: FILTERS AND PAGINATION
         {
-            var res = await _context.Recruitments.ToListAsync();
-            var dest = res.Adapt<List<RecruitmentView>>();
-            return dest;
+            var recruitments =  _context.Recruitments.AsQueryable();
+
+            if (!string.IsNullOrEmpty(filter.SearchString))
+            {
+                recruitments = recruitments.Where(s => s.Title.Contains(filter.SearchString)
+                                     || s.Description.Contains(filter.SearchString));
+            }
+            //TODO: Rest of the filters
+            
+            recruitments = filter.SortOrder switch
+            {
+                SortOrder.NameAsc => recruitments.OrderBy(s => s.Title),
+                SortOrder.NameDesc => recruitments.OrderByDescending(s => s.Title),
+                SortOrder.DateAddedAsc => recruitments.OrderBy(s => s.StartDate),
+                SortOrder.DateAddedDesc => recruitments.OrderByDescending(s => s.StartDate),
+                //TODO: Order by closest
+                _ => recruitments.OrderBy(s => s.Title)
+            };
+
+            var recruitmentList = await recruitments.ToListAsync();
+            var dest = recruitmentList.Adapt<List<RecruitmentView>>();
+            var paginated = await PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
+            
+            return paginated;
         }
 
         public async Task<bool> AddApplication(AddApplicationDto addApplicationDto)

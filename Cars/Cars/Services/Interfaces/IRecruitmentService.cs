@@ -12,7 +12,7 @@ namespace Cars.Services.Interfaces
         Task<List<RecruitmentView>> GetRecruitments();
         
         Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId);
-        Task<List<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto recruitmentFilterDto);
+        Task<PaginatedList<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto filter);
 
         Task<bool> AddApplication(AddApplicationDto addApplicationDto);
 

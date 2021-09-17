@@ -22,7 +22,7 @@
         </li>
         <li>
             <p>Zeskanuj kod QR lub wprowadź ten klucz <kbd>@Model.SharedKey</kbd> do aplikacji do uwierzytelniania dwustopniowego. Spacje i wielkość liter nie mają znaczenia.</p>
-            <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation TODO</a>.</div>
+            @* <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation TODO</a>.</div> *@
             <div id="qrCode"></div>
             <div id="qrCodeData" data-url="@Html.Raw(Model.AuthenticatorUri)"></div>
         </li>
@@ -50,4 +50,7 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script type="text/javascript" src="~/lib/davidshimjs-qrcodejs-04f46c6/qrcode.js"></script>
+    <script type="text/javascript" src="~/js/qr.js"></script>
 }
