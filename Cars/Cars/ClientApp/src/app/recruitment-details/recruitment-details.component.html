@@ -1,8 +1,8 @@
 <div class="card mb-4 box-shadow container-lg p-0">
 
-  <h1 *ngIf="!details else loading">Wczytywanie</h1>
+  <h1 *ngIf="!details else loaded">Wczytywanie</h1>
 
-  <ng-template #loading>
+  <ng-template #loaded>
     <div class="card-header">
       <h4 class="my-0 font-weight-normal">{{details.title}}</h4>
     </div>

@@ -17,11 +17,12 @@
             <div class="card-body">
               <div class="form-row">
 
-                <a class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry &raquo;</a>
+                <a class="btn btn-warning mb-2 w-100" role="button" (click)="clearFilters()">Wyczyść filtry &raquo;</a>
+                <a class="btn btn-primary mb-2 w-100" role="button" (click)="applyFilter()">Zastosuj filtry &raquo;</a>
 
                 <div class="form-group">
                   <label>Oferta</label>
-                  <input class="form-control" placeholder="Wyszukaj oferty" type="text">
+                  <input class="form-control" placeholder="Wyszukaj oferty" type="text" [(ngModel)]="filters.searchString">
                 </div>
 
                 <div class="border-top my-3"></div>
@@ -111,7 +112,7 @@
       <h1 *ngIf="!offers else loaded">Wczytywanie</h1>
 
       <ng-template #loaded>
-        <mat-card *ngFor="let offer of offers" [routerLink]="['/recruitment-details/' + offer.id]">
+        <mat-card class="mb-1" *ngFor="let offer of offers" [routerLink]="['/recruitment-details/' + offer.id]">
           <div class="row">
             <div class="col-4">
               <img

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "echo starting && ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -20,6 +20,7 @@
     "@angular/material": "^11.2.13",
     "@angular/platform-browser": "~11.0.5",
     "@angular/platform-browser-dynamic": "~11.0.5",
+    "@angular/platform-server": "^12.2.6",
     "@angular/router": "~11.0.5",
     "bootstrap": "^5.0.0-beta3",
     "oidc-client": "^1.11.5",

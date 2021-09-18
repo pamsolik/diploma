@@ -3,7 +3,7 @@
     public enum RecruitmentStatus
     {
         Open,
-        Close,
+        Closed,
         Hidden
     }
 }

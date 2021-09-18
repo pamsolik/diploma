@@ -59,31 +59,17 @@ namespace Cars.Services.Implementations
         }
 
         public async Task<PaginatedList<RecruitmentView>>
-            GetRecruitmentsFiltered(RecruitmentFilterDto filter) //TODO: FILTERS AND PAGINATION
+            GetRecruitmentsFiltered(RecruitmentFilterDto filter)
         {
-            var recruitments =  _context.Recruitments.AsQueryable();
+            var recruitments = _context.Recruitments.AsQueryable()
+                .Where(r => r.Status == RecruitmentStatus.Open);
 
-            if (!string.IsNullOrEmpty(filter.SearchString))
-            {
-                recruitments = recruitments.Where(s => s.Title.Contains(filter.SearchString) 
-                                                       || s.Description.Contains(filter.SearchString));
-            }
-            //TODO: Rest of the filters
-            
-            recruitments = filter.SortOrder switch
-            {
-                SortOrder.NameAsc => recruitments.OrderBy(s => s.Title),
-                SortOrder.NameDesc => recruitments.OrderByDescending(s => s.Title),
-                SortOrder.DateAddedAsc => recruitments.OrderBy(s => s.StartDate),
-                SortOrder.DateAddedDesc => recruitments.OrderByDescending(s => s.StartDate),
-                //TODO: Order by closest
-                _ => recruitments.OrderBy(s => s.Title)
-            };
+            recruitments = FilterOutAndSortRecruitments(ref recruitments, filter);
 
             var recruitmentList = await recruitments.ToListAsync();
             var dest = recruitmentList.Adapt<List<RecruitmentView>>();
             var paginated = await PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
-            
+
             return paginated;
         }
 
@@ -102,5 +88,34 @@ namespace Cars.Services.Implementations
             var dest = res.Adapt<List<ApplicationView>>();
             return dest;
         }
+
+        private static IQueryable<Recruitment> FilterOutAndSortRecruitments(ref IQueryable<Recruitment> recruitments,
+            RecruitmentFilterDto filter)
+        {
+            if (!string.IsNullOrEmpty(filter.SearchString))
+            {
+                recruitments = recruitments.Where(s => s.Title.Contains(filter.SearchString)
+                                                       || s.Description.Contains(filter.SearchString));
+            }
+            //TODO: Rest of the filters
+
+
+            recruitments = filter.SortOrder switch
+            {
+                SortOrder.NameAsc => recruitments.OrderBy(s => s.Title),
+                SortOrder.NameDesc => recruitments.OrderByDescending(s => s.Title),
+                SortOrder.DateAddedAsc => recruitments.OrderBy(s => s.StartDate),
+                SortOrder.DateAddedDesc => recruitments.OrderByDescending(s => s.StartDate),
+                //TODO: Order by closest
+                _ => recruitments.OrderBy(s => s.Title)
+            };
+
+            return recruitments;
+        }
+
+        // async Task<PaginatedList<RecruitmentView>> ConvertToPaginatedList()
+        // {
+        //     //Maybe in the future
+        // }
     }
 }
