@@ -11,20 +11,21 @@ namespace CarsTests
         {
             //TODO: Base settings
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("InMemoryDb")  
+                .UseInMemoryDatabase("InMemoryDb")
                 .Options;
-            
-            var storeOptions = new OperationalStoreOptions {
+
+            var storeOptions = new OperationalStoreOptions
+            {
                 //populate needed members
             };
-            
+
             var sOptions = Options.Create(storeOptions);
-            
-           var context = new ApplicationDbContext(options, sOptions);
-            
-           context.Database.EnsureDeleted();
-           
-           return context;
+
+            var context = new ApplicationDbContext(options, sOptions);
+
+            context.Database.EnsureDeleted();
+
+            return context;
         }
     }
 }

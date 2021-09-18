@@ -17,12 +17,13 @@
             <div class="card-body">
               <div class="form-row">
 
-                <a class="btn btn-warning mb-2 w-100" role="button" (click)="clearFilters()">Wyczyść filtry &raquo;</a>
-                <a class="btn btn-primary mb-2 w-100" role="button" (click)="applyFilter()">Zastosuj filtry &raquo;</a>
+                <a (click)="clearFilters()" class="btn btn-warning mb-2 w-100" role="button">Wyczyść filtry &raquo;</a>
+                <a (click)="applyFilter()" class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry &raquo;</a>
 
                 <div class="form-group">
                   <label>Oferta</label>
-                  <input class="form-control" placeholder="Wyszukaj oferty" type="text" [(ngModel)]="filters.searchString">
+                  <input [(ngModel)]="filters.searchString" class="form-control" placeholder="Wyszukaj oferty"
+                         type="text">
                 </div>
 
                 <div class="border-top my-3"></div>
@@ -64,38 +65,38 @@
           </div>
         </article>
 
-<!--        <article class="card-group-item">-->
-<!--          <header class="card-header">-->
-<!--            <h6 class="title">Selection </h6>-->
-<!--          </header>-->
-<!--          <div class="filter-content">-->
-<!--            <div class="card-body">-->
-<!--              <div class="custom-control custom-checkbox">-->
-<!--                <span class="float-right badge badge-light round">52</span>-->
-<!--                <input type="checkbox" class="custom-control-input" id="Check1">-->
-<!--                <label class="custom-control-label" for="Check1">Samsung</label>-->
-<!--              </div>-->
+        <!--        <article class="card-group-item">-->
+        <!--          <header class="card-header">-->
+        <!--            <h6 class="title">Selection </h6>-->
+        <!--          </header>-->
+        <!--          <div class="filter-content">-->
+        <!--            <div class="card-body">-->
+        <!--              <div class="custom-control custom-checkbox">-->
+        <!--                <span class="float-right badge badge-light round">52</span>-->
+        <!--                <input type="checkbox" class="custom-control-input" id="Check1">-->
+        <!--                <label class="custom-control-label" for="Check1">Samsung</label>-->
+        <!--              </div>-->
 
-<!--              <div class="custom-control custom-checkbox">-->
-<!--                <span class="float-right badge badge-light round">132</span>-->
-<!--                <input type="checkbox" class="custom-control-input" id="Check2">-->
-<!--                <label class="custom-control-label" for="Check2">Black berry</label>-->
-<!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
+        <!--              <div class="custom-control custom-checkbox">-->
+        <!--                <span class="float-right badge badge-light round">132</span>-->
+        <!--                <input type="checkbox" class="custom-control-input" id="Check2">-->
+        <!--                <label class="custom-control-label" for="Check2">Black berry</label>-->
+        <!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
 
-<!--              <div class="custom-control custom-checkbox">-->
-<!--                <span class="float-right badge badge-light round">17</span>-->
-<!--                <input type="checkbox" class="custom-control-input" id="Check3">-->
-<!--                <label class="custom-control-label" for="Check3">Samsung</label>-->
-<!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
+        <!--              <div class="custom-control custom-checkbox">-->
+        <!--                <span class="float-right badge badge-light round">17</span>-->
+        <!--                <input type="checkbox" class="custom-control-input" id="Check3">-->
+        <!--                <label class="custom-control-label" for="Check3">Samsung</label>-->
+        <!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
 
-<!--              <div class="custom-control custom-checkbox">-->
-<!--                <span class="float-right badge badge-light round">7</span>-->
-<!--                <input type="checkbox" class="custom-control-input" id="Check4">-->
-<!--                <label class="custom-control-label" for="Check4">Other Brand</label>-->
-<!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
-<!--            </div> &lt;!&ndash; card-body.// &ndash;&gt;-->
-<!--          </div>-->
-<!--        </article>-->
+        <!--              <div class="custom-control custom-checkbox">-->
+        <!--                <span class="float-right badge badge-light round">7</span>-->
+        <!--                <input type="checkbox" class="custom-control-input" id="Check4">-->
+        <!--                <label class="custom-control-label" for="Check4">Other Brand</label>-->
+        <!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
+        <!--            </div> &lt;!&ndash; card-body.// &ndash;&gt;-->
+        <!--          </div>-->
+        <!--        </article>-->
 
 
       </div>
@@ -112,7 +113,7 @@
       <h1 *ngIf="!offers else loaded">Wczytywanie</h1>
 
       <ng-template #loaded>
-        <mat-card class="mb-1" *ngFor="let offer of offers" [routerLink]="['/recruitment-details/' + offer.id]">
+        <mat-card *ngFor="let offer of offers" [routerLink]="['/recruitment-details/' + offer.id]" class="mb-1">
           <div class="row">
             <div class="col-4">
               <img

@@ -1,4 +1,3 @@
-using System;
 using Cars.Data;
 using Cars.Models.DataModels;
 using Cars.Services.Implementations;
@@ -64,13 +63,13 @@ namespace Cars
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 );
-            
+
             //Email Sender
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             //Cookies and data protection token lifespan
-            
+
             // services.ConfigureApplicationCookie(o => {
             //     o.ExpireTimeSpan = TimeSpan.FromDays(5);
             //     o.SlidingExpiration = true;
@@ -78,7 +77,7 @@ namespace Cars
             //
             // services.Configure<DataProtectionTokenProviderOptions>(o => 
             //     o.TokenLifespan = TimeSpan.FromHours(3));
-            
+
             services.AddSwaggerDocument();
         }
 

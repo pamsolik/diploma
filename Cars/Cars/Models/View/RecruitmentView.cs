@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Cars.Models.DataModels;
+﻿using System.ComponentModel.DataAnnotations;
 using Cars.Models.Enums;
 
 namespace Cars.Models.View
@@ -16,7 +12,7 @@ namespace Cars.Models.View
 
         [StringLength(10000, ErrorMessage = "Description cannot be longer than 10000 characters.")]
         public string Description { get; set; }
-        
+
         public string JobType { get; set; }
         public JobLevel JobLevel { get; set; }
     }

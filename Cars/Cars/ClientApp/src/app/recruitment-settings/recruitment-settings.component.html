@@ -1,3 +1,51 @@
 <div class="card mb-4 box-shadow container-lg p-0">
-  SETTINGS
+
+  <h1 *ngIf="!settings else loaded">Wczytywanie</h1>
+
+  <ng-template #loaded>
+    <div class="card-header">
+      <h4 class="my-0 font-weight-normal">{{editMode ? "Edycja oferty pracy" : "Tworzenie nowej oferty pracy"}}</h4>
+    </div>
+    <div class="card-body row">
+      <div class="col-5">
+
+        <img
+          alt="Błąd wczytywania zdjęcia."
+          class="figure-img img-fluid rounded"
+          src="https://media.istockphoto.com/photos/apply-now-jobs-job-working-recruitment-employees-business-desk-picture-id643778458?k=6&m=643778458&s=612x612&w=0&h=42rZTES6oeZFldaS0TgZ3grMiaDYx_cZLw_pljZ5U6w=">
+
+        <div class="form-group">
+          <label>Wybierz </label>
+          <input class="form-control-file" type="file">
+          <small class="form-text text-muted">Maksymalnie 500 znaków.</small>
+        </div>
+
+      </div>
+
+      <div class="col">
+        <ul>
+          <li>TODO INPUTS</li>
+          <li>Poziom: {{settings.jobLevel}}</li>
+          <li>Typ: {{settings.jobType}}</li>
+          <li>Rozpoczęcie rekrutacji: {{settings.startDate}}</li>
+        </ul>
+      </div>
+      <form>
+
+        <div class="form-group">
+          <label>Tytuł ogłoszenia</label>
+          <input [(ngModel)]="settings.title" class="form-control" placeholder="Podaj tytuł" type="text">
+          <small class="form-text text-muted">Maksymalnie 500 znaków.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Opis oferty</label>
+          <textarea [(ngModel)]="settings.description" class="form-control" rows="10"></textarea>
+        </div>
+
+
+      </form>
+    </div>
+
+  </ng-template>
 </div>

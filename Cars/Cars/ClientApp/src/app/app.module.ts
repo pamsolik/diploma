@@ -20,7 +20,7 @@ import {RecruitmentSettingsComponent} from "./recruitment-settings/recruitment-s
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {AdminComponent} from "./admin/admin.component";
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [

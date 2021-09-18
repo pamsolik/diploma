@@ -46,11 +46,6 @@ namespace Cars.Services.Implementations
             return dest;
         }
 
-        public Task<RecruitmentDetailsView> GetRecruitmentDetails()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
         {
             var res = await _context.Recruitments.FindAsync(recruitmentId);
@@ -89,14 +84,17 @@ namespace Cars.Services.Implementations
             return dest;
         }
 
+        public Task<RecruitmentDetailsView> GetRecruitmentDetails()
+        {
+            throw new NotImplementedException();
+        }
+
         private static IQueryable<Recruitment> FilterOutAndSortRecruitments(ref IQueryable<Recruitment> recruitments,
             RecruitmentFilterDto filter)
         {
             if (!string.IsNullOrEmpty(filter.SearchString))
-            {
                 recruitments = recruitments.Where(s => s.Title.Contains(filter.SearchString)
                                                        || s.Description.Contains(filter.SearchString));
-            }
             //TODO: Rest of the filters
 
 

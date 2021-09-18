@@ -28,8 +28,7 @@ namespace Cars.Models.DataModels
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
-        [Required]
-        public RecruitmentStatus Status { get; set; }
+        [Required] public RecruitmentStatus Status { get; set; }
 
         [Required] public RecruitmentType Type { get; set; }
 

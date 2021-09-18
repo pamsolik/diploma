@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using System.Threading.Tasks;
+using Cars.Services.Options;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System.Threading.Tasks;
-using Cars.Services.Options;
 
 namespace Cars.Services.Implementations
 {
@@ -24,7 +24,7 @@ namespace Cars.Services.Implementations
         public Task Execute(string apiKey, string subject, string message, string email)
         {
             var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
+            var msg = new SendGridMessage
             {
                 From = new EmailAddress("patryk.amsolik@gmail.com", "Potwierdzenie adresu e-mail"),
                 Subject = subject,

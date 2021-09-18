@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Cars.Models.DataModels;
@@ -23,10 +22,10 @@ namespace Cars.Models.View
         public RecruitmentStatus Status { get; set; }
 
         public RecruitmentType Type { get; set; }
-        
+
         public string JobType { get; set; }
         public JobLevel JobLevel { get; set; }
-        
+
         [ForeignKey("Recruiter")] public string RecruiterId { get; set; }
 
         public ApplicationUser Recruiter { get; set; }

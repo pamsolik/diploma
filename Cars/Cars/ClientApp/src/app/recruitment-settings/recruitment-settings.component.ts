@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {newRecruitmentDetails, RecruitmentDetails} from "../../models/RecruitmentDetails"
 
 @Component({
   selector: 'app-recruitment-settings-component',
@@ -6,9 +7,7 @@ import {Component} from '@angular/core';
   styleUrls: ['./recruitment-settings.component.css']
 })
 export class RecruitmentSettingsComponent {
-  offers: string[] = ["A", "B", "C", "D"];
+  editMode: boolean = false;
+  settings: RecruitmentDetails = newRecruitmentDetails();
 
-  public incrementCounter() {
-    //this.currentCount++;
-  }
 }

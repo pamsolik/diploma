@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Cars.Models.Dto;
 using Cars.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -62,7 +61,7 @@ namespace Cars.Controllers
             var res = await _recruitmentService.GetApplications(id);
             return Ok(res);
         }
-        
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetRecruitmentDetails([FromRoute] int id)
         {

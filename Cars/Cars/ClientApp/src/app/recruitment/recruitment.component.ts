@@ -1,5 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {RecruitmentOffer} from "../../models/RecruitmentOffer";
+import {Filters, newFilters} from "../../models/Filters";
 
 @Component({
   selector: 'app-recruitment-component',
@@ -15,39 +17,15 @@ export class RecruitmentComponent {
     this.applyFilter();
   }
 
-  applyFilter(){
+  applyFilter() {
     this.http.post<RecruitmentOffer[]>(this.baseUrl + 'api/recruitments/filtered', this.filters).subscribe(result => {
       this.offers = result;
       console.log(this.offers);
     }, error => console.error(error));
   }
 
-  clearFilters(){
-    this.filters = {
-      pageSize: 2,
-      pageIndex: 1,
-      searchString: "",
-      category: "",
-      levels: []
-    }
+  clearFilters() {
+    this.filters = newFilters();
   }
 
-}
-
-interface Filters {
-  pageSize: number,
-  pageIndex: number,
-  searchString: string,
-  category: string,
-  levels: any,
-  //TODO: More filters and sort order
-}
-
-interface RecruitmentOffer {
-  id :number,
-  title: string,
-  description: string,
-  type: number,
-  jobType: string,
-  jobLevel: number
 }

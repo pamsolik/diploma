@@ -8,7 +8,6 @@ import {HttpClient} from '@angular/common/http';
   encapsulation: ViewEncapsulation.None
 })
 export class RecruiterComponent {
-  offers: string[] = ["1", "2", "3", "4"];
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     // http.get<WeatherForecast[]>(baseUrl + 'weatherforecast').subscribe(result => {
@@ -16,5 +15,3 @@ export class RecruiterComponent {
     // }, error => console.error(error));
   }
 }
-
-
