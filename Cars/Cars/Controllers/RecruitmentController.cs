@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
 using Cars.Models.Dto;
+using Cars.Models.Exceptions;
 using Cars.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -44,6 +47,7 @@ namespace Cars.Controllers
         [HttpPost("filtered")]
         public async Task<IActionResult> GetRecruitmentsFiltered([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
+            //throw new AppBaseException(HttpStatusCode.Forbidden, "TEST");
             var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto);
             return Ok(res);
         }

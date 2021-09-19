@@ -1,4 +1,9 @@
-﻿export interface RecruitmentOffer {
+﻿export interface RecruitmentList{
+  items: RecruitmentOffer[],
+  totalItems: number
+}
+
+export interface RecruitmentOffer {
   id: number,
   title: string,
   description: string,

@@ -18,9 +18,11 @@ import {MatCardModule} from "@angular/material/card";
 import {RecruitmentDetailsComponent} from "./recruitment-details/recruitment-details.component";
 import {RecruitmentSettingsComponent} from "./recruitment-settings/recruitment-settings.component";
 import {MatTabsModule} from "@angular/material/tabs";
-import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginatorModule, MatPaginatorIntl} from "@angular/material/paginator";
 import {AdminComponent} from "./admin/admin.component";
 import {CommonModule} from '@angular/common';
+import {MatPaginatorIntlCustom} from "../components/MatPaginatorIntlCustom";
+
 
 @NgModule({
   declarations: [
@@ -58,7 +60,8 @@ import {CommonModule} from '@angular/common';
     MatPaginatorModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true},
+    {provide: MatPaginatorIntl, useClass: MatPaginatorIntlCustom}
   ],
   bootstrap: [AppComponent]
 })

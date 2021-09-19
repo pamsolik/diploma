@@ -5,6 +5,7 @@
   category: string,
   levels: any,
   //TODO: More filters and sort order
+
 }
 
 export function newFilters(): Filters {

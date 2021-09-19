@@ -22,7 +22,7 @@ namespace Cars.Controllers
         {
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
             var exception = context.Error; // Your exception
-            var code = 500; // Internal Server Error by default
+            const int code = 500; // Internal Server Error by default
 
             //if      (exception is MyNotFoundException) code = 404; // Not Found
             //else if (exception is MyUnauthException)   code = 401; // Unauthorized

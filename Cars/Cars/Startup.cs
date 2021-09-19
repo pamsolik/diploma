@@ -84,13 +84,11 @@ namespace Cars
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseExceptionHandler("/api/error");
-
             if (env.IsDevelopment())
             {
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
-                //app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
             }
             else
@@ -98,17 +96,20 @@ namespace Cars
                 // app.UseExceptionHandler("/Error");
                 // // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                
             }
-
-            app.UseExceptionHandler(c => c.Run(async context =>
-            {
-                var exception = context.Features
-                    .Get<IExceptionHandlerPathFeature>()
-                    .Error;
-                var response = new { error = exception.Message };
-                await context.Response.WriteAsJsonAsync(response);
-            }));
-
+            
+            //TODO: Move to prod
+            //app.UseExceptionHandler("/api/error");
+            // app.UseExceptionHandler(c => c.Run(async context =>
+            // {
+            //     var exception = context.Features
+            //         .Get<IExceptionHandlerPathFeature>()
+            //         .Error;
+            //     var response = new ErrorDetails(exception);
+            //     await context.Response.WriteAsJsonAsync(response);
+            // }));
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment()) app.UseSpaStaticFiles();

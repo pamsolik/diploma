@@ -63,7 +63,7 @@ namespace Cars.Services.Implementations
 
             var recruitmentList = await recruitments.ToListAsync();
             var dest = recruitmentList.Adapt<List<RecruitmentView>>();
-            var paginated = await PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
+            var paginated = PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
 
             return paginated;
         }
@@ -83,12 +83,7 @@ namespace Cars.Services.Implementations
             var dest = res.Adapt<List<ApplicationView>>();
             return dest;
         }
-
-        public Task<RecruitmentDetailsView> GetRecruitmentDetails()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         private static IQueryable<Recruitment> FilterOutAndSortRecruitments(ref IQueryable<Recruitment> recruitments,
             RecruitmentFilterDto filter)
         {

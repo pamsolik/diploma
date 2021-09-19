@@ -36,18 +36,6 @@ namespace Cars.Areas.Identity.Pages.Account
             if (user == null) return NotFound($"Nie znaleziono użytkownika z adresem '{email}'.");
 
             Email = email;
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = false;
-            if (!DisplayConfirmAccountLink) return Page();
-            var userId = await _userManager.GetUserIdAsync(user);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            EmailConfirmationUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                null,
-                new { area = "Identity", userId, code, returnUrl },
-                Request.Scheme);
-
             return Page();
         }
     }

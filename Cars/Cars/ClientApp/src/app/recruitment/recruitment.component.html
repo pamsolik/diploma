@@ -18,7 +18,7 @@
               <div class="form-row">
 
                 <a (click)="clearFilters()" class="btn btn-warning mb-2 w-100" role="button">Wyczyść filtry &raquo;</a>
-                <a (click)="applyFilter()" class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry &raquo;</a>
+                <a (click)="loadData()" class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry &raquo;</a>
 
                 <div class="form-group">
                   <label>Oferta</label>
@@ -113,7 +113,18 @@
       <h1 *ngIf="!offers else loaded">Wczytywanie</h1>
 
       <ng-template #loaded>
-        <mat-card *ngFor="let offer of offers" [routerLink]="['/recruitment-details/' + offer.id]" class="mb-1">
+
+        <mat-paginator id="paginator"
+                       [pageIndex]="0"
+                       [length]="offers.totalItems"
+                       [pageSize]="filters.pageSize"
+                       [pageSizeOptions]="[2, 5, 10, 25, 100]"
+                       (page)="applyFilter($event); loadData()"
+
+                       aria-label="Wybierz stronę">
+        </mat-paginator>
+
+        <mat-card *ngFor="let offer of offers.items" [routerLink]="['/recruitment-details/' + offer.id]" class="mb-1">
           <div class="row">
             <div class="col-4">
               <img

@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading.Tasks;
 using Cars.Models.DataModels;
+using Cars.Models.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -41,6 +43,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
+            //throw new AppBaseException(HttpStatusCode.Unauthorized, "TEST");
             if (!ModelState.IsValid) return Page();
 
             var user = await _userManager.GetUserAsync(User);
