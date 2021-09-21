@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Device.Location;
 using System.Linq;
 using System.Threading.Tasks;
 using Cars.Data;
@@ -10,6 +10,7 @@ using Cars.Models.View;
 using Cars.Services.Interfaces;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Cars.Services.Implementations
 {
@@ -104,6 +105,13 @@ namespace Cars.Services.Implementations
             };
 
             return recruitments;
+        }
+
+        private double CalculateDistance(Recruitment recruitment, double latitude, double longitude)
+        {
+            var sCoord = new GeoCoordinate(recruitment.Latitude, recruitment.Longitude);
+            var eCoord = new GeoCoordinate(latitude, longitude);
+            return sCoord.GetDistanceTo(eCoord);
         }
 
         // async Task<PaginatedList<RecruitmentView>> ConvertToPaginatedList()

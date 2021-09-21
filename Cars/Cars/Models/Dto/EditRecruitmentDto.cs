@@ -42,5 +42,11 @@ namespace Cars.Models.Dto
         [Required]
         [StringLength(1000, ErrorMessage = "City cannot be longer than 1000 characters.")]
         public string City { get; set; }
+        
+        [Required]
+        public double Latitude { get; set; }
+        
+        [Required]
+        public double Longitude { get; set; }
     }
 }
