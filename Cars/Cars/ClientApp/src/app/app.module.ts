@@ -22,6 +22,9 @@ import {MatPaginatorModule, MatPaginatorIntl} from "@angular/material/paginator"
 import {AdminComponent} from "./admin/admin.component";
 import {CommonModule} from '@angular/common';
 import {MatPaginatorIntlCustom} from "../components/MatPaginatorIntlCustom";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatSelectModule} from "@angular/material/select";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -57,7 +60,10 @@ import {MatPaginatorIntlCustom} from "../components/MatPaginatorIntlCustom";
     ]),
     MatCardModule,
     MatTabsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    MatInputModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true},

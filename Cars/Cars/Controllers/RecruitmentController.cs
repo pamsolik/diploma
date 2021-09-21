@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Cars.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Recruiter,Admin")]
     [ApiController]
     [Route("api/recruitments")]
     public class RecruitmentController : ControllerBase

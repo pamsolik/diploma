@@ -23,12 +23,19 @@
       </div>
 
       <div class="col">
-        <ul>
-          <li>TODO INPUTS</li>
-          <li>Poziom: {{settings.jobLevel}}</li>
-          <li>Typ: {{settings.jobType}}</li>
-          <li>Rozpoczęcie rekrutacji: {{settings.startDate}}</li>
-        </ul>
+
+        <div class="form-group mb-2">
+          <label>Poziom</label>
+          <select class="form-control" [(ngModel)]="jobLevel">
+            <option *ngFor="let level of jobLevels">{{level}}</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-2">
+          <label>Typ pracy</label>
+          <input [(ngModel)]="settings.jobType" class="form-control" placeholder="Podaj typ pracy" type="text">
+        </div>
+
       </div>
       <form>
 
@@ -47,5 +54,6 @@
       </form>
     </div>
 
+    <a (click)="save()" class="btn btn-primary m-3" role="button">Zapisz</a>
   </ng-template>
 </div>

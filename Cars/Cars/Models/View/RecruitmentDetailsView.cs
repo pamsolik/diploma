@@ -10,24 +10,30 @@ namespace Cars.Models.View
     {
         public int Id { get; set; }
 
-        [StringLength(500, ErrorMessage = "Title cannot be longer than 500 characters.")]
+        public string RecruiterId { get; set; }
+
+        public ApplicationUser Recruiter { get; set; }
+        
         public string Title { get; set; }
-
-        [StringLength(10000, ErrorMessage = "Description cannot be longer than 10000 characters.")]
+        
+        public string ShortDescription { get; set; }
+        
         public string Description { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        
         public DateTime StartDate { get; set; }
 
         public RecruitmentStatus Status { get; set; }
 
         public RecruitmentType Type { get; set; }
-
-        public string JobType { get; set; }
+        
+        public JobType JobType { get; set; }
+        
         public JobLevel JobLevel { get; set; }
-
-        [ForeignKey("Recruiter")] public string RecruiterId { get; set; }
-
-        public ApplicationUser Recruiter { get; set; }
+        
+        public TeamSize TeamSize { get; set; }
+        
+        public string Field { get; set; }
+        
+        public string City { get; set; }
     }
 }

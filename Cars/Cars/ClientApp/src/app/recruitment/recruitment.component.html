@@ -113,16 +113,9 @@
       <h1 *ngIf="!offers else loaded">Wczytywanie</h1>
 
       <ng-template #loaded>
-
-        <mat-paginator id="paginator"
-                       [pageIndex]="0"
-                       [length]="offers.totalItems"
-                       [pageSize]="filters.pageSize"
-                       [pageSizeOptions]="[2, 5, 10, 25, 100]"
-                       (page)="applyFilter($event); loadData()"
-
-                       aria-label="Wybierz stronę">
-        </mat-paginator>
+        <select class="form-control" [(ngModel)]="sortOrder">
+          <option *ngFor="let order of sortOrders">{{order}}</option>
+        </select>
 
         <mat-card *ngFor="let offer of offers.items" [routerLink]="['/recruitment-details/' + offer.id]" class="mb-1">
           <div class="row">
@@ -137,8 +130,17 @@
             </div>
           </div>
         </mat-card>
-      </ng-template>
 
+        <mat-paginator id="paginator"
+                       [pageIndex]="0"
+                       [length]="offers.totalItems"
+                       [pageSize]="filters.pageSize"
+                       [pageSizeOptions]="[2, 5, 10, 25, 100]"
+                       (page)="applyFilter($event); loadData()"
+
+                       aria-label="Wybierz stronę">
+        </mat-paginator>
+      </ng-template>
     </div>
   </div>
 </div>

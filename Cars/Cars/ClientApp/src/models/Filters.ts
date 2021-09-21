@@ -1,9 +1,12 @@
-﻿export interface Filters {
+﻿import {SortOrder} from "./enums/SortOrder";
+
+export interface Filters {
   pageSize: number,
   pageIndex: number,
   searchString: string,
   category: string,
   levels: any,
+  sortOrder: number
   //TODO: More filters and sort order
 
 }
@@ -14,6 +17,7 @@ export function newFilters(): Filters {
     pageIndex: 1,
     searchString: "",
     category: "",
-    levels: []
+    levels: [],
+    sortOrder: 1
   }
 }

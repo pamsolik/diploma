@@ -4,6 +4,9 @@ import {RecruitmentList, RecruitmentOffer} from "../../models/RecruitmentOffer";
 import {Filters, newFilters} from "../../models/Filters";
 import {MatPaginator, MatPaginatorIntl, PageEvent} from "@angular/material/paginator";
 import {tap} from "rxjs/operators";
+import {JobLevel} from "../../models/enums/JobLevel";
+import {SortOrder} from "../../models/enums/SortOrder";
+import {getEnumKeyByEnumValue} from "../../components/EnumTool";
 
 @Component({
   selector: 'app-recruitment-component',
@@ -11,6 +14,8 @@ import {tap} from "rxjs/operators";
   styleUrls: ['./recruitment.component.css']
 })
 export class RecruitmentComponent{
+  sortOrders = Object.values(SortOrder);
+  sortOrder: string = SortOrder.NameAsc;
   offers: RecruitmentList;
   filters: Filters;
 
@@ -25,7 +30,8 @@ export class RecruitmentComponent{
   }
 
   loadData() {
-    console.log(this.filters.pageIndex);
+    this.filters.sortOrder = getEnumKeyByEnumValue(SortOrder, this.sortOrder);
+    console.log(this.filters.sortOrder);
     this.http.post<RecruitmentList>(this.baseUrl + 'api/recruitments/filtered', this.filters).subscribe(result => {
       this.offers = result;
       console.log(this.offers.items);

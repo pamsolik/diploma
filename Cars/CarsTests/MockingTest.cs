@@ -16,12 +16,12 @@ namespace CarsTests
             await dbContext.Recruitments.AddRangeAsync(
                 new Recruitment
                 {
-                    Id = 1, Description = "Desc 1", Title = "Rec 1", Type = RecruitmentType.Open, JobType = "Normal"
+                    Id = 1, Description = "Desc 1", Title = "Rec 1", Type = RecruitmentType.Open, JobType = JobType.Hybrid
                 },
                 new Recruitment
                 {
                     Id = 2, Description = "Desc 2", Title = "Rec 2", Type = RecruitmentType.InviteOnly,
-                    JobType = "Not Normal"
+                    JobType = JobType.Hybrid
                 }
             );
             await dbContext.SaveChangesAsync();

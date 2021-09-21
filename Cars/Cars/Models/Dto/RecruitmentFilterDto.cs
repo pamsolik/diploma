@@ -14,6 +14,13 @@ namespace Cars.Models.Dto
 
         public List<JobLevel> JobLevels { get; set; }
 
+        public List<JobType> JobTypes { get; set; }
+        
+        public List<TeamSize> TeamSizes { get; set; }
+        
+        public string City { get; set; }
+
+        public int Distance { get; set; } = 0;
         public SortOrder SortOrder { get; set; } = SortOrder.NameAsc;
     }
 }
