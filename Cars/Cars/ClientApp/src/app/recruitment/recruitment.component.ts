@@ -3,10 +3,10 @@ import {HttpClient} from "@angular/common/http";
 import {RecruitmentList, RecruitmentOffer} from "../../models/RecruitmentOffer";
 import {Filters, newFilters} from "../../models/Filters";
 import {MatPaginator, MatPaginatorIntl, PageEvent} from "@angular/material/paginator";
-import {tap} from "rxjs/operators";
-import {JobLevel} from "../../models/enums/JobLevel";
 import {SortOrder} from "../../models/enums/SortOrder";
 import {getEnumKeyByEnumValue} from "../../components/EnumTool";
+import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
+import {Options} from "@angular-slider/ngx-slider";
 
 @Component({
   selector: 'app-recruitment-component',
@@ -14,12 +14,26 @@ import {getEnumKeyByEnumValue} from "../../components/EnumTool";
   styleUrls: ['./recruitment.component.css']
 })
 export class RecruitmentComponent{
+  enums: RecruitmentEnums = new RecruitmentEnums();
   sortOrders = Object.values(SortOrder);
   sortOrder: string = SortOrder.NameAsc;
   offers: RecruitmentList;
   filters: Filters;
 
+
+  options: Options = {
+    floor: 0,
+    ceil: 100,
+    step: 5,
+    showTicks: false
+    // ,
+    // translate: (value: number): string => {
+    //   return value + 'km';
+    // }
+  };
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+    this.filters = newFilters();
     this.clearFilters();
     this.loadData();
   }
@@ -37,7 +51,8 @@ export class RecruitmentComponent{
   }
 
   clearFilters() {
-    this.filters = newFilters();
+    console.log(this.filters);
+    //this.filters = newFilters();
   }
 
   public createImgPath = (path: string) => {

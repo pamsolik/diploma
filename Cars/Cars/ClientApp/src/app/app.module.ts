@@ -26,6 +26,8 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatSelectModule} from "@angular/material/select";
 import {MatInputModule} from "@angular/material/input";
 import {FileUploadComponent} from "./file-upload/file-upload.component";
+import {MatSliderModule} from "@angular/material/slider";
+import {NgxSliderModule} from "@angular-slider/ngx-slider";
 
 
 @NgModule({
@@ -65,7 +67,9 @@ import {FileUploadComponent} from "./file-upload/file-upload.component";
     MatPaginatorModule,
     MatDatepickerModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatSliderModule,
+    NgxSliderModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true},

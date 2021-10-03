@@ -84,12 +84,10 @@ namespace Cars.Services.Implementations
         public async Task<PaginatedList<RecruitmentView>>
             GetRecruitmentsFiltered(RecruitmentFilterDto filter)
         {
-            var recruitments = _context.Recruitments.AsQueryable()
+            var recruitments = _context.Recruitments
                 .Where(r => r.Status == RecruitmentStatus.Open);
-
-            recruitments = FilterOutAndSortRecruitments(ref recruitments, filter);
-
-            var recruitmentList = await recruitments.ToListAsync();
+            
+            var recruitmentList = FilterOutAndSortRecruitments(ref recruitments, filter).ToList();
             var dest = recruitmentList.Adapt<List<RecruitmentView>>();
             var paginated = PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
 
@@ -112,26 +110,30 @@ namespace Cars.Services.Implementations
             return dest;
         }
 
-        private static IQueryable<Recruitment> FilterOutAndSortRecruitments(ref IQueryable<Recruitment> recruitments,
+        private static IEnumerable<Recruitment> FilterOutAndSortRecruitments(ref IQueryable<Recruitment> recruitments,
             RecruitmentFilterDto filter)
         {
             if (!string.IsNullOrEmpty(filter.SearchString))
-                recruitments = recruitments.Where(s => s.Title.Contains(filter.SearchString)
-                                                       || s.Description.Contains(filter.SearchString));
-            //TODO: Rest of the filters
-
-
-            recruitments = filter.SortOrder switch
+                recruitments = recruitments.Where(s =>
+                    s.Title.Contains(filter.SearchString) || s.Description.Contains(filter.SearchString));
+            
+            var filtered = recruitments.AsEnumerable();
+            
+            FilterPickedValues(ref filtered, filter.JobLevels, x => (int)x.JobLevel);
+            FilterPickedValues(ref filtered, filter.JobTypes, x => (int)x.JobType);
+            FilterPickedValues(ref filtered, filter.TeamSizes, x => (int)x.TeamSize);
+            
+            filtered = filter.SortOrder switch
             {
-                SortOrder.NameAsc => recruitments.OrderBy(s => s.Title),
-                SortOrder.NameDesc => recruitments.OrderByDescending(s => s.Title),
-                SortOrder.DateAddedAsc => recruitments.OrderBy(s => s.StartDate),
-                SortOrder.DateAddedDesc => recruitments.OrderByDescending(s => s.StartDate),
+                SortOrder.NameAsc => filtered.OrderBy(s => s.Title),
+                SortOrder.NameDesc => filtered.OrderByDescending(s => s.Title),
+                SortOrder.DateAddedAsc => filtered.OrderBy(s => s.StartDate),
+                SortOrder.DateAddedDesc => filtered.OrderByDescending(s => s.StartDate),
                 //TODO: Order by closest
                 _ => recruitments.OrderBy(s => s.Title)
             };
 
-            return recruitments;
+            return filtered;
         }
 
         private double CalculateDistance(Recruitment recruitment, double latitude, double longitude)
@@ -141,6 +143,19 @@ namespace Cars.Services.Implementations
             return sCoord.GetDistanceTo(eCoord);
         }
 
+        private static void FilterPickedValues(ref IEnumerable<Recruitment> list,
+            IReadOnlyList<bool?> filter,
+            Func<Recruitment, int> predicate)
+        {
+            if (filter.Any(f => f == true))
+            {
+                list = list.Where(li =>
+                {
+                    var val = predicate(li);
+                    return filter.Count > val && filter[val] == true;
+                });
+            }
+        }
 
         // async Task<PaginatedList<RecruitmentView>> ConvertToPaginatedList()
         // {

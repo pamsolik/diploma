@@ -1,7 +1,7 @@
 ﻿export interface RecruitmentDetailsView {
   id: number,
   title: string,
-  shortDescription: "",
+  shortDescription: string,
   description: string,
   status: number,
   type: number,

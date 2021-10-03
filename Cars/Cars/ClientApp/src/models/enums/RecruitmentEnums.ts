@@ -7,7 +7,7 @@ import {RecruitmentType} from "./RecruitmentType";
 import {TeamSize} from "./TeamSize";
 
 export class RecruitmentEnums{
-  jobLevels: string[] = Object.values(JobLevel);
+  public jobLevels: string[] = Object.values(JobLevel);
   jobLevel: string;
 
   jobTypes: string[] = Object.values(JobType);

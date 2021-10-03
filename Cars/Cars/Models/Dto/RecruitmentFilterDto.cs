@@ -12,11 +12,11 @@ namespace Cars.Models.Dto
 
         public string SearchString { get; set; }
 
-        public List<JobLevel> JobLevels { get; set; }
+        public List<bool?> JobLevels { get; set; }
 
-        public List<JobType> JobTypes { get; set; }
+        public List<bool?> JobTypes { get; set; }
         
-        public List<TeamSize> TeamSizes { get; set; }
+        public List<bool?> TeamSizes { get; set; }
         
         public string City { get; set; }
 

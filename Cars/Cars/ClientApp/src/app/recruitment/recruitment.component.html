@@ -33,87 +33,72 @@
                   <input class="form-control" placeholder="Wprowadź lokalizację" type="text">
                 </div>
 
+                <div class="form-group mt-2">
+                  <label>Dystans (km)</label>
+                  <div class="custom-slider">
+                    <ngx-slider [(value)]="filters.distance" [options]="options"></ngx-slider>
+                  </div>
+                </div>
+
                 <div class="border-top my-3"></div>
 
                 <div class="form-group">
-                  <label>Kategoria</label>
-                  <select class="form-control">
-                    <option>Wybierz</option>
-                    <option>1</option>
-                    <option>2</option>
-                  </select>
+                  <label>Typ pracy</label>
+                  <div class="form-check" *ngFor="let type of enums.jobTypes; let i = index">
+                    <input [(ngModel)]="filters.jobTypes[i]" class="form-check-input" type="checkbox" [value]="i">
+                    <label class="form-check-label">
+                      {{type}}
+                    </label>
+                  </div>
                 </div>
 
                 <div class="border-top my-3"></div>
 
-                <label>Poziom</label>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="">
-                  <label class="form-check-label">
-                    Praktyki
-                  </label>
+                <div class="form-group">
+                  <label>Poziom</label>
+                  <div class="form-check" *ngFor="let type of enums.jobLevels; let i = index">
+                    <input [(ngModel)]="filters.jobLevels[i]" class="form-check-input" type="checkbox" [value]="i">
+                    <label class="form-check-label">
+                      {{type}}
+                    </label>
+                  </div>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="">
-                  <label class="form-check-label">
-                    Junior
-                  </label>
+
+                <div class="border-top my-3"></div>
+
+                <div class="form-group">
+                  <label>Wielkość zespołu</label>
+                  <div class="form-check" *ngFor="let type of enums.teamSizes; let i = index">
+                    <input [(ngModel)]="filters.teamSizes[i]" class="form-check-input" type="checkbox" [value]="i">
+                    <label class="form-check-label">
+                      {{type}}
+                    </label>
+                  </div>
                 </div>
+
+                <div class="border-top my-3"></div>
+
+                <!--                <div class="form-group">-->
+                <!--                  <label>Typ pracy 1</label>-->
+                <!--                  <select class="form-control">-->
+                <!--                    <option>Wybierz</option>-->
+                <!--                    <option *ngFor="let level of enums.jobTypes">{{level}}</option>-->
+                <!--                  </select>-->
+                <!--                </div>-->
 
               </div>
             </div>
           </div>
         </article>
 
-        <!--        <article class="card-group-item">-->
-        <!--          <header class="card-header">-->
-        <!--            <h6 class="title">Selection </h6>-->
-        <!--          </header>-->
-        <!--          <div class="filter-content">-->
-        <!--            <div class="card-body">-->
-        <!--              <div class="custom-control custom-checkbox">-->
-        <!--                <span class="float-right badge badge-light round">52</span>-->
-        <!--                <input type="checkbox" class="custom-control-input" id="Check1">-->
-        <!--                <label class="custom-control-label" for="Check1">Samsung</label>-->
-        <!--              </div>-->
-
-        <!--              <div class="custom-control custom-checkbox">-->
-        <!--                <span class="float-right badge badge-light round">132</span>-->
-        <!--                <input type="checkbox" class="custom-control-input" id="Check2">-->
-        <!--                <label class="custom-control-label" for="Check2">Black berry</label>-->
-        <!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
-
-        <!--              <div class="custom-control custom-checkbox">-->
-        <!--                <span class="float-right badge badge-light round">17</span>-->
-        <!--                <input type="checkbox" class="custom-control-input" id="Check3">-->
-        <!--                <label class="custom-control-label" for="Check3">Samsung</label>-->
-        <!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
-
-        <!--              <div class="custom-control custom-checkbox">-->
-        <!--                <span class="float-right badge badge-light round">7</span>-->
-        <!--                <input type="checkbox" class="custom-control-input" id="Check4">-->
-        <!--                <label class="custom-control-label" for="Check4">Other Brand</label>-->
-        <!--              </div> &lt;!&ndash; form-check.// &ndash;&gt;-->
-        <!--            </div> &lt;!&ndash; card-body.// &ndash;&gt;-->
-        <!--          </div>-->
-        <!--        </article>-->
-
-
       </div>
     </div>
+
     <div class="col p-1">
-
-      <!--      <mat-paginator [length]="100"
-                           [pageSize]="10"
-                           [pageSizeOptions]="[5, 10, 25, 100]"
-                           aria-label="Select page">
-
-            </mat-paginator>-->
-
       <h1 *ngIf="!offers else loaded">Wczytywanie</h1>
 
       <ng-template #loaded>
-        <select class="form-control" [(ngModel)]="sortOrder">
+        <select class="form-control mb-2" [(ngModel)]="sortOrder">
           <option *ngFor="let order of sortOrders">{{order}}</option>
         </select>
 
