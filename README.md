@@ -18,3 +18,7 @@ dr inż. Łukasz Chomątek
 | Specjalizacja: | IOAD |
 | Termin: | TODO |
 | Języki: | C#, TS, JS |
+
+## Technologie
+
+TODO

@@ -9,5 +9,6 @@ export interface RecruitmentOffer {
   description: string,
   type: number,
   jobType: string,
-  jobLevel: number
+  jobLevel: number,
+  imgUrl: string
 }

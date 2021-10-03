@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Device.Location;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Cars.Data;
@@ -8,6 +10,7 @@ using Cars.Models.Dto;
 using Cars.Models.Enums;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
+using IdentityServer4.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,27 +25,51 @@ namespace Cars.Services.Implementations
         {
             _context = context;
         }
-
-
-        public async Task<bool> AddRecruitment(AddRecruitmentDto addRecruitmentDto)
+        
+        public async Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId)
         {
             var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
+            dest.RecruiterId = recruiterId;
             var res = _context.Recruitments.Add(dest);
             await _context.SaveChangesAsync();
-            return true;
+            if (addRecruitmentDto.ImgUrl.IsNullOrEmpty())
+            {
+                res.Entity.ImgUrl = ImgPath.PlaceHolder;
+                res = _context.Recruitments.Update(res.Entity);
+                await _context.SaveChangesAsync();
+            }
+            else if (addRecruitmentDto.ImgUrl != ImgPath.PlaceHolder)
+            {
+                try
+                {
+                    var basePath = Directory.GetCurrentDirectory();
+                    var ext = Path.GetExtension(addRecruitmentDto.ImgUrl);
+                    var imgUrl = Path.Combine("Resources", "Images", "Thumbnails", $"Recruitment_{res.Entity.Id}{ext}");
+                    File.Move(Path.Combine(basePath, addRecruitmentDto.ImgUrl ?? throw new FileNotFoundException()), Path.Combine(basePath, imgUrl), true);
+                    res.Entity.ImgUrl = imgUrl;
+                }
+                catch (IOException e)
+                {
+                    res.Entity.ImgUrl = ImgPath.PlaceHolder;
+                }
+                res = _context.Recruitments.Update(res.Entity);
+                await _context.SaveChangesAsync();
+            }
+            return res.Entity.Id;
         }
 
         public async Task<bool> EditRecruitment(EditRecruitmentDto addRecruitmentDto)
         {
+            var recruitment = await _context.Recruitments.FindAsync(addRecruitmentDto.Id); //TODO 
             var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
             var res = _context.Recruitments.Update(dest);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<List<RecruitmentView>> GetRecruitments()
+        public async Task<List<RecruitmentView>> GetRecruitments(string userId)
         {
-            var res = await _context.Recruitments.ToListAsync();
+            var res = await _context.Recruitments.Where(r => r.RecruiterId == userId).ToListAsync();
             var dest = res.Adapt<List<RecruitmentView>>();
             return dest;
         }
@@ -84,7 +111,7 @@ namespace Cars.Services.Implementations
             var dest = res.Adapt<List<ApplicationView>>();
             return dest;
         }
-        
+
         private static IQueryable<Recruitment> FilterOutAndSortRecruitments(ref IQueryable<Recruitment> recruitments,
             RecruitmentFilterDto filter)
         {
@@ -113,6 +140,7 @@ namespace Cars.Services.Implementations
             var eCoord = new GeoCoordinate(latitude, longitude);
             return sCoord.GetDistanceTo(eCoord);
         }
+
 
         // async Task<PaginatedList<RecruitmentView>> ConvertToPaginatedList()
         // {

@@ -55,6 +55,8 @@ namespace Cars.Models.DataModels
         
         [Required]
         public double Longitude { get; set; }
+
+        public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
         
         public ICollection<RecruitmentApplication> Applications { get; set; }
     }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Cars.Models.Dto;
 using Cars.Services.Interfaces;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -19,12 +20,16 @@ namespace Cars.Controllers
             _logger = logger;
             _adminService = adminService;
         }
-
+        
         [HttpGet("recruitments")]
-        public async Task<IActionResult> GetRecruitments([FromBody] AddRecruitmentDto addRecruitmentDto)
+        public async Task<IActionResult> GetRecruitments()
         {
-            //var res =  await _adminService.AddRecruitment(addRecruitmentDto);
+            var res =  await _adminService.GetRecruitments();
+            
             return Ok("");
         }
+        
+        
+        
     }
 }

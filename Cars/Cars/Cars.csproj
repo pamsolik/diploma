@@ -15,6 +15,7 @@
 
     <ItemGroup>
         <PackageReference Include="Mapster" Version="7.2.0" />
+        <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.10" />
@@ -45,6 +46,10 @@
     <ItemGroup>
         <Folder Include="ClientApp\src\pipes" />
         <Folder Include="ClientApp\src\services" />
+        <Folder Include="Resources\Images\Defaults" />
+        <Folder Include="Resources\Images\Profile" />
+        <Folder Include="Resources\Images\Temp" />
+        <Folder Include="Resources\Images\Thumbnails" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

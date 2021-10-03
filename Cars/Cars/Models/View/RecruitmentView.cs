@@ -13,6 +13,8 @@ namespace Cars.Models.View
         
         public string City { get; set; }
         
+        public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
+        
         //TODO: Calculate
         public int DaysAgo { get; set; }
     }

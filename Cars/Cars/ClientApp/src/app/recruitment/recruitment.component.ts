@@ -31,14 +31,16 @@ export class RecruitmentComponent{
 
   loadData() {
     this.filters.sortOrder = getEnumKeyByEnumValue(SortOrder, this.sortOrder);
-    console.log(this.filters.sortOrder);
     this.http.post<RecruitmentList>(this.baseUrl + 'api/recruitments/filtered', this.filters).subscribe(result => {
       this.offers = result;
-      console.log(this.offers.items);
     }, error => console.error(error));
   }
 
   clearFilters() {
     this.filters = newFilters();
+  }
+
+  public createImgPath = (path: string) => {
+    return `${this.baseUrl}${path}`;
   }
 }

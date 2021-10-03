@@ -1,13 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 using Cars.Models.Enums;
 
 namespace Cars.Models.Dto
 {
     public class AddRecruitmentDto
     {
-        [Required]
-        public string RecruiterId { get; set; }
+        //public string RecruiterId { get; set; }
 
         [Required]
         [StringLength(200, ErrorMessage = "Title cannot be longer than 200 characters.")]
@@ -45,5 +45,7 @@ namespace Cars.Models.Dto
         
         [Required]
         public double Longitude { get; set; }
+        
+        public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
     }
 }

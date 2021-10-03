@@ -14,7 +14,7 @@ export interface Filters {
 export function newFilters(): Filters {
   return {
     pageSize: 2,
-    pageIndex: 1,
+    pageIndex: 0,
     searchString: "",
     category: "",
     levels: [],

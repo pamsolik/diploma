@@ -1,11 +1,18 @@
 ﻿using System;
+using System.IO;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Cars.Models.Dto;
+using Cars.Models.Enums;
 using Cars.Models.Exceptions;
+using Cars.Models.View;
 using Cars.Services.Interfaces;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNet.Identity;
 
 namespace Cars.Controllers
 {
@@ -15,8 +22,8 @@ namespace Cars.Controllers
     public class RecruitmentController : ControllerBase
     {
         private readonly ILogger<RecruitmentController> _logger;
+        
         private readonly IRecruitmentService _recruitmentService;
-
         public RecruitmentController(ILogger<RecruitmentController> logger, IRecruitmentService recruitmentService)
         {
             _recruitmentService = recruitmentService;
@@ -26,28 +33,41 @@ namespace Cars.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRecruitment([FromBody] AddRecruitmentDto addRecruitmentDto)
         {
-            var res = await _recruitmentService.AddRecruitment(addRecruitmentDto);
-            return Ok(res);
+            var usr = User.Identity.GetUserId();
+            var res = await _recruitmentService.AddRecruitment(addRecruitmentDto, usr);
+           
+            //TODO: TEST
+            return Ok(new ApiAnswer("Added"));
         }
 
         [HttpPut]
         public async Task<IActionResult> EditRecruitment([FromBody] EditRecruitmentDto editRecruitment)
         {
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) != editRecruitment.RecruiterId)
+                throw new AppBaseException(HttpStatusCode.Forbidden,
+                    "User is not authorised to edit this recruitment.");
             var res = await _recruitmentService.EditRecruitment(editRecruitment);
+            return Ok(new ApiAnswer("Edited"));
+        }
+
+        [HttpPut("status/{id}")]
+        public async Task<IActionResult> CloseRecruitment([FromBody] RecruitmentStatus status)
+        {
+            //TODO: Maybe delete
+            var res = await _recruitmentService.GetRecruitments(User.GetSubjectId());
             return Ok(res);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetRecruitments()
         {
-            var res = await _recruitmentService.GetRecruitments();
+            var res = await _recruitmentService.GetRecruitments(User.GetSubjectId());
             return Ok(res);
         }
 
         [HttpPost("filtered")]
         public async Task<IActionResult> GetRecruitmentsFiltered([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
-            //throw new AppBaseException(HttpStatusCode.Forbidden, "TEST");
             var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto);
             return Ok(res);
         }

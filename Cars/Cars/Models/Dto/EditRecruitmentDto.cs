@@ -48,5 +48,8 @@ namespace Cars.Models.Dto
         
         [Required]
         public double Longitude { get; set; }
+        
+        [Required]
+        public string ImgUrl { get; set; }
     }
 }

@@ -35,5 +35,7 @@ namespace Cars.Models.View
         public string Field { get; set; }
         
         public string City { get; set; }
+        
+        public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
     }
 }

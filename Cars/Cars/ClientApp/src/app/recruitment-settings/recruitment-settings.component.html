@@ -9,48 +9,84 @@
     <div class="card-body row">
       <div class="col-5">
 
-        <img
-          alt="Błąd wczytywania zdjęcia."
-          class="figure-img img-fluid rounded"
-          src="https://media.istockphoto.com/photos/apply-now-jobs-job-working-recruitment-employees-business-desk-picture-id643778458?k=6&m=643778458&s=612x612&w=0&h=42rZTES6oeZFldaS0TgZ3grMiaDYx_cZLw_pljZ5U6w=">
+        <!--        <img-->
+        <!--          alt="Błąd wczytywania zdjęcia."-->
+        <!--          class="figure-img img-fluid rounded"-->
+        <!--          src="https://media.istockphoto.com/photos/apply-now-jobs-job-working-recruitment-employees-business-desk-picture-id643778458?k=6&m=643778458&s=612x612&w=0&h=42rZTES6oeZFldaS0TgZ3grMiaDYx_cZLw_pljZ5U6w=">-->
 
-        <div class="form-group">
-          <label>Wybierz </label>
-          <input class="form-control-file" type="file">
-          <small class="form-text text-muted">Maksymalnie 500 znaków.</small>
-        </div>
+        <img [src]="createImgPath(settings.imgUrl)" alt="Wybierz zdjęcie" class="figure-img img-fluid rounded">
+
+        <app-file-upload (onUploadFinished)="uploadFinished($event)"></app-file-upload>
 
       </div>
 
-      <div class="col">
+      <form class="col mb-3">
 
-        <div class="form-group mb-2">
+        <div class="form-group mb-3">
           <label>Poziom</label>
-          <select class="form-control" [(ngModel)]="jobLevel">
-            <option *ngFor="let level of jobLevels">{{level}}</option>
+          <select class="form-control" [(ngModel)]="enums.jobLevel">
+            <option *ngFor="let level of enums.jobLevels">{{level}}</option>
           </select>
         </div>
 
-        <div class="form-group mb-2">
+        <div class="form-group mb-3">
           <label>Typ pracy</label>
-          <input [(ngModel)]="settings.jobType" class="form-control" placeholder="Podaj typ pracy" type="text">
+          <select class="form-control" [(ngModel)]="enums.jobType">
+            <option *ngFor="let level of enums.jobTypes">{{level}}</option>
+          </select>
         </div>
 
-      </div>
+        <div class="form-group mb-3">
+          <label>Typ rekrutacji</label>
+          <select class="form-control" [(ngModel)]="enums.recruitmentType">
+            <option *ngFor="let level of enums.recruitmentTypes">{{level}}</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Rozmiar zespołu</label>
+          <select class="form-control" [(ngModel)]="enums.teamSize">
+            <option *ngFor="let level of enums.teamSizes">{{level}}</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Status</label>
+          <select class="form-control" [(ngModel)]="enums.recruitmentStatus">
+            <option *ngFor="let level of enums.recruitmentStatuses">{{level}}</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Dział pracy</label>
+          <input [(ngModel)]="settings.field" class="form-control" placeholder="Podaj dział" type="text">
+          <small class="form-text text-muted">Maksymalnie 200 znaków.</small>
+        </div>
+
+      </form>
       <form>
 
-        <div class="form-group">
+        <div class="form-group mb-3">
           <label>Tytuł ogłoszenia</label>
           <input [(ngModel)]="settings.title" class="form-control" placeholder="Podaj tytuł" type="text">
+          <small class="form-text text-muted">Maksymalnie 200 znaków.</small>
+        </div>
+
+        <div class="form-group mb-3">
+          <label>Krótki opis</label>
+          <textarea [(ngModel)]="settings.shortDescription"
+                    placeholder="Krótki opis widoczny na karcie przy wyszukiwaniu" class="form-control"
+                    rows="5"></textarea>
           <small class="form-text text-muted">Maksymalnie 500 znaków.</small>
         </div>
 
-        <div class="form-group">
+        <div class="form-group mb-3">
           <label>Opis oferty</label>
-          <textarea [(ngModel)]="settings.description" class="form-control" rows="10"></textarea>
+          <textarea [(ngModel)]="settings.description" placeholder="Opis" class="form-control" rows="20"></textarea>
+          <small class="form-text text-muted">Maksymalnie 10000 znaków.</small>
         </div>
 
-
+        <a>TODO: Miasta itd</a>
       </form>
     </div>
 

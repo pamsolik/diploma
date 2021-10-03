@@ -29,8 +29,10 @@ namespace Cars.Models.DataModels
         [StringLength(10000, ErrorMessage = "Description cannot be longer than 10000 characters.")]
         public string Description { get; set; }
 
+        
+        
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime Time { get; set; }
+        public DateTime Time { get; set; } = DateTime.Now;
     }
 }

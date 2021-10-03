@@ -1,0 +1,17 @@
+﻿export interface RecruitmentDetailsView {
+  id: number,
+  title: string,
+  shortDescription: "",
+  description: string,
+  status: number,
+  type: number,
+  jobType: number,
+  jobLevel: number,
+  teamSize: number,
+  field: string,
+  city: string,
+  latitude: number,
+  longitude: number,
+  imgUrl: string,
+  startDate: Date,
+}

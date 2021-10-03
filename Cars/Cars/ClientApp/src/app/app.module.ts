@@ -25,6 +25,7 @@ import {MatPaginatorIntlCustom} from "../components/MatPaginatorIntlCustom";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatSelectModule} from "@angular/material/select";
 import {MatInputModule} from "@angular/material/input";
+import {FileUploadComponent} from "./file-upload/file-upload.component";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {MatInputModule} from "@angular/material/input";
     RecruitmentSettingsComponent,
     RecruiterComponent,
     AdminComponent,
-    FooterComponent
+    FooterComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,//.withServerTransition({appId: 'ng-cli-universal'}),

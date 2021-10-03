@@ -4,8 +4,8 @@ using Cars.Models.View;
 
 namespace Cars.Services.Interfaces
 {
-    public interface IAdminService
+    public interface IUserService
     {
-        public Task<List<RecruitmentView>> GetRecruitments();
+        public Task<string> GetUserId(string userName);
     }
 }
