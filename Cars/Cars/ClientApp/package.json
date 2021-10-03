@@ -26,6 +26,7 @@
     "bootstrap": "^5.0.0-beta3",
     "oidc-client": "^1.11.5",
     "rxjs": "~6.6.0",
+    "sweetalert2": "^11.1.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

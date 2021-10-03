@@ -6,7 +6,7 @@
 export interface RecruitmentOffer {
   id: number,
   title: string,
-  description: string,
+  shortDescription: string,
   type: number,
   jobType: string,
   jobLevel: number,

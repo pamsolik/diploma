@@ -45,7 +45,6 @@
 
     <ItemGroup>
         <Folder Include="ClientApp\src\pipes" />
-        <Folder Include="ClientApp\src\services" />
         <Folder Include="Resources\Images\Defaults" />
         <Folder Include="Resources\Images\Profile" />
         <Folder Include="Resources\Images\Temp" />

@@ -6,6 +6,8 @@ import {HttpClient} from "@angular/common/http";
 import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 import {RecruitmentList} from "../../models/RecruitmentOffer";
 import {ApiAnswer} from "../../models/ApiAnswer";
+import Swal from 'sweetalert2';
+import {AlertService} from "../../services/alert.service";
 
 @Component({
   selector: 'app-recruitment-settings-component',
@@ -17,7 +19,7 @@ export class RecruitmentSettingsComponent {
   editMode: boolean = false;
   settings: RecruitmentDetailsDto = new RecruitmentDetailsDto();
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private alertService: AlertService) {
   }
 
   public createImgPath = (serverPath: string) => {
@@ -34,9 +36,13 @@ export class RecruitmentSettingsComponent {
     this.enums.updateRecruitmentSettings(this.settings);
     console.log(this.settings);
     this.settings.city = "Ass";
+    this.alertService.showLoading("Dodawanie");
     this.http.post<ApiAnswer>(`${this.baseUrl}api/recruitments`, this.settings).subscribe(result => {
-      console.log(result);
-    }, error => console.error(error));
+        this.alertService.showResultAndRedirect("Gratulacje", "Dodano rekrutacje", '/recruiter')
+        console.log(result);
+    }, error => {
+        this.alertService.showResult("Błąd", error.message)
+        console.error(error);
+    })
   }
-
 }
