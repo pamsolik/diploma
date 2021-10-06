@@ -57,7 +57,7 @@
         </div>
 
       </form>
-      <form>
+      <form class="border-top mt-2 pt-2">
 
         <div class="form-group mb-3">
           <label>Tytuł ogłoszenia</label>
@@ -80,6 +80,40 @@
         </div>
 
         <a>TODO: Miasta itd</a>
+
+        <div class="border-top my-2"></div>
+
+        <div class="form-group mb-3">
+          <label>Klauzula obowiązkowa</label>
+          <textarea [(ngModel)]="settings.clauseRequired" placeholder="Opis" class="form-control" rows="5"></textarea>
+          <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="clauseCheck1" [(ngModel)]="clauseOpt1">
+          <label class="form-check-label" for="clauseCheck1">
+            Klauzula dodatkowa
+          </label>
+        </div>
+
+        <div class="form-group mb-3" [hidden]="!clauseOpt1">
+          <label>Klauzula dodatkowa</label>
+          <textarea [(ngModel)]="settings.clauseOpt1" placeholder="Opis" class="form-control" rows="5"></textarea>
+          <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="clauseCheck2" [(ngModel)]="clauseOpt2">
+          <label class="form-check-label" for="clauseCheck2">
+            Klauzula dodatkowa nr 2
+          </label>
+        </div>
+
+        <div class="form-group mb-3" [hidden]="!clauseOpt2">
+          <label>Klauzula dodatkowa nr 2</label>
+          <textarea [(ngModel)]="settings.clauseOpt2" placeholder="Opis" class="form-control" rows="5"></textarea>
+          <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
+        </div>
       </form>
     </div>
 

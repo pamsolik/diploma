@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Cars.Models.DataModels;
+using Cars.Models.Dto;
 using Cars.Models.Enums;
 
 namespace Cars.Models.View
@@ -34,8 +35,14 @@ namespace Cars.Models.View
         
         public string Field { get; set; }
         
-        public string City { get; set; }
+        public City City { get; set; }
         
         public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
+        
+        public string ClauseRequired { get; set; }
+        
+        public string ClauseOpt1 { get; set; }
+        
+        public string ClauseOpt2 { get; set; }
     }
 }

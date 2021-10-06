@@ -28,6 +28,7 @@ import {MatInputModule} from "@angular/material/input";
 import {FileUploadComponent} from "./file-upload/file-upload.component";
 import {MatSliderModule} from "@angular/material/slider";
 import {NgxSliderModule} from "@angular-slider/ngx-slider";
+import {ApplyComponent} from "./apply/apply.component";
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import {NgxSliderModule} from "@angular-slider/ngx-slider";
     RecruiterComponent,
     AdminComponent,
     FooterComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    ApplyComponent
   ],
   imports: [
     BrowserModule,//.withServerTransition({appId: 'ng-cli-universal'}),

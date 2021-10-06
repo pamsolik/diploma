@@ -18,7 +18,7 @@ namespace Cars.Models.Dto
         
         public List<bool?> TeamSizes { get; set; }
         
-        public string City { get; set; }
+        public CityDto City { get; set; }
 
         public int Distance { get; set; } = 0;
         public SortOrder SortOrder { get; set; } = SortOrder.NameAsc;

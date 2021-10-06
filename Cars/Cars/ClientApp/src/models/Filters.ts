@@ -1,4 +1,5 @@
 ﻿import {SortOrder} from "./enums/SortOrder";
+import {City} from "./City";
 
 export interface Filters {
   pageSize: number,
@@ -12,13 +13,10 @@ export interface Filters {
   teamSizes: [],
   //From external library
   distance: number,
-  city: string,
-  latitude: number,
-  longitude: number
+  city: City
 }
 
-export function newFilters(): Filters {
-  return {
+export const FiltersDefault: Filters = {
     pageSize: 5,
     pageIndex: 0,
     searchString: "",
@@ -30,9 +28,6 @@ export function newFilters(): Filters {
     jobTypes: [],
     teamSizes: [],
 
-    city: "",
     distance: 0,
-    latitude: 0,
-    longitude: 0
-  }
+    city: new City(),
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Cars.Models.DataModels;
 using Cars.Models.Enums;
 
 namespace Cars.Models.Dto
@@ -40,16 +41,19 @@ namespace Cars.Models.Dto
         public string Field { get; set; }
         
         [Required]
-        [StringLength(1000, ErrorMessage = "City cannot be longer than 1000 characters.")]
-        public string City { get; set; }
-        
-        [Required]
-        public double Latitude { get; set; }
-        
-        [Required]
-        public double Longitude { get; set; }
+        public CityDto City { get; set; }
         
         [Required]
         public string ImgUrl { get; set; }
+        
+        [Required]
+        [StringLength(1000, ErrorMessage = "ClauseRequired cannot be longer than 1000 characters.")]
+        public string ClauseRequired { get; set; }
+        
+        [StringLength(1000, ErrorMessage = "ClauseOpt1 cannot be longer than 1000 characters.")]
+        public string ClauseOpt1 { get; set; }
+        
+        [StringLength(1000, ErrorMessage = "ClauseOpt2 cannot be longer than 1000 characters.")]
+        public string ClauseOpt2 { get; set; }
     }
 }

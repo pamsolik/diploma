@@ -45,10 +45,12 @@
 
     <ItemGroup>
         <Folder Include="ClientApp\src\pipes" />
+        <Folder Include="Resources\Files\CL" />
+        <Folder Include="Resources\Files\CV" />
         <Folder Include="Resources\Images\Defaults" />
         <Folder Include="Resources\Images\Profile" />
-        <Folder Include="Resources\Images\Temp" />
         <Folder Include="Resources\Images\Thumbnails" />
+        <Folder Include="Resources\Temp" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

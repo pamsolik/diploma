@@ -1,4 +1,6 @@
-﻿export interface RecruitmentDetailsView {
+﻿import {City} from "./City";
+
+export interface RecruitmentDetailsView {
   id: number,
   title: string,
   shortDescription: string,
@@ -9,9 +11,12 @@
   jobLevel: number,
   teamSize: number,
   field: string,
-  city: string,
+  city: City,
   latitude: number,
   longitude: number,
   imgUrl: string,
   startDate: Date,
+  clauseRequired: string,
+  clauseOpt1: string,
+  clauseOpt2: string
 }

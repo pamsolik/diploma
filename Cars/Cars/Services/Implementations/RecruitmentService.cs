@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Device.Location;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Cars.Data;
 using Cars.Models.DataModels;
@@ -13,6 +14,7 @@ using Cars.Services.Interfaces;
 using IdentityServer4.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 
 namespace Cars.Services.Implementations
@@ -28,10 +30,29 @@ namespace Cars.Services.Implementations
         
         public async Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId)
         {
-            var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
+             //TODO: check if valid and respond accordingly
+            var existingCity = _context.Cites.FirstOrDefault(CompareCities(addRecruitmentDto));
+            
+            if (existingCity is null)
+            {
+                existingCity = addRecruitmentDto.City.Adapt<City>();
+                _context.Cites.Add(existingCity);
+            }
+            
+            var dest = addRecruitmentDto.Adapt<Recruitment>();
+            
+            dest.City = existingCity;
             dest.RecruiterId = recruiterId;
+            
             var res = _context.Recruitments.Add(dest);
             await _context.SaveChangesAsync();
+            
+            res = await CopyAndSaveThumbnail(addRecruitmentDto, res);
+            return res.Entity.Id;
+        }
+
+        private async Task<EntityEntry<Recruitment>> CopyAndSaveThumbnail(AddRecruitmentDto addRecruitmentDto, EntityEntry<Recruitment> res)
+        {
             if (addRecruitmentDto.ImgUrl.IsNullOrEmpty())
             {
                 res.Entity.ImgUrl = ImgPath.PlaceHolder;
@@ -45,17 +66,26 @@ namespace Cars.Services.Implementations
                     var basePath = Directory.GetCurrentDirectory();
                     var ext = Path.GetExtension(addRecruitmentDto.ImgUrl);
                     var imgUrl = Path.Combine("Resources", "Images", "Thumbnails", $"Recruitment_{res.Entity.Id}{ext}");
-                    File.Move(Path.Combine(basePath, addRecruitmentDto.ImgUrl ?? throw new FileNotFoundException()), Path.Combine(basePath, imgUrl), true);
+                    File.Move(Path.Combine(basePath, addRecruitmentDto.ImgUrl ?? throw new FileNotFoundException()),
+                        Path.Combine(basePath, imgUrl), true);
                     res.Entity.ImgUrl = imgUrl;
                 }
                 catch (IOException e)
                 {
                     res.Entity.ImgUrl = ImgPath.PlaceHolder;
-                }
+                } 
                 res = _context.Recruitments.Update(res.Entity);
                 await _context.SaveChangesAsync();
             }
-            return res.Entity.Id;
+            return res;
+        }
+
+        private static Expression<Func<City, bool>> CompareCities(AddRecruitmentDto addRecruitmentDto)
+        {
+            //TODO: Refactor
+            return c => c.Name == addRecruitmentDto.City.Name && 
+                        c.Latitude == addRecruitmentDto.City.Latitude && 
+                        c.Longitude == addRecruitmentDto.City.Longitude;
         }
 
         public async Task<bool> EditRecruitment(EditRecruitmentDto addRecruitmentDto)
@@ -77,6 +107,7 @@ namespace Cars.Services.Implementations
         public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
         {
             var res = await _context.Recruitments.FindAsync(recruitmentId);
+            res.City = await _context.Cites.FindAsync(res.CityId); //TODO: FIX
             var dest = res.Adapt<RecruitmentDetailsView>();
             return dest;
         }
@@ -138,7 +169,7 @@ namespace Cars.Services.Implementations
 
         private double CalculateDistance(Recruitment recruitment, double latitude, double longitude)
         {
-            var sCoord = new GeoCoordinate(recruitment.Latitude, recruitment.Longitude);
+            var sCoord = new GeoCoordinate(recruitment.City.Latitude, recruitment.City.Longitude);
             var eCoord = new GeoCoordinate(latitude, longitude);
             return sCoord.GetDistanceTo(eCoord);
         }

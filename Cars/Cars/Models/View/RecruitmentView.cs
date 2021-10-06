@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Cars.Models.DataModels;
 using Cars.Models.Enums;
 
 namespace Cars.Models.View
@@ -11,7 +12,7 @@ namespace Cars.Models.View
         
         public string ShortDescription { get; set; }
         
-        public string City { get; set; }
+        public City City { get; set; }
         
         public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
         

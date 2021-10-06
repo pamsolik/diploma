@@ -1,0 +1,72 @@
+<ng-template #content let-modal class="">
+  <div class="card p-0 m-0">
+    <h4 class="card-header">Podaj dane do aplikaji</h4>
+    <div class="mt-2 card-body row">
+      <!--      <form class="g-3 needs-validation" novalidate>-->
+      <div class="col-8 border-end">
+        <div class="form-group">
+          <h5>Krótki opis</h5>
+          <textarea [(ngModel)]="application.description"
+                    placeholder="Krótka wiadomość do rekrutującego (nieobowiązkowa)" class="form-control"
+                    rows="5"></textarea>
+          <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
+        </div>
+
+        <div class="border-top my-2"></div>
+
+        <h5>CV:</h5>
+        <app-file-upload (onUploadFinished)="uploadFinishedCv($event)"></app-file-upload>
+
+        <div class="border-top my-2"></div>
+
+        <h5>List motywacyjny:</h5>
+        <app-file-upload (onUploadFinished)="uploadFinishedCl($event)"></app-file-upload>
+
+        <div class="border-top my-2"></div>
+
+        <h5>Klauzule:</h5>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="clauseReq"
+                 [(ngModel)]="application.clauseRequiredAccepted" required>
+          <label class="form-check-label" for="clauseReq">{{details.clauseRequired}}</label>
+        </div>
+
+        <div class="form-check" [hidden]="!details.clauseOpt1">
+          <input class="form-check-input" type="checkbox" value="" id="clauseCheck1"
+                 [(ngModel)]="application.clauseOptAccepted">
+          <label class="form-check-label" for="clauseCheck1">{{details.clauseOpt1}}</label>
+        </div>
+
+        <div class="form-check" [hidden]="!details.clauseOpt2">
+          <input class="form-check-input" type="checkbox" value="" id="clauseCheck2"
+                 [(ngModel)]="application.clauseOpt2Accepted">
+          <label class="form-check-label" for="clauseCheck2">{{details.clauseOpt2}}</label>
+        </div>
+
+        <!--      </form>-->
+      </div>
+
+      <div class="col">
+
+        <h5>Projekty (Linki do publicznych repuzytorium GitHub):</h5>
+        <div class="mx-3">
+          <p class="alert alert-warning" *ngIf="application.projects.length == 0">Brak projektów</p>
+          <div class="form-group mb-2 row" *ngFor="let proj of application.projects; let i = index">
+            <input [(ngModel)]="application.projects[i]" class="form-control col ms-0" placeholder="Podaj tytuł"
+                   type="text" disabled>
+            <button class="btn btn-danger col-auto mx-2" (click)="deleteProject(i)">×</button>
+          </div>
+        </div>
+
+        <input [(ngModel)]="newProj" class="form-control my-2" placeholder="Podaj nowy projekt" type="text">
+        <button class="btn btn-success" (click)="addProject(newProj)">Dodaj kolejny projekt</button>
+
+        <button class="btn btn-success px-2 " type="submit" (click)="apply()">Aplikuj</button>
+      </div>
+
+    </div>
+  </div>
+</ng-template>
+
+<button class="btn btn-success" (click)="open(content)">Aplikuj</button>

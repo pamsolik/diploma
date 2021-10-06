@@ -4,20 +4,26 @@
 
   <ng-template #loaded>
     <div class="card-header">
-      <h4 class="my-0 font-weight-normal">{{details.title}}</h4>
+      <div class="row">
+        <h4 class="my-0 font-weight-normal col">{{details.title}}</h4>
+        <div class="float-end col">
+          <app-apply content="{{details}}" [details]="details" class="float-end"></app-apply>
+        </div>
+      </div>
     </div>
     <div class="card-body row">
       <div class="col-5 border-end">
-        <img class="figure-img img-fluid rounded"
-             [src]="createImgPath(details.imgUrl)"
-             alt="Thumbnail image">
-
+        <div class="text-center">
+          <img class="figure-img img-fluid rounded"
+               [src]="createImgPath(details.imgUrl)"
+               alt="Thumbnail image">
+        </div>
         <ul>
           <li>Poziom: {{enums.jobLevels[details.jobLevel]}}</li>
           <li>Tryb pracy: {{enums.jobTypes[details.jobType]}}</li>
           <li>Typ: {{enums.recruitmentTypes[details.type]}}</li>
-          <li>Lokalizacja: {{details.city}}</li>
-          <li>Rozpoczęcie rekrutacji: {{details.startDate}}</li>
+          <li>Lokalizacja: {{details.city.name}}</li>
+          <li>Rozpoczęcie rekrutacji: {{details.startDate | date: 'dd-MM-yyyy'}}</li>
         </ul>
       </div>
 

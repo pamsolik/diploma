@@ -33,7 +33,7 @@ namespace Cars.Controllers
             {
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files[0];
-                var folderName = Path.Combine("Resources", "Images", "Temp");
+                var folderName = Path.Combine("Resources", "Temp");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 
                 if (file.Length <= 0) return BadRequest();

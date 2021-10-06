@@ -46,18 +46,22 @@ namespace Cars.Models.DataModels
         [StringLength(200, ErrorMessage = "Field cannot be longer than 200 characters.")]
         public string Field { get; set; }
         
-        [Required]
-        [StringLength(1000, ErrorMessage = "City cannot be longer than 1000 characters.")]
-        public string City { get; set; }
+        [ForeignKey("City")] public int CityId { get; set; }
 
-        [Required]
-        public double Latitude { get; set; }
+        public City City { get; set; }
         
-        [Required]
-        public double Longitude { get; set; }
-
         public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
         
         public ICollection<RecruitmentApplication> Applications { get; set; }
+        
+        [Required]
+        [StringLength(1000, ErrorMessage = "ClauseRequired cannot be longer than 1000 characters.")]
+        public string ClauseRequired { get; set; }
+        
+        [StringLength(1000, ErrorMessage = "ClauseOpt1 cannot be longer than 1000 characters.")]
+        public string ClauseOpt1 { get; set; }
+        
+        [StringLength(1000, ErrorMessage = "ClauseOpt2 cannot be longer than 1000 characters.")]
+        public string ClauseOpt2 { get; set; }
     }
 }

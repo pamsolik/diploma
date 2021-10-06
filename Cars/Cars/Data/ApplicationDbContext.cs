@@ -17,6 +17,10 @@ namespace Cars.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         public DbSet<RecruitmentApplication> Applications { get; set; }
+        
+        public DbSet<City> Cites { get; set; }
+        
+        public DbSet<CodeQualityAssessment> CodeQualityAssessments { get; set; }
         public DbSet<Recruitment> Recruitments { get; set; }
     }
 }

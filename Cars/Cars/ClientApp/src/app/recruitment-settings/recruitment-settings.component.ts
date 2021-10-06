@@ -1,12 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {RecruitmentDetailsDto} from "../../models/RecruitmentDetailsDto"
-import {JobLevel} from "../../models/enums/JobLevel";
-import {getEnumKeyByEnumValue} from "../../components/EnumTool";
 import {HttpClient} from "@angular/common/http";
 import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
-import {RecruitmentList} from "../../models/RecruitmentOffer";
 import {ApiAnswer} from "../../models/ApiAnswer";
-import Swal from 'sweetalert2';
 import {AlertService} from "../../services/alert.service";
 
 @Component({
@@ -16,10 +12,13 @@ import {AlertService} from "../../services/alert.service";
 })
 export class RecruitmentSettingsComponent {
   enums: RecruitmentEnums = new RecruitmentEnums();
-  editMode: boolean = false;
   settings: RecruitmentDetailsDto = new RecruitmentDetailsDto();
+  editMode: boolean = false;
+  clauseOpt1: boolean = false;
+  clauseOpt2: boolean = false;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private alertService: AlertService) {
+    console.log(this.settings);
   }
 
   public createImgPath = (serverPath: string) => {
@@ -35,7 +34,7 @@ export class RecruitmentSettingsComponent {
   save() {
     this.enums.updateRecruitmentSettings(this.settings);
     console.log(this.settings);
-    this.settings.city = "Ass";
+    this.settings.city.name = "Ass";
     this.alertService.showLoading("Dodawanie");
     this.http.post<ApiAnswer>(`${this.baseUrl}api/recruitments`, this.settings).subscribe(result => {
         this.alertService.showResultAndRedirect("Gratulacje", "Dodano rekrutacje", '/recruiter')

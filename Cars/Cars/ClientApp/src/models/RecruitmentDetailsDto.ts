@@ -1,4 +1,6 @@
-﻿export class RecruitmentDetailsDto {
+﻿import {City} from "./City";
+
+export class RecruitmentDetailsDto {
   title: string = "";
   shortDescription: string = "";
   description: string = "";
@@ -8,8 +10,9 @@
   jobLevel: number = 0;
   teamSize: number = 0;
   field: string = "";
-  city: string = "";
-  latitude: number = 0;
-  longitude: number = 0;
+  city: City = new City();
   imgUrl: string = "";
+  clauseRequired: string = "";
+  clauseOpt1: string = "";
+  clauseOpt2: string = "";
 }

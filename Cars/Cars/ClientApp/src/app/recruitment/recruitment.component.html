@@ -17,7 +17,7 @@
             <div class="card-body">
               <div class="form-row">
 
-                <a (click)="clearFilters()" class="btn btn-warning mb-2 w-100" role="button">Wyczyść filtry &raquo;</a>
+                <a (click)="clearFilters(); loadData()" class="btn btn-warning mb-2 w-100" role="button">Wyczyść filtry &raquo;</a>
                 <a (click)="loadData()" class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry &raquo;</a>
 
                 <div class="form-group">
@@ -30,6 +30,7 @@
 
                 <div class="form-group">
                   <label>Lokalizacja</label>
+<!--                  <input type="search" id="address-input" placeholder="Wybierz lokalizację" />-->
                   <input class="form-control" placeholder="Wprowadź lokalizację" type="text">
                 </div>
 
