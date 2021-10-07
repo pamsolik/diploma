@@ -45,8 +45,8 @@ body {
 
 .user_c {
   z-index: 99 !important;
-  background-color: lightgray;
-  border-radius: 7px;
+  background-color: #e7e7e7;
+  border-radius: 10px;
   padding: 20px 20px;
   box-sizing: border-box;
   width: auto;
@@ -72,7 +72,7 @@ body {
   width: 0;
   height: 0;
   border: solid 10px transparent;
-  border-bottom: solid 10px red;
+  border-bottom: solid 10px black;
   position: absolute;
   left: 60px;
   top: -20px;
@@ -84,7 +84,7 @@ body {
 
 .user_info p {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 22px;
 }
 
@@ -105,9 +105,9 @@ body {
 }
 
 .u_menu ul li {
-  line-height: 30px;
+  line-height: 35px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .u_menu ul li a {

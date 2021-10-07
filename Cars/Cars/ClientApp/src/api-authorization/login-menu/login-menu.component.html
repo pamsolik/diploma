@@ -15,24 +15,20 @@
              src="https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg">
         <p>Patryk Amsolik</p>
         <p>{{ userName | async }}</p>
-        <p><a href="#">Dashboard</a></p>
       </div>
 
       <div class="u_menu r">
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">My Games</a></li>
-          <li><a href="#">Store</a></li>
-          <li><a href="#">Profile</a></li>
-          <li><a href="#">Logout</a></li>
+          <li><a [routerLink]='["/"]' [state]='{ local: true }' title="Powrót">Strona domowa</a></li>
+          <li><a [routerLink]='["/authentication/profile"]' [state]='{ local: true }' title="Ustawienia">Ustawienia</a>
+          </li>
+          <li><a [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Wyloguj się">Wyloguj</a>
+          </li>
         </ul>
       </div>
-
     </div>
   </li>
-  <li class="nav-item">
-    <a [routerLink]='["/authentication/logout"]' [state]='{ local: true }' class="nav-link text-dark" title="Logout">Wyloguj</a>
-  </li>
+
 </ul>
 <ul *ngIf="!(isAuthenticated | async)" class="navbar-nav">
   <li class="nav-item">
