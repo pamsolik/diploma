@@ -22,8 +22,9 @@ namespace Cars.Controllers
     public class RecruitmentController : ControllerBase
     {
         private readonly ILogger<RecruitmentController> _logger;
-        
+
         private readonly IRecruitmentService _recruitmentService;
+
         public RecruitmentController(ILogger<RecruitmentController> logger, IRecruitmentService recruitmentService)
         {
             _recruitmentService = recruitmentService;
@@ -35,7 +36,7 @@ namespace Cars.Controllers
         {
             var usr = User.Identity.GetUserId();
             var res = await _recruitmentService.AddRecruitment(addRecruitmentDto, usr);
-           
+
             //TODO: TEST
             return Ok(new ApiAnswer("Added"));
         }
@@ -43,7 +44,7 @@ namespace Cars.Controllers
         [HttpPut]
         public async Task<IActionResult> EditRecruitment([FromBody] EditRecruitmentDto editRecruitment)
         {
-            if (User.FindFirstValue(ClaimTypes.NameIdentifier) != editRecruitment.RecruiterId)
+            if (User.Identity.GetUserId() != editRecruitment.RecruiterId)
                 throw new AppBaseException(HttpStatusCode.Forbidden,
                     "User is not authorised to edit this recruitment.");
             var res = await _recruitmentService.EditRecruitment(editRecruitment);
@@ -54,21 +55,29 @@ namespace Cars.Controllers
         public async Task<IActionResult> CloseRecruitment([FromBody] RecruitmentStatus status)
         {
             //TODO: Maybe delete
-            var res = await _recruitmentService.GetRecruitments(User.GetSubjectId());
+            //var res = await _recruitmentService.();
+            return Ok("Not implemented");
+        }
+
+        [HttpPost("public")]
+        public async Task<IActionResult> GetRecruitmentsPublic([FromBody] RecruitmentFilterDto recruitmentFilterDto)
+        {
+            var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Public);
             return Ok(res);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetRecruitments()
+        [HttpPost("recruiter")]
+        public async Task<IActionResult> GetRecruitmentsRecruiter([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
-            var res = await _recruitmentService.GetRecruitments(User.GetSubjectId());
+            var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Recruiter,
+                User.Identity.GetUserId());
             return Ok(res);
         }
 
-        [HttpPost("filtered")]
-        public async Task<IActionResult> GetRecruitmentsFiltered([FromBody] RecruitmentFilterDto recruitmentFilterDto)
+        [HttpPost("admin")]
+        public async Task<IActionResult> GetRecruitmentsAdmin([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
-            var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto);
+            var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Admin);
             return Ok(res);
         }
 

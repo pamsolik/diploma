@@ -48,7 +48,6 @@
       </div>
 
       <div class="col">
-
         <h5>Projekty (Linki do publicznych repuzytorium GitHub):</h5>
         <div class="mx-3">
           <p class="alert alert-warning" *ngIf="application.projects.length == 0">Brak projektów</p>
@@ -59,10 +58,10 @@
           </div>
         </div>
 
-        <input [(ngModel)]="newProj" class="form-control my-2" placeholder="Podaj nowy projekt" type="text">
+        <input [(ngModel)]="newProj" class="form-control m-2" placeholder="Podaj nowy projekt" type="text">
         <button class="btn btn-success" (click)="addProject(newProj)">Dodaj kolejny projekt</button>
 
-        <button class="btn btn-success px-2 " type="submit" (click)="apply()">Aplikuj</button>
+        <button class="btn btn-success px-2 w-100" type="submit" (click)="apply()">Aplikuj</button>
       </div>
 
     </div>

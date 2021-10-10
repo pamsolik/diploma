@@ -29,6 +29,7 @@ import {FileUploadComponent} from "./file-upload/file-upload.component";
 import {MatSliderModule} from "@angular/material/slider";
 import {NgxSliderModule} from "@angular-slider/ngx-slider";
 import {ApplyComponent} from "./apply/apply.component";
+import {RecruitmentListComponent} from "./recruitment-list/recruitment-list.component";
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import {ApplyComponent} from "./apply/apply.component";
     RecruiterComponent,
     AdminComponent,
     FooterComponent,
+    RecruitmentListComponent,
     FileUploadComponent,
     ApplyComponent
   ],

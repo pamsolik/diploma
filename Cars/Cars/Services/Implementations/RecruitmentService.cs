@@ -96,14 +96,7 @@ namespace Cars.Services.Implementations
             await _context.SaveChangesAsync();
             return true;
         }
-
-        public async Task<List<RecruitmentView>> GetRecruitments(string userId)
-        {
-            var res = await _context.Recruitments.Where(r => r.RecruiterId == userId).ToListAsync();
-            var dest = res.Adapt<List<RecruitmentView>>();
-            return dest;
-        }
-
+        
         public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
         {
             var res = await _context.Recruitments.FindAsync(recruitmentId);
@@ -113,16 +106,26 @@ namespace Cars.Services.Implementations
         }
 
         public async Task<PaginatedList<RecruitmentView>>
-            GetRecruitmentsFiltered(RecruitmentFilterDto filter)
+            GetRecruitmentsFiltered(RecruitmentFilterDto filter, RecruitmentMode recruitmentMode, string userId = "")
         {
-            var recruitments = _context.Recruitments
-                .Where(r => r.Status == RecruitmentStatus.Open);
+            var recruitments =  GetRecruitments(recruitmentMode, userId);
             
             var recruitmentList = FilterOutAndSortRecruitments(ref recruitments, filter).ToList();
             var dest = recruitmentList.Adapt<List<RecruitmentView>>();
             var paginated = PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
 
             return paginated;
+        }
+
+        private IQueryable<Recruitment> GetRecruitments(RecruitmentMode recruitmentMode, string userId = "")
+        {
+            return recruitmentMode switch
+            {
+                RecruitmentMode.Public => _context.Recruitments.Where(r => r.Status == RecruitmentStatus.Open),
+                RecruitmentMode.Recruiter => _context.Recruitments.Where(r => r.RecruiterId == userId),
+                RecruitmentMode.Admin => _context.Recruitments,
+                _ => throw new ArgumentException("This mode doesn't exist")
+            };
         }
 
         public async Task<bool> AddApplication(AddApplicationDto addApplicationDto)

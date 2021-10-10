@@ -2,10 +2,11 @@
   <div class="card-header">
     <h4 class="my-0 font-weight-normal">Panel rekrutera</h4>
   </div>
+  <div class="card-body">
+    <a [routerLinkActive]="['link-active']" [routerLink]="['/recruitment-settings']" class="btn btn-primary mb-2"
+       role="button">Dodaj nową ofertę</a>
 
-  TODO: copy and modify the recruitment offer display
-
-  <a [routerLinkActive]="['link-active']" [routerLink]="['/recruitment-settings']" class="btn btn-primary mb-2"
-     role="button">Dodaj nową ofertę</a>
-
+    <app-recruitment-list-component apiUrl="api/recruitments/recruiter"
+                                    redirectUrl="/recruitment-settings/"></app-recruitment-list-component>
+  </div>
 </div>
