@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading.Tasks;
 
 namespace Cars.Models.DataModels
 {
@@ -10,13 +11,15 @@ namespace Cars.Models.DataModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
-        [Required] [ForeignKey("Recruitment")] public int RecruitmentId { get; set; }
-
-        public Recruitment Recruitment { get; set; }
+        [Required] public int RecruitmentId { get; set; }
         
-        [Required] [ForeignKey("Applicant")] public string ApplicantId { get; set; }
-
-        public ApplicationUser Applicant { get; set; }
+        [ForeignKey("RecruitmentId")]
+        public virtual Recruitment Recruitment { get; set; }
+        
+        [Required]  public string ApplicantId { get; set; }
+        
+        [ForeignKey("ApplicantId")]
+        public virtual ApplicationUser Applicant { get; set; }
         
         [StringLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
         public string Description { get; set; }
@@ -34,5 +37,11 @@ namespace Cars.Models.DataModels
         public bool ClauseOptAccepted { get; set; }
         
         public bool ClauseOpt2Accepted { get; set; }
+        
+        //null if not calculated yet
+        public int? CodeQualityAssessmentId { get; set; }
+
+        [ForeignKey("CodeQualityAssessmentId")]
+        public virtual CodeQualityAssessment CodeQualityAssessment { get; set; }
     }
 }

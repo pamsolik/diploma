@@ -11,9 +11,10 @@ namespace Cars.Models.DataModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey("Recruiter")] public string RecruiterId { get; set; }
-
-        public ApplicationUser Recruiter { get; set; }
+        public string RecruiterId { get; set; }
+        
+        [ForeignKey("RecruiterId")] 
+        public virtual ApplicationUser Recruiter { get; set; }
 
         [Required]
         [StringLength(200, ErrorMessage = "Title cannot be longer than 200 characters.")]
@@ -46,9 +47,10 @@ namespace Cars.Models.DataModels
         [StringLength(200, ErrorMessage = "Field cannot be longer than 200 characters.")]
         public string Field { get; set; }
         
-        [ForeignKey("City")] public int CityId { get; set; }
+        public int CityId { get; set; }
 
-        public City City { get; set; }
+        [ForeignKey("CityId")]
+        public virtual City City { get; set; }
         
         public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
         

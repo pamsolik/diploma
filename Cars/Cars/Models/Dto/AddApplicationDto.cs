@@ -9,9 +9,6 @@ namespace Cars.Models.Dto
     public class AddApplicationDto
     {
         [Required] public int RecruitmentId { get; set; }
-
-        
-        [Required] public string ApplicantId { get; set; }
         
         public string Description { get; set; }
         

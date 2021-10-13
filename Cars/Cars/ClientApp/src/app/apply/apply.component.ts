@@ -9,6 +9,7 @@ import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 import {RecruitmentDetailsDto} from "../../models/RecruitmentDetailsDto";
 import {AlertService} from "../../services/alert.service";
 import {END} from "@angular/cdk/keycodes";
+import {ApiAnswer} from "../../models/ApiAnswer";
 
 
 @Component({
@@ -23,7 +24,10 @@ export class ApplyComponent {
   @Input()
   details: RecruitmentDetailsView;
 
-  constructor(private modalService: NgbModal, private alertService: AlertService) {
+  constructor(private modalService: NgbModal,
+              @Inject('BASE_URL') private baseUrl: string,
+              private http: HttpClient,
+              private alertService: AlertService) {
 
   }
 
@@ -35,9 +39,19 @@ export class ApplyComponent {
     this.application.clFile = event.dbPath;
   }
 
-  apply(){
+  apply() {
     this.application.recruitmentId = this.details.id;
+    this.alertService.showLoading("Dodawanie aplikacji");
     console.log(this.application);
+    this.http.post<ApiAnswer>(`${this.baseUrl}api/recruitments/apply`, this.application).subscribe(result => {
+      this.alertService.showResultAndRedirect("Gratulacje", "Zapisano aplikację", '/recruitments')
+      console.log(result);
+    }, error => {
+      this.alertService.showResult("Błąd", error.message)
+      console.error(error);
+    })
+
+
   }
 
   open(content: any) {
@@ -60,7 +74,7 @@ export class ApplyComponent {
 
   addProject(proj: string) {
     if (proj) {
-      if(this.application.projects.find(p => p == proj)){
+      if (this.application.projects.find(p => p == proj)) {
         this.alertService.showResult("Błąd", "Projekt już istnieje na liście.");
         return;
       }

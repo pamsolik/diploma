@@ -30,6 +30,7 @@ import {MatSliderModule} from "@angular/material/slider";
 import {NgxSliderModule} from "@angular-slider/ngx-slider";
 import {ApplyComponent} from "./apply/apply.component";
 import {RecruitmentListComponent} from "./recruitment-list/recruitment-list.component";
+import {ApplicationsComponent} from "./applications/applications.component";
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import {RecruitmentListComponent} from "./recruitment-list/recruitment-list.comp
     FooterComponent,
     RecruitmentListComponent,
     FileUploadComponent,
+    ApplicationsComponent,
     ApplyComponent
   ],
   imports: [
@@ -63,7 +65,7 @@ import {RecruitmentListComponent} from "./recruitment-list/recruitment-list.comp
       {path: 'recruiter/:id', component: RecruitmentSettingsComponent, canActivate: [AuthorizeGuard]},
       {path: 'recruitment-settings/:id', component: RecruitmentSettingsComponent, canActivate: [AuthorizeGuard]},
       {path: 'recruitment-settings', component: RecruitmentSettingsComponent, canActivate: [AuthorizeGuard]},
-
+      {path: 'recruitment-applications/:id', component: ApplicationsComponent, canActivate: [AuthorizeGuard]},
       {path: 'admin', component: AdminComponent, canActivate: [AuthorizeGuard]},
     ]),
     MatCardModule,

@@ -1,0 +1,27 @@
+<div class="card mb-4 box-shadow container-lg p-0">
+  <h1 *ngIf="!true else loaded">Wczytywanie</h1>
+
+  <ng-template #loaded>
+    <div class="card-header">
+      <h4 class="my-0 font-weight-normal">Aplikacje</h4>
+    </div>
+
+    <div>
+      <mat-card *ngFor="let application of recruitmentApplications" [routerLink]="['/']" class="mb-1">
+        <div class="row">
+          <div class="col-4">
+            <img class="img-fluid"
+                 [src]=""
+                 alt="Thumbnail image">
+          </div>
+
+          <div class="job-desc col">
+            <h5 class="card-title">{{application.applicant.userName}}</h5>
+            <p>{{application.description}}</p>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+  </ng-template>
+</div>

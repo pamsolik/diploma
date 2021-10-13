@@ -1,25 +1,27 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace Cars.Models.DataModels
 {
     public class ApplicationUser : IdentityUser
     {
-        //TODO: Add user properties
+        //TODO: Add user properties to the ui
         
-        //Name
-        //Surname
+        public string Name { get; set; }
+        public string Surname { get; set; }
         
-        //Description
+        public string Description { get; set; }
         
-        //Profile Img
+        public string ProfilePicture { get; set; }
         
-        //City
+        public City City { get; set; }
         
-        //Github
-        //LinkedIn
+        public string Github { get; set; }
+        public string LinkedIn { get; set; }
         
-        //Maybe desc with titles idk
-        //Education
-        //Experience
+        public List<string> Skills { get; set; }
+        
+        public List<Experience> Education { get; set; }
+        public List<Experience> Experience { get; set; }
     }
 }

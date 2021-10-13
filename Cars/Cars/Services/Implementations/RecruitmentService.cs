@@ -27,31 +27,32 @@ namespace Cars.Services.Implementations
         {
             _context = context;
         }
-        
+
         public async Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId)
         {
-             //TODO: check if valid and respond accordingly
+            //TODO: check if valid and respond accordingly
             var existingCity = _context.Cites.FirstOrDefault(CompareCities(addRecruitmentDto));
-            
+
             if (existingCity is null)
             {
                 existingCity = addRecruitmentDto.City.Adapt<City>();
                 _context.Cites.Add(existingCity);
             }
-            
+
             var dest = addRecruitmentDto.Adapt<Recruitment>();
-            
+
             dest.City = existingCity;
             dest.RecruiterId = recruiterId;
-            
+
             var res = _context.Recruitments.Add(dest);
             await _context.SaveChangesAsync();
-            
+
             res = await CopyAndSaveThumbnail(addRecruitmentDto, res);
             return res.Entity.Id;
         }
 
-        private async Task<EntityEntry<Recruitment>> CopyAndSaveThumbnail(AddRecruitmentDto addRecruitmentDto, EntityEntry<Recruitment> res)
+        private async Task<EntityEntry<Recruitment>> CopyAndSaveThumbnail(AddRecruitmentDto addRecruitmentDto,
+            EntityEntry<Recruitment> res)
         {
             if (addRecruitmentDto.ImgUrl.IsNullOrEmpty())
             {
@@ -73,18 +74,20 @@ namespace Cars.Services.Implementations
                 catch (IOException e)
                 {
                     res.Entity.ImgUrl = ImgPath.PlaceHolder;
-                } 
+                }
+
                 res = _context.Recruitments.Update(res.Entity);
                 await _context.SaveChangesAsync();
             }
+
             return res;
         }
 
         private static Expression<Func<City, bool>> CompareCities(AddRecruitmentDto addRecruitmentDto)
         {
             //TODO: Refactor
-            return c => c.Name == addRecruitmentDto.City.Name && 
-                        c.Latitude == addRecruitmentDto.City.Latitude && 
+            return c => c.Name == addRecruitmentDto.City.Name &&
+                        c.Latitude == addRecruitmentDto.City.Latitude &&
                         c.Longitude == addRecruitmentDto.City.Longitude;
         }
 
@@ -96,7 +99,7 @@ namespace Cars.Services.Implementations
             await _context.SaveChangesAsync();
             return true;
         }
-        
+
         public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
         {
             var res = await _context.Recruitments.FindAsync(recruitmentId);
@@ -108,8 +111,8 @@ namespace Cars.Services.Implementations
         public async Task<PaginatedList<RecruitmentView>>
             GetRecruitmentsFiltered(RecruitmentFilterDto filter, RecruitmentMode recruitmentMode, string userId = "")
         {
-            var recruitments =  GetRecruitments(recruitmentMode, userId);
-            
+            var recruitments = GetRecruitments(recruitmentMode, userId);
+
             var recruitmentList = FilterOutAndSortRecruitments(ref recruitments, filter).ToList();
             var dest = recruitmentList.Adapt<List<RecruitmentView>>();
             var paginated = PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
@@ -128,9 +131,10 @@ namespace Cars.Services.Implementations
             };
         }
 
-        public async Task<bool> AddApplication(AddApplicationDto addApplicationDto)
+        public async Task<bool> AddApplication(AddApplicationDto addApplicationDto, string applicantId)
         {
             var dest = addApplicationDto.Adapt<RecruitmentApplication>(); //TODO: check if valid and respond accordingly
+            dest.ApplicantId = applicantId;
             var res = _context.Applications.Add(dest);
             await _context.SaveChangesAsync();
             return true;
@@ -139,7 +143,12 @@ namespace Cars.Services.Implementations
         public async Task<List<ApplicationView>> GetApplications(int recruitmentId)
         {
             var res = await _context.Applications
-                .Where(a => a.RecruitmentId == recruitmentId).ToListAsync();
+                .Where(a => a.RecruitmentId == recruitmentId)
+                .ToListAsync();
+            
+            res.ForEach(app => app.Applicant = 
+                _context.ApplicationUsers.First(u => u.Id == app.ApplicantId));
+
             var dest = res.Adapt<List<ApplicationView>>();
             return dest;
         }
@@ -150,13 +159,13 @@ namespace Cars.Services.Implementations
             if (!string.IsNullOrEmpty(filter.SearchString))
                 recruitments = recruitments.Where(s =>
                     s.Title.Contains(filter.SearchString) || s.Description.Contains(filter.SearchString));
-            
+
             var filtered = recruitments.AsEnumerable();
-            
+
             FilterPickedValues(ref filtered, filter.JobLevels, x => (int)x.JobLevel);
             FilterPickedValues(ref filtered, filter.JobTypes, x => (int)x.JobType);
             FilterPickedValues(ref filtered, filter.TeamSizes, x => (int)x.TeamSize);
-            
+
             filtered = filter.SortOrder switch
             {
                 SortOrder.NameAsc => filtered.OrderBy(s => s.Title),

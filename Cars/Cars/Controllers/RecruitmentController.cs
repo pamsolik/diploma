@@ -84,7 +84,8 @@ namespace Cars.Controllers
         [HttpPost("apply")]
         public async Task<IActionResult> Apply([FromBody] AddApplicationDto addApplicationDto)
         {
-            var res = await _recruitmentService.AddApplication(addApplicationDto);
+            var applicantId = User.Identity.GetUserId();
+            var res = await _recruitmentService.AddApplication(addApplicationDto, applicantId);
             return Ok(res);
         }
 

@@ -34,7 +34,7 @@ export class RecruitmentSettingsComponent {
   save() {
     this.enums.updateRecruitmentSettings(this.settings);
     console.log(this.settings);
-    this.settings.city.name = "Ass";
+    this.settings.city.name = "Ass"; //TODO: change
     this.alertService.showLoading("Dodawanie");
     this.http.post<ApiAnswer>(`${this.baseUrl}api/recruitments`, this.settings).subscribe(result => {
         this.alertService.showResultAndRedirect("Gratulacje", "Dodano rekrutacje", '/recruiter')

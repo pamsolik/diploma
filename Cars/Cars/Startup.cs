@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Cars.Data;
 using Cars.Models.DataModels;
@@ -150,7 +151,7 @@ namespace Cars
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
-
+                spa.Options.StartupTimeout = TimeSpan.FromSeconds(300);
                 if (env.IsDevelopment())
                     spa.UseAngularCliServer("start");
                 //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
