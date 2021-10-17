@@ -11,7 +11,9 @@ namespace Cars.Services.Interfaces
         Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId);
         Task<bool> EditRecruitment(EditRecruitmentDto addRecruitmentDto);
         Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId);
-        Task<PaginatedList<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto filter, RecruitmentMode recruitmentMode, string userId = "");
+
+        Task<PaginatedList<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto filter,
+            RecruitmentMode recruitmentMode, string userId = "");
 
         Task<bool> AddApplication(AddApplicationDto addApplicationDto, string applicantId);
 

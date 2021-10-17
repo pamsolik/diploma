@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Cars.Models.View;
+﻿using System.Threading.Tasks;
 
 namespace Cars.Services.Interfaces
 {

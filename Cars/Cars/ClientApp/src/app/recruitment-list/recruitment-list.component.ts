@@ -1,21 +1,19 @@
-import {AfterViewInit, Component, ElementRef, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {RecruitmentList, RecruitmentOffer} from "../../models/RecruitmentOffer";
+import {RecruitmentList} from "../../models/RecruitmentOffer";
 import {Filters, FiltersDefault} from "../../models/Filters";
-import {MatPaginator, MatPaginatorIntl, PageEvent} from "@angular/material/paginator";
+import {PageEvent} from "@angular/material/paginator";
 import {SortOrder} from "../../models/enums/SortOrder";
 import {getEnumKeyByEnumValue} from "../../components/EnumTool";
 import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 import {Options} from "@angular-slider/ngx-slider";
-
-import places from "places.js";
 
 @Component({
   selector: 'app-recruitment-list-component',
   templateUrl: './recruitment-list.component.html',
   styleUrls: ['./recruitment-list.component.css']
 })
-export class RecruitmentListComponent implements OnInit{
+export class RecruitmentListComponent implements OnInit {
   enums: RecruitmentEnums = new RecruitmentEnums();
   sortOrders = Object.values(SortOrder);
   sortOrder: string = SortOrder.NameAsc;

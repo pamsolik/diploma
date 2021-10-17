@@ -32,7 +32,7 @@
                 {
                     throw new InvalidOperationException("The default Identity UI layout requires a partial view '_LoginPartial' " +
                                                         "usually located at '/Pages/_LoginPartial' or at '/Views/Shared/_LoginPartial' to work. Based on your configuration " +
-                                                        $"we have looked at it in the following locations: {System.Environment.NewLine}{string.Join(System.Environment.NewLine, result.SearchedLocations)}.");
+                                                        $"we have looked at it in the following locations: {Environment.NewLine}{string.Join(Environment.NewLine, result.SearchedLocations)}.");
                 }
             </div>
         </div>

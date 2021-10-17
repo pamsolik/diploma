@@ -1,3 +1,3 @@
-﻿export interface ApiAnswer{
+﻿export interface ApiAnswer {
   message: string;
 }

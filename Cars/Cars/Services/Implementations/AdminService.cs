@@ -16,7 +16,7 @@ namespace Cars.Services.Implementations
         {
             _context = context;
         }
-        
+
         public async Task<List<RecruitmentView>> GetRecruitments()
         {
             var res = await _context.Recruitments.ToListAsync();

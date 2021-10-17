@@ -1,6 +1,4 @@
-﻿import {F} from "@angular/cdk/keycodes";
-
-export interface ApplicationDto {
+﻿export interface ApplicationDto {
   recruitmentId: number,
   description: string,
   cvFile: string,

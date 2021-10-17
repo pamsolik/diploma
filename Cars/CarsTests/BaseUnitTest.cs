@@ -1,4 +1,5 @@
-﻿using Cars.Data;
+﻿using System;
+using Cars.Data;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -23,8 +24,14 @@ namespace CarsTests
 
             var context = new ApplicationDbContext(options, sOptions);
 
-            context.Database.EnsureDeleted();
-
+            try
+            {
+                context.Database.EnsureDeleted();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             return context;
         }
     }

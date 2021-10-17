@@ -6,9 +6,6 @@
     <div class="card-body p-0 ">
 
       <article class="card-group-item">
-        <!--<header class="card-header">
-          <h6 class="title">Range input </h6>
-        </header>-->
         <div class="filter-content">
           <div class="card-body">
             <div class="form-row">
@@ -42,8 +39,8 @@
 
               <div class="form-group">
                 <label>Typ pracy</label>
-                <div class="form-check" *ngFor="let type of enums.jobTypes; let i = index">
-                  <input [(ngModel)]="filters.jobTypes[i]" class="form-check-input" type="checkbox" [value]="i">
+                <div *ngFor="let type of enums.jobTypes; let i = index" class="form-check">
+                  <input [(ngModel)]="filters.jobTypes[i]" [value]="i" class="form-check-input" type="checkbox">
                   <label class="form-check-label">
                     {{type}}
                   </label>
@@ -54,8 +51,8 @@
 
               <div class="form-group">
                 <label>Poziom</label>
-                <div class="form-check" *ngFor="let type of enums.jobLevels; let i = index">
-                  <input [(ngModel)]="filters.jobLevels[i]" class="form-check-input" type="checkbox" [value]="i">
+                <div *ngFor="let type of enums.jobLevels; let i = index" class="form-check">
+                  <input [(ngModel)]="filters.jobLevels[i]" [value]="i" class="form-check-input" type="checkbox">
                   <label class="form-check-label">
                     {{type}}
                   </label>
@@ -66,8 +63,8 @@
 
               <div class="form-group">
                 <label>Wielkość zespołu</label>
-                <div class="form-check" *ngFor="let type of enums.teamSizes; let i = index">
-                  <input [(ngModel)]="filters.teamSizes[i]" class="form-check-input" type="checkbox" [value]="i">
+                <div *ngFor="let type of enums.teamSizes; let i = index" class="form-check">
+                  <input [(ngModel)]="filters.teamSizes[i]" [value]="i" class="form-check-input" type="checkbox">
                   <label class="form-check-label">
                     {{type}}
                   </label>
@@ -75,20 +72,11 @@
               </div>
 
               <div class="border-top my-3"></div>
-
-              <!--                <div class="form-group">-->
-              <!--                  <label>Typ pracy 1</label>-->
-              <!--                  <select class="form-control">-->
-              <!--                    <option>Wybierz</option>-->
-              <!--                    <option *ngFor="let level of enums.jobTypes">{{level}}</option>-->
-              <!--                  </select>-->
-              <!--                </div>-->
-
             </div>
           </div>
         </div>
-      </article>
 
+      </article>
     </div>
   </div>
 
@@ -96,16 +84,16 @@
     <h1 *ngIf="!offers else loaded">Wczytywanie</h1>
 
     <ng-template #loaded>
-      <select class="form-control mb-2" [(ngModel)]="sortOrder">
+      <select [(ngModel)]="sortOrder" class="form-control mb-2">
         <option *ngFor="let order of sortOrders">{{order}}</option>
       </select>
 
       <mat-card *ngFor="let offer of offers.items" [routerLink]="[redirectUrl + offer.id]" class="mb-1">
         <div class="row">
           <div class="col-4">
-            <img class="img-fluid"
-                 [src]="createImgPath(offer.imgUrl)"
-                 alt="Thumbnail image">
+            <img [src]="createImgPath(offer.imgUrl)"
+                 alt="Thumbnail image"
+                 class="img-fluid">
           </div>
           <div class="job-desc col">
             <h5 class="card-title">{{offer.title}}</h5>
@@ -114,14 +102,13 @@
         </div>
       </mat-card>
 
-      <mat-paginator id="paginator"
-                     [pageIndex]="0"
+      <mat-paginator (page)="applyFilter($event); loadData()"
                      [length]="offers.totalItems"
-                     [pageSize]="filters.pageSize"
+                     [pageIndex]="0"
                      [pageSizeOptions]="[2, 5, 10, 25, 100]"
-                     (page)="applyFilter($event); loadData()"
-
-                     aria-label="Wybierz stronę">
+                     [pageSize]="filters.pageSize"
+                     aria-label="Wybierz stronę"
+                     id="paginator">
       </mat-paginator>
     </ng-template>
   </div>

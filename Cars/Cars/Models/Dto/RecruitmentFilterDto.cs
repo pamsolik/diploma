@@ -15,9 +15,9 @@ namespace Cars.Models.Dto
         public List<bool?> JobLevels { get; set; }
 
         public List<bool?> JobTypes { get; set; }
-        
+
         public List<bool?> TeamSizes { get; set; }
-        
+
         public CityDto City { get; set; }
 
         public int Distance { get; set; } = 0;

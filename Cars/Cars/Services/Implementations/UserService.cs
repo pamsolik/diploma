@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Cars.Data;
@@ -17,11 +16,11 @@ namespace Cars.Services.Implementations
         {
             _context = context;
         }
-        
+
         public async Task<string> GetUserId(string userName)
         {
             var usr = await _context.Users.Where(user => user.UserName == userName).FirstOrDefaultAsync();
-            return usr != null ? usr.Id : throw new AppBaseException( HttpStatusCode.NotFound,"User not found.");
+            return usr != null ? usr.Id : throw new AppBaseException(HttpStatusCode.NotFound, "User not found.");
         }
     }
 }

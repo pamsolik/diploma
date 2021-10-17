@@ -9,7 +9,8 @@
 @if (Model.CurrentLogins?.Count > 0)
 {
     <h4>Zarejestrowane Loginy</h4>
-    <table class="table">
+    <table class="table" aria-label="Current logins table">
+        <th id="provider"></th><th id="removeBtn"></th>
         <tbody>
         @foreach (var login in Model.CurrentLogins)
         {

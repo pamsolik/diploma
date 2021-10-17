@@ -1,4 +1,4 @@
-﻿export interface RecruitmentList{
+﻿export interface RecruitmentList {
   items: RecruitmentOffer[],
   totalItems: number
 }

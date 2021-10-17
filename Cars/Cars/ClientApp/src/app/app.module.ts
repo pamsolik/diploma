@@ -13,24 +13,24 @@ import {RecruiterComponent} from './recruiter/recruiter.component';
 import {ApiAuthorizationModule} from 'src/api-authorization/api-authorization.module';
 import {AuthorizeGuard} from 'src/api-authorization/authorize.guard';
 import {AuthorizeInterceptor} from 'src/api-authorization/authorize.interceptor';
-import {FooterComponent} from "./footer/footer.component";
-import {MatCardModule} from "@angular/material/card";
-import {RecruitmentDetailsComponent} from "./recruitment-details/recruitment-details.component";
-import {RecruitmentSettingsComponent} from "./recruitment-settings/recruitment-settings.component";
-import {MatTabsModule} from "@angular/material/tabs";
-import {MatPaginatorModule, MatPaginatorIntl} from "@angular/material/paginator";
-import {AdminComponent} from "./admin/admin.component";
+import {FooterComponent} from './footer/footer.component';
+import {MatCardModule} from '@angular/material/card';
+import {RecruitmentDetailsComponent} from './recruitment-details/recruitment-details.component';
+import {RecruitmentSettingsComponent} from './recruitment-settings/recruitment-settings.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
+import {AdminComponent} from './admin/admin.component';
 import {CommonModule} from '@angular/common';
-import {MatPaginatorIntlCustom} from "../components/MatPaginatorIntlCustom";
-import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatSelectModule} from "@angular/material/select";
-import {MatInputModule} from "@angular/material/input";
-import {FileUploadComponent} from "./file-upload/file-upload.component";
-import {MatSliderModule} from "@angular/material/slider";
-import {NgxSliderModule} from "@angular-slider/ngx-slider";
-import {ApplyComponent} from "./apply/apply.component";
-import {RecruitmentListComponent} from "./recruitment-list/recruitment-list.component";
-import {ApplicationsComponent} from "./applications/applications.component";
+import {MatPaginatorIntlCustom} from '../components/MatPaginatorIntlCustom';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import {FileUploadComponent} from './file-upload/file-upload.component';
+import {MatSliderModule} from '@angular/material/slider';
+import {NgxSliderModule} from '@angular-slider/ngx-slider';
+import {ApplyComponent} from './apply/apply.component';
+import {RecruitmentListComponent} from './recruitment-list/recruitment-list.component';
+import {ApplicationsComponent} from './applications/applications.component';
 
 
 @NgModule({
@@ -50,7 +50,7 @@ import {ApplicationsComponent} from "./applications/applications.component";
     ApplyComponent
   ],
   imports: [
-    BrowserModule,//.withServerTransition({appId: 'ng-cli-universal'}),
+    BrowserModule, // .withServerTransition({appId: 'ng-cli-universal'}),
     CommonModule,
     HttpClientModule,
     FormsModule,

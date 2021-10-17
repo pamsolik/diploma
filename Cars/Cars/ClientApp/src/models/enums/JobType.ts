@@ -1,4 +1,4 @@
-﻿export enum JobType{
+﻿export enum JobType {
   Remote = "Zdalny",
   Hybrid = "Hybrydowy",
   OnSite = "Na miejscu",

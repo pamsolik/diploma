@@ -1,7 +1,7 @@
 ﻿import {Applicant} from "./Applicant";
 import {CodeQualityAssessment} from "./CodeQualityAssessment";
 
-export interface RecruitmentApplication{
+export interface RecruitmentApplication {
   id: number,
   // recruitment: number,
   applicant: Applicant,

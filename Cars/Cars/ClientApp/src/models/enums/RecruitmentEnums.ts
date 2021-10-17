@@ -6,7 +6,7 @@ import {RecruitmentStatus} from "./RecruitmentStatus";
 import {RecruitmentType} from "./RecruitmentType";
 import {TeamSize} from "./TeamSize";
 
-export class RecruitmentEnums{
+export class RecruitmentEnums {
   public jobLevels: string[] = Object.values(JobLevel);
   jobLevel: string;
 
@@ -22,7 +22,7 @@ export class RecruitmentEnums{
   teamSizes: string[] = Object.values(TeamSize);
   teamSize: string;
 
-  public updateRecruitmentSettings(settings: RecruitmentDetailsDto){
+  public updateRecruitmentSettings(settings: RecruitmentDetailsDto) {
     settings.jobLevel = getEnumKeyByEnumValue(JobLevel, this.jobLevel);
     settings.jobType = getEnumKeyByEnumValue(JobType, this.jobType);
     settings.status = getEnumKeyByEnumValue(RecruitmentStatus, this.recruitmentStatus);

@@ -2,7 +2,6 @@ import {Component, Inject} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView"
-import {JobLevel} from "../../models/enums/JobLevel";
 import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 
 

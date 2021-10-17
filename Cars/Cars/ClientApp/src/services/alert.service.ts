@@ -1,15 +1,13 @@
-﻿import { Injectable, OnInit, Inject } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+﻿import {Injectable} from "@angular/core";
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: "root",
 })
 export class AlertService {
 
-  constructor( private router: Router) {
+  constructor(private router: Router) {
 //private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
   }
 
@@ -22,7 +20,8 @@ export class AlertService {
       timerProgressBar: true,
       didOpen: () => {
         Swal.showLoading()
-        timerInterval = setInterval(() => { }, 100)
+        timerInterval = setInterval(() => {
+        }, 100)
       },
       willClose: () => {
         clearInterval(timerInterval)
@@ -33,17 +32,20 @@ export class AlertService {
     })
   }
 
-  showResultAndRedirect(title: string, result: string, route: string, type: any = "info"){
+  showResultAndRedirect(title: string, result: string, route: string, type: any = "info") {
     Swal.close();
     Swal.fire(title, result, type).then(
-      () => { this.router.navigate([route])}
+      () => {
+        this.router.navigate([route])
+      }
     );
   }
 
-  showResult(title: string, result: string, type: any = "error"){
+  showResult(title: string, result: string, type: any = "error") {
     Swal.close();
     Swal.fire(title, result, type).then(
-      () => {}
+      () => {
+      }
     );
   }
 }

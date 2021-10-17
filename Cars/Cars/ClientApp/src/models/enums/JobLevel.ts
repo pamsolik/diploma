@@ -1,4 +1,4 @@
-﻿export enum JobLevel{
+﻿export enum JobLevel {
   Intern = "Praktyki",
   Junior = "Junior",
   Mid = "Mid",

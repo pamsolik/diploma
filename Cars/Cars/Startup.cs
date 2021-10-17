@@ -2,12 +2,12 @@ using System;
 using System.IO;
 using Cars.Data;
 using Cars.Models.DataModels;
+using Cars.Models.Exceptions;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
 using Cars.Services.Options;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -72,12 +72,13 @@ namespace Cars
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
-            services.Configure<FormOptions>(o => {
+            services.Configure<FormOptions>(o =>
+            {
                 o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
             });
-            
+
             //Cookies and data protection token lifespan
 
             // services.ConfigureApplicationCookie(o => {
@@ -98,7 +99,7 @@ namespace Cars
             {
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
             }
             else
@@ -106,9 +107,11 @@ namespace Cars
                 // app.UseExceptionHandler("/Error");
                 // // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-                
             }
-            
+
+            //app.ConfigureExceptionHandler();
+            app.ConfigureCustomExceptionMiddleware();
+
             //TODO: Move to prod
             //app.UseExceptionHandler("/api/error");
             // app.UseExceptionHandler(c => c.Run(async context =>
@@ -119,7 +122,7 @@ namespace Cars
             //     var response = new ErrorDetails(exception);
             //     await context.Response.WriteAsJsonAsync(response);
             // }));
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment()) app.UseSpaStaticFiles();
@@ -137,13 +140,14 @@ namespace Cars
                     "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-            
+
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions()
+            app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
                 RequestPath = new PathString("/Resources")
             });
+
 
             app.UseSpa(spa =>
             {

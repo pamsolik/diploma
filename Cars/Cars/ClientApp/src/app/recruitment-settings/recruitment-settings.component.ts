@@ -37,11 +37,11 @@ export class RecruitmentSettingsComponent {
     this.settings.city.name = "Ass"; //TODO: change
     this.alertService.showLoading("Dodawanie");
     this.http.post<ApiAnswer>(`${this.baseUrl}api/recruitments`, this.settings).subscribe(result => {
-        this.alertService.showResultAndRedirect("Gratulacje", "Dodano rekrutacje", '/recruiter')
-        console.log(result);
+      this.alertService.showResultAndRedirect("Gratulacje", "Dodano rekrutacje", '/recruiter')
+      console.log(result);
     }, error => {
-        this.alertService.showResult("Błąd", error.message)
-        console.error(error);
+      this.alertService.showResult("Błąd", error.message)
+      console.error(error);
     })
   }
 }

@@ -17,9 +17,9 @@ namespace Cars.Models.View
         public List<T> Items { get; set; } = new();
         public int PageIndex { get; }
         public int TotalPages { get; }
-        
+
         public int TotalItems { get; }
-        
+
         public static PaginatedList<T> CreateAsync(List<T> source, int pageIndex, int pageSize)
         {
             var count = source.Count;

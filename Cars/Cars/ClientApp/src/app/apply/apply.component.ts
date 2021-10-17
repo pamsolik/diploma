@@ -1,14 +1,11 @@
-import {Component, OnInit, OnDestroy, Input, Inject, EventEmitter, Output} from '@angular/core';
+import {Component, Inject, Input} from '@angular/core';
 
 import {HttpClient} from '@angular/common/http';
-import {Router, ActivatedRoute} from '@angular/router';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ApplicationDto, ApplicationDtoDefault} from "../../models/ApplicationDto";
 import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
-import {RecruitmentDetailsDto} from "../../models/RecruitmentDetailsDto";
 import {AlertService} from "../../services/alert.service";
-import {END} from "@angular/cdk/keycodes";
 import {ApiAnswer} from "../../models/ApiAnswer";
 
 

@@ -1,4 +1,4 @@
-<ng-template #content let-modal class="">
+<ng-template #content class="" let-modal>
   <div class="card p-0 m-0">
     <h4 class="card-header">Podaj dane do aplikaji</h4>
     <div class="mt-2 card-body row">
@@ -7,7 +7,7 @@
         <div class="form-group">
           <h5>Krótki opis</h5>
           <textarea [(ngModel)]="application.description"
-                    placeholder="Krótka wiadomość do rekrutującego (nieobowiązkowa)" class="form-control"
+                    class="form-control" placeholder="Krótka wiadomość do rekrutującego (nieobowiązkowa)"
                     rows="5"></textarea>
           <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
         </div>
@@ -27,20 +27,20 @@
         <h5>Klauzule:</h5>
 
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="clauseReq"
-                 [(ngModel)]="application.clauseRequiredAccepted" required>
+          <input [(ngModel)]="application.clauseRequiredAccepted" class="form-check-input" id="clauseReq" required
+                 type="checkbox" value="">
           <label class="form-check-label" for="clauseReq">{{details.clauseRequired}}</label>
         </div>
 
-        <div class="form-check" [hidden]="!details.clauseOpt1">
-          <input class="form-check-input" type="checkbox" value="" id="clauseCheck1"
-                 [(ngModel)]="application.clauseOptAccepted">
+        <div [hidden]="!details.clauseOpt1" class="form-check">
+          <input [(ngModel)]="application.clauseOptAccepted" class="form-check-input" id="clauseCheck1" type="checkbox"
+                 value="">
           <label class="form-check-label" for="clauseCheck1">{{details.clauseOpt1}}</label>
         </div>
 
-        <div class="form-check" [hidden]="!details.clauseOpt2">
-          <input class="form-check-input" type="checkbox" value="" id="clauseCheck2"
-                 [(ngModel)]="application.clauseOpt2Accepted">
+        <div [hidden]="!details.clauseOpt2" class="form-check">
+          <input [(ngModel)]="application.clauseOpt2Accepted" class="form-check-input" id="clauseCheck2" type="checkbox"
+                 value="">
           <label class="form-check-label" for="clauseCheck2">{{details.clauseOpt2}}</label>
         </div>
 
@@ -50,22 +50,22 @@
       <div class="col">
         <h5>Projekty (Linki do publicznych repuzytorium GitHub):</h5>
         <div class="mx-3">
-          <p class="alert alert-warning" *ngIf="application.projects.length == 0">Brak projektów</p>
-          <div class="form-group mb-2 row" *ngFor="let proj of application.projects; let i = index">
-            <input [(ngModel)]="application.projects[i]" class="form-control col ms-0" placeholder="Podaj tytuł"
-                   type="text" disabled>
-            <button class="btn btn-danger col-auto mx-2" (click)="deleteProject(i)">×</button>
+          <p *ngIf="application.projects.length == 0" class="alert alert-warning">Brak projektów</p>
+          <div *ngFor="let proj of application.projects; let i = index" class="form-group mb-2 row">
+            <input [(ngModel)]="application.projects[i]" class="form-control col ms-0" disabled
+                   placeholder="Podaj tytuł" type="text">
+            <button (click)="deleteProject(i)" class="btn btn-danger col-auto mx-2">×</button>
           </div>
         </div>
 
         <input [(ngModel)]="newProj" class="form-control m-2" placeholder="Podaj nowy projekt" type="text">
-        <button class="btn btn-success" (click)="addProject(newProj)">Dodaj kolejny projekt</button>
+        <button (click)="addProject(newProj)" class="btn btn-success">Dodaj kolejny projekt</button>
 
-        <button class="btn btn-success px-2 w-100" type="submit" (click)="apply()">Aplikuj</button>
+        <button (click)="apply()" class="btn btn-success px-2 w-100" type="submit">Aplikuj</button>
       </div>
 
     </div>
   </div>
 </ng-template>
 
-<button class="btn btn-success" (click)="open(content)">Aplikuj</button>
+<button (click)="open(content)" class="btn btn-success">Aplikuj</button>

@@ -1,27 +1,35 @@
 <div class="card mb-4 box-shadow container-lg p-0">
-  <h1 *ngIf="!true else loaded">Wczytywanie</h1>
+  <h1 *ngIf="!recruitmentApplications else loaded">Wczytywanie</h1>
 
   <ng-template #loaded>
     <div class="card-header">
       <h4 class="my-0 font-weight-normal">Aplikacje</h4>
     </div>
 
-    <div>
-      <mat-card *ngFor="let application of recruitmentApplications" [routerLink]="['/']" class="mb-1">
-        <div class="row">
-          <div class="col-4">
-            <img class="img-fluid"
-                 [src]=""
-                 alt="Thumbnail image">
-          </div>
+    <div class="row my-2">
+      <section class="col-3 border-end p-3">
+        <h6>Ilość aplikacji: </h6>
+        <h6>{{recruitmentApplications.length}}</h6>
+      </section>
+      <section class="col me-1">
+        <h5>Lista aplikacji</h5>
+        <mat-card *ngFor="let application of recruitmentApplications" [routerLink]="['/']" class="mb-1">
+          <div class="row">
+            <div class="col-3">
+              <img alt="Thumbnail image"
+                   class="img-fluid"
+                   src="https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg">
+              <p class="mt-2"> {{application.time | date: 'dd-MM-yyyy HH:mm'}}</p>
+            </div>
 
-          <div class="job-desc col">
-            <h5 class="card-title">{{application.applicant.userName}}</h5>
-            <p>{{application.description}}</p>
+            <div class="job-desc col">
+              <h5 class="card-title">{{application.applicant.userName}}</h5>
+              <p>{{application.description}}</p>
+
+            </div>
           </div>
-        </div>
-      </mat-card>
+        </mat-card>
+      </section>
     </div>
-
   </ng-template>
 </div>

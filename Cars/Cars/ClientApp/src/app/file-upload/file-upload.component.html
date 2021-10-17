@@ -1,13 +1,13 @@
-<div class="row mb-2" >
+<div class="row mb-2">
   <div class="col-3">
-    <input type="file" #file placeholder="Wybierz plik" (change)="uploadFile(file.files)" style="display:none;">
-    <button type="button" class="btn btn-success" (click)="file.click()">Wybierz plik</button>
+    <input #file (change)="uploadFile(file.files)" placeholder="Wybierz plik" style="display:none;" type="file">
+    <button (click)="file.click()" class="btn btn-success" type="button">Wybierz plik</button>
   </div>
   <div class="col">
-    <span class="upload" *ngIf="progress > 0">
+    <span *ngIf="progress > 0" class="upload">
       Postępy: {{progress}}%
     </span>
-    <span class="upload" *ngIf="message">
+    <span *ngIf="message" class="upload">
       {{message}}
     </span>
   </div>

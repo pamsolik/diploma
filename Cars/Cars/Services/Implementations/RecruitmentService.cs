@@ -16,7 +16,6 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-
 namespace Cars.Services.Implementations
 {
     public class RecruitmentService : IRecruitmentService
@@ -49,6 +48,57 @@ namespace Cars.Services.Implementations
 
             res = await CopyAndSaveThumbnail(addRecruitmentDto, res);
             return res.Entity.Id;
+        }
+
+        public async Task<bool> EditRecruitment(EditRecruitmentDto addRecruitmentDto)
+        {
+            var recruitment = await _context.Recruitments.FindAsync(addRecruitmentDto.Id); //TODO 
+            var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
+            var res = _context.Recruitments.Update(dest);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
+        {
+            var res = await _context.Recruitments.FindAsync(recruitmentId);
+            res.City = await _context.Cites.FindAsync(res.CityId); //TODO: FIX
+            var dest = res.Adapt<RecruitmentDetailsView>();
+            return dest;
+        }
+
+        public async Task<PaginatedList<RecruitmentView>>
+            GetRecruitmentsFiltered(RecruitmentFilterDto filter, RecruitmentMode recruitmentMode, string userId = "")
+        {
+            var recruitments = GetRecruitments(recruitmentMode, userId);
+
+            var recruitmentList = FilterOutAndSortRecruitments(ref recruitments, filter).ToList();
+            var dest = recruitmentList.Adapt<List<RecruitmentView>>();
+            var paginated = PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
+
+            return paginated;
+        }
+
+        public async Task<bool> AddApplication(AddApplicationDto addApplicationDto, string applicantId)
+        {
+            var dest = addApplicationDto.Adapt<RecruitmentApplication>(); //TODO: check if valid and respond accordingly
+            dest.ApplicantId = applicantId;
+            var res = _context.Applications.Add(dest);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<List<ApplicationView>> GetApplications(int recruitmentId)
+        {
+            var res = await _context.Applications
+                .Where(a => a.RecruitmentId == recruitmentId)
+                .ToListAsync();
+
+            res.ForEach(app => app.Applicant =
+                _context.ApplicationUsers.First(u => u.Id == app.ApplicantId));
+
+            var dest = res.Adapt<List<ApplicationView>>();
+            return dest;
         }
 
         private async Task<EntityEntry<Recruitment>> CopyAndSaveThumbnail(AddRecruitmentDto addRecruitmentDto,
@@ -91,35 +141,6 @@ namespace Cars.Services.Implementations
                         c.Longitude == addRecruitmentDto.City.Longitude;
         }
 
-        public async Task<bool> EditRecruitment(EditRecruitmentDto addRecruitmentDto)
-        {
-            var recruitment = await _context.Recruitments.FindAsync(addRecruitmentDto.Id); //TODO 
-            var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
-            var res = _context.Recruitments.Update(dest);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
-        {
-            var res = await _context.Recruitments.FindAsync(recruitmentId);
-            res.City = await _context.Cites.FindAsync(res.CityId); //TODO: FIX
-            var dest = res.Adapt<RecruitmentDetailsView>();
-            return dest;
-        }
-
-        public async Task<PaginatedList<RecruitmentView>>
-            GetRecruitmentsFiltered(RecruitmentFilterDto filter, RecruitmentMode recruitmentMode, string userId = "")
-        {
-            var recruitments = GetRecruitments(recruitmentMode, userId);
-
-            var recruitmentList = FilterOutAndSortRecruitments(ref recruitments, filter).ToList();
-            var dest = recruitmentList.Adapt<List<RecruitmentView>>();
-            var paginated = PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
-
-            return paginated;
-        }
-
         private IQueryable<Recruitment> GetRecruitments(RecruitmentMode recruitmentMode, string userId = "")
         {
             return recruitmentMode switch
@@ -129,28 +150,6 @@ namespace Cars.Services.Implementations
                 RecruitmentMode.Admin => _context.Recruitments,
                 _ => throw new ArgumentException("This mode doesn't exist")
             };
-        }
-
-        public async Task<bool> AddApplication(AddApplicationDto addApplicationDto, string applicantId)
-        {
-            var dest = addApplicationDto.Adapt<RecruitmentApplication>(); //TODO: check if valid and respond accordingly
-            dest.ApplicantId = applicantId;
-            var res = _context.Applications.Add(dest);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<List<ApplicationView>> GetApplications(int recruitmentId)
-        {
-            var res = await _context.Applications
-                .Where(a => a.RecruitmentId == recruitmentId)
-                .ToListAsync();
-            
-            res.ForEach(app => app.Applicant = 
-                _context.ApplicationUsers.First(u => u.Id == app.ApplicantId));
-
-            var dest = res.Adapt<List<ApplicationView>>();
-            return dest;
         }
 
         private static IEnumerable<Recruitment> FilterOutAndSortRecruitments(ref IQueryable<Recruitment> recruitments,
@@ -191,13 +190,11 @@ namespace Cars.Services.Implementations
             Func<Recruitment, int> predicate)
         {
             if (filter.Any(f => f == true))
-            {
                 list = list.Where(li =>
                 {
                     var val = predicate(li);
                     return filter.Count > val && filter[val] == true;
                 });
-            }
         }
 
         // async Task<PaginatedList<RecruitmentView>> ConvertToPaginatedList()
