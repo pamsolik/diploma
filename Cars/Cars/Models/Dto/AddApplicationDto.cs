@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Cars.Models.DataModels;
 
 namespace Cars.Models.Dto
 {
@@ -13,7 +14,7 @@ namespace Cars.Models.Dto
 
         public string ClFile { get; set; }
 
-        public List<string> Projects { get; set; }
+        public List<ProjectDto> Projects { get; set; }
 
         public bool ClauseOptAccepted { get; set; }
 

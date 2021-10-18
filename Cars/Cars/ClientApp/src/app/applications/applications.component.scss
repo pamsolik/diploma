@@ -1,6 +1,3 @@
-.job-desc {
-  flex: 1;
-}
 
 img {
   max-width: 60%;
@@ -15,13 +12,13 @@ img {
 }
 
 .mat-card {
-  background: lightgreen;
+  background: white;
   color: black;
   height: 20vh;
 }
 
 .mat-card:hover {
-  background: green;
+  background: darkgrey;
   color: white;
   cursor: pointer;
 }

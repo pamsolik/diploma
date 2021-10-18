@@ -16,7 +16,7 @@ namespace Cars.Models.View
 
         public string ClFile { get; set; }
 
-        public List<string> Projects { get; set; }
+        public List<Project> Projects { get; set; }
 
         public DateTime Time { get; set; }
 

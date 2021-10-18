@@ -155,7 +155,7 @@ namespace Cars
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
-                spa.Options.StartupTimeout = TimeSpan.FromSeconds(300);
+                spa.Options.StartupTimeout = TimeSpan.FromSeconds(60);
                 if (env.IsDevelopment())
                     spa.UseAngularCliServer("start");
                 //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
