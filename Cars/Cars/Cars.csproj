@@ -32,7 +32,7 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
         <PackageReference Include="NSwag.AspNetCore" Version="13.13.2" />
         <PackageReference Include="NSwag.Core" Version="13.13.2" />
-        <PackageReference Include="SendGrid" Version="9.24.3" />
+        <PackageReference Include="SendGrid" Version="9.24.4" />
         <PackageReference Include="System.Device.Location.Portable" Version="1.0.0" />
     </ItemGroup>
 
