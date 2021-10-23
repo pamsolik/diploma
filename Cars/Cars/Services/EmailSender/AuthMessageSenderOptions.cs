@@ -1,4 +1,4 @@
-﻿namespace Cars.Services.Options
+﻿namespace Cars.Services.EmailSender
 {
     public class AuthMessageSenderOptions
     {

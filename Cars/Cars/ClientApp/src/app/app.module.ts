@@ -31,24 +31,28 @@ import {NgxSliderModule} from '@angular-slider/ngx-slider';
 import {ApplyComponent} from './apply/apply.component';
 import {RecruitmentListComponent} from './recruitment-list/recruitment-list.component';
 import {ApplicationsComponent} from './applications/applications.component';
+import {NgbdSortableHeader} from "../components/NgbdSortableHeader";
+import {ApplicationDetailsComponent} from "./application-details/application-details.component";
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavMenuComponent,
-    HomeComponent,
-    RecruitmentComponent,
-    RecruitmentDetailsComponent,
-    RecruitmentSettingsComponent,
-    RecruiterComponent,
-    AdminComponent,
-    FooterComponent,
-    RecruitmentListComponent,
-    FileUploadComponent,
-    ApplicationsComponent,
-    ApplyComponent
-  ],
+    declarations: [
+        AppComponent,
+        NavMenuComponent,
+        HomeComponent,
+        RecruitmentComponent,
+        RecruitmentDetailsComponent,
+        RecruitmentSettingsComponent,
+        RecruiterComponent,
+        AdminComponent,
+        FooterComponent,
+        RecruitmentListComponent,
+        FileUploadComponent,
+        ApplicationsComponent,
+        ApplyComponent,
+        NgbdSortableHeader,
+        ApplicationDetailsComponent
+    ],
   imports: [
     BrowserModule, // .withServerTransition({appId: 'ng-cli-universal'}),
     CommonModule,

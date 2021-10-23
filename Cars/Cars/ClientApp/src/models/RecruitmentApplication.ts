@@ -1,5 +1,6 @@
 ﻿import {Applicant} from "./Applicant";
 import {CodeQualityAssessment} from "./CodeQualityAssessment";
+import {ProjectDto} from "./ProjectDto";
 
 export interface RecruitmentApplication {
   id: number,
@@ -8,9 +9,10 @@ export interface RecruitmentApplication {
   description: string,
   cvFile: string,
   clFile: string,
-  projects: [],
+  projects: ProjectDto[],
   time: Date,
   clauseOptAccepted: boolean,
   clauseOpt2Accepted: boolean,
-  codeQualityAssessment: CodeQualityAssessment
+  codeQualityAssessment: CodeQualityAssessment,
+  selected: boolean
 }

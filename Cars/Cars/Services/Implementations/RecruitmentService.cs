@@ -15,16 +15,19 @@ using IdentityServer4.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 
 namespace Cars.Services.Implementations
 {
     public class RecruitmentService : IRecruitmentService
     {
+        private readonly ILogger<RecruitmentService> _logger;
         private readonly ApplicationDbContext _context;
 
-        public RecruitmentService(ApplicationDbContext context)
+        public RecruitmentService(ApplicationDbContext context, ILogger<RecruitmentService> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId)
@@ -94,9 +97,12 @@ namespace Cars.Services.Implementations
                 .Where(a => a.RecruitmentId == recruitmentId)
                 .ToListAsync();
 
-            res.ForEach(app => app.Applicant =
-                _context.ApplicationUsers.First(u => u.Id == app.ApplicantId));
-
+            res.ForEach(app =>
+            {
+                app.Applicant = _context.ApplicationUsers.First(u => u.Id == app.ApplicantId);
+                app.CodeQualityAssessment = _context.CodeQualityAssessments.First(q => q.Id == app.CodeQualityAssessmentId);
+            });
+            
             var dest = res.Adapt<List<ApplicationView>>();
             return dest;
         }
@@ -123,6 +129,7 @@ namespace Cars.Services.Implementations
                 }
                 catch (IOException e)
                 {
+                    _logger.LogInformation(e,"IOException, reverting to the default image");
                     res.Entity.ImgUrl = ImgPath.PlaceHolder;
                 }
 

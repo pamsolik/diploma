@@ -12,13 +12,20 @@ img {
 }
 
 .mat-card {
-  background: white;
   color: black;
   height: 20vh;
 }
 
-.mat-card:hover {
-  background: darkgrey;
-  color: white;
-  cursor: pointer;
+.base {
+  background: white;
 }
+
+.selected {
+  background: lightgreen;
+}
+
+//.mat-card:hover {
+//  background: darkgrey;
+//  color: white;
+//  cursor: pointer;
+//}

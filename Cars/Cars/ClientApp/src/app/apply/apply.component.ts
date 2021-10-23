@@ -7,6 +7,7 @@ import {ApplicationDto, ApplicationDtoDefault} from "../../models/ApplicationDto
 import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 import {AlertService} from "../../services/alert.service";
 import {ApiAnswer} from "../../models/ApiAnswer";
+import {ProjectDto} from "../../models/ProjectDto";
 
 
 @Component({
@@ -71,11 +72,11 @@ export class ApplyComponent {
 
   addProject(proj: string) {
     if (proj) {
-      if (this.application.projects.find(p => p == proj)) {
+      if (this.application.projects.find(p => p.Url == proj)) {
         this.alertService.showResult("Błąd", "Projekt już istnieje na liście.");
         return;
       }
-      this.application.projects.push(proj);
+      this.application.projects.push({Description: 'desc', Title: 'title', Url: proj} as ProjectDto);
       this.newProj = "";
     } else {
       this.alertService.showResult("Błąd", "Nie można dodać pustego projektu.")

@@ -1,0 +1,35 @@
+<ng-template #content class="" let-modal>
+  <div class="card p-0 m-0">
+    <h4 class="card-header">{{details.applicant.userName}}</h4>
+    <div class="mt-2 card-body row">
+      <!--      <form class="g-3 needs-validation" novalidate>-->
+      <div class="col-8 border-end">
+
+        <p>{{details.description}}</p>
+
+        <div class="border-top my-2"></div>
+
+        <h5>CV:</h5>
+        <p>{{details.cvFile}}</p>
+
+        <div class="border-top my-2"></div>
+
+        <h5>List motywacyjny:</h5>
+        <p>{{details.clFile}}</p>
+
+        <div class="border-top my-2"></div>
+
+        <h5>Klauzule:</h5>
+
+      </div>
+
+      <div class="col">
+        <h5>Projekty</h5>
+        <a *ngFor="let p of details.projects">p</a>
+      </div>
+
+    </div>
+  </div>
+</ng-template>
+
+<button (click)="open(content)" class="btn btn-info">Szczegóły</button>

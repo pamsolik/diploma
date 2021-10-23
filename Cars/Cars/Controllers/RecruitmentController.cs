@@ -46,12 +46,12 @@ namespace Cars.Controllers
             return Ok(new ApiAnswer("Edited"));
         }
 
-        [HttpPut("status/{id}")]
-        public async Task<IActionResult> CloseRecruitment([FromBody] RecruitmentStatus status)
+        [HttpPut("status/{status}")]
+        public IActionResult CloseRecruitment([FromBody] RecruitmentStatus status)
         {
             //TODO: Maybe delete
             //var res = await _recruitmentService.();
-            return Ok("Not implemented");
+            return Ok("Not implemented " + status);
         }
 
         [HttpPost("public")]

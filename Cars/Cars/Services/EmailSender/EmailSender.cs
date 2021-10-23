@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Cars.Services.Options;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace Cars.Services.Implementations
+namespace Cars.Services.EmailSender
 {
     public class EmailSender : IEmailSender
     {

@@ -1,5 +1,12 @@
 ﻿export interface CodeQualityAssessment {
   id: number,
   success: boolean,
-  completedTime: Date
+  completedTime: Date,
+  errors: number,
+  security,
+  codeSmells,
+  duplications: number,
+  readability,
+  maintainability,
+  technicalDebt
 }

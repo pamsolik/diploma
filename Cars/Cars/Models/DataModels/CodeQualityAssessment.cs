@@ -14,7 +14,7 @@ namespace Cars.Models.DataModels
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CompletedTime { get; set; }
 
-
+        
         //All metrics from sonar +
         //code lenght +
         //some errors/lenght metric to evaluate the code

@@ -3,9 +3,9 @@ using System.IO;
 using Cars.Data;
 using Cars.Models.DataModels;
 using Cars.Models.Exceptions;
+using Cars.Services.EmailSender;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
-using Cars.Services.Options;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +39,7 @@ namespace Cars
             //     options.UseSqlServer(
             //         Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc();
+            services.AddMvc().AddRazorRuntimeCompilation();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection"))
@@ -55,11 +55,15 @@ namespace Cars
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddScoped<IRecruitmentService, RecruitmentService>();
+            services.AddScoped<IAdminService, AdminService>();
+            
+            services.AddSingleton<IScannerService, ScannerService>();
 
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
+            services.AddAuthentication().AddIdentityServerJwt();
+            
             services.AddControllersWithViews();
             services.AddRazorPages();
+            
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
@@ -108,6 +112,8 @@ namespace Cars
                 // // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
+            app.ApplicationServices.GetService<IScannerService>();
 
             //app.ConfigureExceptionHandler();
             app.ConfigureCustomExceptionMiddleware();
@@ -155,7 +161,7 @@ namespace Cars
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
-                spa.Options.StartupTimeout = TimeSpan.FromSeconds(60);
+                spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
                 if (env.IsDevelopment())
                     spa.UseAngularCliServer("start");
                 //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");

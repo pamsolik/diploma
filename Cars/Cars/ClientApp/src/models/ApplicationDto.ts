@@ -1,9 +1,11 @@
-﻿export interface ApplicationDto {
+﻿import {ProjectDto} from "./ProjectDto";
+
+export interface ApplicationDto {
   recruitmentId: number,
   description: string,
   cvFile: string,
   clFile: string,
-  projects: Array<string>,
+  projects: ProjectDto[],
   clauseRequiredAccepted,
   clauseOptAccepted,
   clauseOpt2Accepted
@@ -15,7 +17,7 @@ export const ApplicationDtoDefault: ApplicationDto = {
   description: "",
   cvFile: "",
   clFile: "",
-  projects: new Array<string>(),
+  projects: [],
   clauseRequiredAccepted: false,
   clauseOpt2Accepted: false,
   clauseOptAccepted: false

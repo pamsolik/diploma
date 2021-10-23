@@ -1,22 +1,73 @@
 <div class="card mb-4 box-shadow container-lg p-0">
-  <h1 *ngIf="!recruitmentApplications else loaded">Wczytywanie</h1>
+  <h1 *ngIf="!recruitmentApplications else loaded"></h1>
 
   <ng-template #loaded>
+
+
     <div class="card-header">
       <h4 class="my-0 font-weight-normal">Aplikacje</h4>
     </div>
 
+
     <div class="card-body">
-        <section class="col-3 p-3">
-          <h6>Ilość aplikacji: {{recruitmentApplications.length}}</h6>
+      <h1 *ngIf="recruitmentApplications.length == 0 else any">Brak aplikacji</h1>
+
+      <ng-template #any>
+        <section class="row py-3">
+          <h6 class="col">Ilość aplikacji: {{recruitmentApplications.length}}</h6>
+
+          <div class="col-auto">
+            <button class="btn btn-success" (click)="selectCandidates()">Wybierz kandydatów i zakończ rekrutację</button>
+          </div>
         </section>
+
+        <!--      <table class="table table-striped">-->
+        <!--        <thead>-->
+        <!--        <tr>-->
+        <!--          <th scope="col">#</th>-->
+        <!--          <th scope="col">Dane</th>-->
+        <!--          <th scope="col" sortable="codeQualityAssessment.errors" (sort)="onSort($event)">Błędy</th>-->
+        <!--          <th scope="col" sortable="codeQualityAssessment.security" (sort)="onSort($event)">Bezpieczeństwo</th>-->
+        <!--          <th scope="col" sortable="codeQualityAssessment.codeSmells" (sort)="onSort($event)">Code Smells</th>-->
+        <!--          <th scope="col" sortable="codeQualityAssessment.duplications" (sort)="onSort($event)">Powtórzenia (%)</th>-->
+        <!--          <th scope="col" sortable="codeQualityAssessment.readability" (sort)="onSort($event)">Czytelność</th>-->
+        <!--          <th scope="col" sortable="codeQualityAssessment.maintainability" (sort)="onSort($event)">Utrzymywalność</th>-->
+        <!--          <th scope="col" sortable="codeQualityAssessment.technicalDebt" (sort)="onSort($event)">Dług techniczny</th>-->
+        <!--        </tr>-->
+        <!--        </thead>-->
+        <!--        <tbody>-->
+
+        <!--        <tr *ngFor="let application of recruitmentApplications">-->
+        <!--          <th scope="row">{{ application.id }}</th>-->
+        <!--          <td>-->
+        <!--            <img src="https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg" class="mr-2" alt="a">-->
+        <!--            {{ application.applicant.userName }}-->
+        <!--          </td>-->
+        <!--          <td>{{ application.codeQualityAssessment.errors | number }}</td>-->
+        <!--          <td>{{ application.codeQualityAssessment.security }}</td>-->
+        <!--          <td>{{ application.codeQualityAssessment.codeSmells }}</td>-->
+        <!--          <td>{{ application.codeQualityAssessment.duplications | number }}</td>-->
+        <!--          <td>{{ application.codeQualityAssessment.readability }}</td>-->
+        <!--          <td>{{ application.codeQualityAssessment.maintainability }}</td>-->
+        <!--          <td>{{ application.codeQualityAssessment.technicalDebt }}</td>-->
+        <!--        </tr>-->
+        <!--        </tbody>-->
+        <!--      </table>-->
 
         <section class="me-1">
           <div class="row">
-            <h5 class="col">Lista aplikacji</h5>
+            <h5 class="col-5 border-end border-dark">Lista aplikacji</h5>
+            <p class="col-1 border-end border-dark">Błędy</p>
+            <p class="col-1 border-end border-dark">Bezpieczeństwo</p>
+            <p class="col-1 border-end border-dark">Code Smells</p>
+            <p class="col-1 border-end border-dark">Powtórzenia (%)</p>
+            <p class="col-1 border-end border-dark">Czytelność</p>
+            <p class="col-1 border-end border-dark">Utrzymywalność</p>
+            <p class="col-1">Dług techniczny</p>
           </div>
           <div class="row">
-            <mat-card *ngFor="let application of recruitmentApplications" [routerLink]="['/']" class="mb-1">
+
+            <mat-card *ngFor="let application of recruitmentApplications" class="mb-1 {{application.selected ? 'selected' : 'base'}}">
               <div class="row">
                 <div class="col-2">
                   <img alt="Thumbnail image"
@@ -25,20 +76,53 @@
                   <p class="mt-2"> {{application.time | date: 'dd-MM-yyyy HH:mm'}}</p>
                 </div>
 
-                <div class="col-3 border-end">
+                <div class="col-3 border-end border-dark">
                   <h5 class="card-title">{{application.applicant.userName}}</h5>
                   <p>{{application.description}}</p>
 
+                  <app-application-details [details]="application"></app-application-details>
+
+                  <div class="form-check pt-2">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="application.selected"
+                           id="flexSelected{{application.id}}">
+                    <label class="form-check-label" for="flexSelected{{application.id}}">
+                      Wybrano
+                    </label>
+                  </div>
                 </div>
 
-                <div class="job-desc col">
-                  <h5 class="card-title">{{application.applicant.userName}}</h5>
-                  <p>{{application.description}}</p>
+                <div class="col-1 border-end border-dark text-center">
+                  <h5 class="card-title">{{application.codeQualityAssessment.errors}}</h5>
+                </div>
+
+                <div class="col-1 border-end border-dark text-center">
+                  <h5 class="card-title">{{application.codeQualityAssessment.security}}</h5>
+                </div>
+
+                <div class="col-1 border-end border-dark text-center">
+                  <h5 class="card-title">{{application.codeQualityAssessment.codeSmells}}</h5>
+                </div>
+
+                <div class="col-1 border-end border-dark text-center">
+                  <h5 class="card-title">{{application.codeQualityAssessment.duplications}}</h5>
+                </div>
+
+                <div class="col-1 border-end border-dark text-center">
+                  <h5 class="card-title">{{application.codeQualityAssessment.readability}}</h5>
+                </div>
+
+                <div class="col-1 border-end border-dark text-center">
+                  <h5 class="card-title">{{application.codeQualityAssessment.maintainability}}</h5>
+                </div>
+
+                <div class="col-1 text-center">
+                  <h5 class="card-title">{{application.codeQualityAssessment.technicalDebt}}</h5>
                 </div>
               </div>
             </mat-card>
           </div>
         </section>
-      </div>
+      </ng-template>
+    </div>
   </ng-template>
 </div>
