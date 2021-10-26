@@ -33,12 +33,12 @@ namespace Cars.Services.Implementations
         public async Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId)
         {
             //TODO: check if valid and respond accordingly
-            var existingCity = _context.Cites.FirstOrDefault(CompareCities(addRecruitmentDto));
+            var existingCity = _context.Cities.FirstOrDefault(CompareCities(addRecruitmentDto));
 
             if (existingCity is null)
             {
                 existingCity = addRecruitmentDto.City.Adapt<City>();
-                _context.Cites.Add(existingCity);
+                _context.Cities.Add(existingCity);
             }
 
             var dest = addRecruitmentDto.Adapt<Recruitment>();
@@ -65,7 +65,7 @@ namespace Cars.Services.Implementations
         public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
         {
             var res = await _context.Recruitments.FindAsync(recruitmentId);
-            res.City = await _context.Cites.FindAsync(res.CityId); //TODO: FIX
+            res.City = await _context.Cities.FindAsync(res.CityId); //TODO: FIX
             var dest = res.Adapt<RecruitmentDetailsView>();
             return dest;
         }
@@ -82,13 +82,13 @@ namespace Cars.Services.Implementations
             return paginated;
         }
 
-        public async Task<bool> AddApplication(AddApplicationDto addApplicationDto, string applicantId)
+        public async Task<RecruitmentApplication> AddApplication(AddApplicationDto addApplicationDto, string applicantId)
         {
             var dest = addApplicationDto.Adapt<RecruitmentApplication>(); //TODO: check if valid and respond accordingly
             dest.ApplicantId = applicantId;
             var res = _context.Applications.Add(dest);
             await _context.SaveChangesAsync();
-            return true;
+            return res.Entity;
         }
 
         public async Task<List<ApplicationView>> GetApplications(int recruitmentId)
@@ -99,8 +99,8 @@ namespace Cars.Services.Implementations
 
             res.ForEach(app =>
             {
-                app.Applicant = _context.ApplicationUsers.First(u => u.Id == app.ApplicantId);
-                app.CodeQualityAssessment = _context.CodeQualityAssessments.First(q => q.Id == app.CodeQualityAssessmentId);
+                app.Applicant = _context.ApplicationUsers.FirstOrDefault(u => u.Id == app.ApplicantId);
+                app.CodeQualityAssessment = _context.CodeQualityAssessments.FirstOrDefault(q => q.Id == app.CodeQualityAssessmentId);
             });
             
             var dest = res.Adapt<List<ApplicationView>>();

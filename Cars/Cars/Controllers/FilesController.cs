@@ -33,9 +33,9 @@ namespace Cars.Controllers
                 var folderName = Path.Combine("Resources", "Temp");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-                if (file.Length <= 0) return BadRequest();
+                if (file.Length <= 0) return BadRequest("File lenght is equal to 0");
                 var name = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
-                if (name == null) return BadRequest();
+                if (name == null) return BadRequest("File name cannot be empty");
                 var fileName =
                     $"File_{User.FindFirstValue(ClaimTypes.NameIdentifier)}_{DateTime.Now:yyyy-dd-MM-HH-mm-ss}{Path.GetExtension(name).Trim('"')}";
                 var fullPath = Path.Combine(pathToSave, fileName);

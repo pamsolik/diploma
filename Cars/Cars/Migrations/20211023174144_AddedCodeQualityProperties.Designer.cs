@@ -3,15 +3,17 @@ using System;
 using Cars.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Cars.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211023174144_AddedCodeQualityProperties")]
+    partial class AddedCodeQualityProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,7 +128,7 @@ namespace Cars.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cites");
                 });
 
             modelBuilder.Entity("Cars.Models.DataModels.CodeQualityAssessment", b =>
@@ -194,7 +196,6 @@ namespace Cars.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ApplicationUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DateFrom")
@@ -228,41 +229,9 @@ namespace Cars.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Experiences");
+                    b.ToTable("Experience");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Experience");
-                });
-
-            modelBuilder.Entity("Cars.Models.DataModels.Project", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ApplicationId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationId");
-
-                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("Cars.Models.DataModels.Recruitment", b =>
@@ -388,7 +357,7 @@ namespace Cars.Migrations
                     b.ToTable("Applications");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Skill", b =>
+            modelBuilder.Entity("Cars.Models.DataModels.TextModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -396,7 +365,6 @@ namespace Cars.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ApplicationUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
@@ -404,11 +372,17 @@ namespace Cars.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Skills");
+                    b.ToTable("TextModel");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("TextModel");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -660,6 +634,28 @@ namespace Cars.Migrations
                     b.HasDiscriminator().HasValue("Education");
                 });
 
+            modelBuilder.Entity("Cars.Models.DataModels.Project", b =>
+                {
+                    b.HasBaseType("Cars.Models.DataModels.TextModel");
+
+                    b.Property<int?>("RecruitmentApplicationId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.HasIndex("RecruitmentApplicationId");
+
+                    b.HasDiscriminator().HasValue("Project");
+                });
+
             modelBuilder.Entity("Cars.Models.DataModels.ApplicationUser", b =>
                 {
                     b.HasOne("Cars.Models.DataModels.City", "City")
@@ -671,24 +667,9 @@ namespace Cars.Migrations
 
             modelBuilder.Entity("Cars.Models.DataModels.Experience", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Cars.Models.DataModels.ApplicationUser", null)
                         .WithMany("Experience")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Cars.Models.DataModels.Project", b =>
-                {
-                    b.HasOne("Cars.Models.DataModels.RecruitmentApplication", "Application")
-                        .WithMany("Projects")
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Application");
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Cars.Models.DataModels.Recruitment", b =>
@@ -733,15 +714,11 @@ namespace Cars.Migrations
                     b.Navigation("Recruitment");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Skill", b =>
+            modelBuilder.Entity("Cars.Models.DataModels.TextModel", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Cars.Models.DataModels.ApplicationUser", null)
                         .WithMany("Skills")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -800,6 +777,13 @@ namespace Cars.Migrations
                     b.HasOne("Cars.Models.DataModels.ApplicationUser", null)
                         .WithMany("Education")
                         .HasForeignKey("ApplicationUserId1");
+                });
+
+            modelBuilder.Entity("Cars.Models.DataModels.Project", b =>
+                {
+                    b.HasOne("Cars.Models.DataModels.RecruitmentApplication", null)
+                        .WithMany("Projects")
+                        .HasForeignKey("RecruitmentApplicationId");
                 });
 
             modelBuilder.Entity("Cars.Models.DataModels.ApplicationUser", b =>

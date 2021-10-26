@@ -19,9 +19,9 @@ namespace Cars.Models.DataModels
         public string Github { get; set; }
         public string LinkedIn { get; set; }
 
-        public List<TextModel> Skills { get; set; }
+        public virtual ICollection<Skill> Skills { get; set; }
 
-        public List<Education> Education { get; set; }
-        public List<Experience> Experience { get; set; }
+        public virtual ICollection<Education> Education { get; set; }
+        public virtual ICollection<Experience> Experience { get; set; }
     }
 }

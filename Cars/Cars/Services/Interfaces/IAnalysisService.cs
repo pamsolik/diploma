@@ -1,6 +1,6 @@
 ﻿namespace Cars.Services.Interfaces
 {
-    public interface IScannerService
+    public interface IAnalysisService
     {
         
     }

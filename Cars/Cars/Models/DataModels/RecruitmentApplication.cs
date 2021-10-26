@@ -7,6 +7,11 @@ namespace Cars.Models.DataModels
 {
     public class RecruitmentApplication
     {
+        public RecruitmentApplication()
+        {
+            Projects = new HashSet<Project>();
+        }  
+        
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -25,7 +30,7 @@ namespace Cars.Models.DataModels
 
         public string ClFile { get; set; }
 
-        public List<Project> Projects { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
         
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

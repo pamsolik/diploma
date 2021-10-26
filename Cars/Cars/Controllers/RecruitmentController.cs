@@ -5,6 +5,7 @@ using Cars.Models.Enums;
 using Cars.Models.Exceptions;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
+using Cars.Services.Other;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -19,7 +20,7 @@ namespace Cars.Controllers
         private readonly ILogger<RecruitmentController> _logger;
 
         private readonly IRecruitmentService _recruitmentService;
-
+        
         public RecruitmentController(ILogger<RecruitmentController> logger, IRecruitmentService recruitmentService)
         {
             _recruitmentService = recruitmentService;

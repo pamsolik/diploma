@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cars.Models.DataModels;
 using Cars.Models.Dto;
 using Cars.Models.Enums;
 using Cars.Models.View;
@@ -15,7 +16,7 @@ namespace Cars.Services.Interfaces
         Task<PaginatedList<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto filter,
             RecruitmentMode recruitmentMode, string userId = "");
 
-        Task<bool> AddApplication(AddApplicationDto addApplicationDto, string applicantId);
+        Task<RecruitmentApplication> AddApplication(AddApplicationDto addApplicationDto, string applicantId);
 
         Task<List<ApplicationView>> GetApplications(int recruitmentId);
     }

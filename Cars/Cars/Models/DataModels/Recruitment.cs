@@ -51,7 +51,7 @@ namespace Cars.Models.DataModels
 
         public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
 
-        public ICollection<RecruitmentApplication> Applications { get; set; }
+        public virtual ICollection<RecruitmentApplication> Applications { get; set; }
 
         [Required]
         [StringLength(1000, ErrorMessage = "ClauseRequired cannot be longer than 1000 characters.")]

@@ -57,7 +57,7 @@ namespace Cars
             services.AddScoped<IRecruitmentService, RecruitmentService>();
             services.AddScoped<IAdminService, AdminService>();
             
-            services.AddSingleton<IScannerService, ScannerService>();
+            services.AddSingleton<IAnalysisService, AnalysisService>();
 
             services.AddAuthentication().AddIdentityServerJwt();
             
@@ -113,7 +113,7 @@ namespace Cars
                 app.UseHsts();
             }
             
-            app.ApplicationServices.GetService<IScannerService>();
+            app.ApplicationServices.GetService<IAnalysisService>();
 
             //app.ConfigureExceptionHandler();
             app.ConfigureCustomExceptionMiddleware();
