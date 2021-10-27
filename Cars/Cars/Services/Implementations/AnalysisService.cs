@@ -29,7 +29,7 @@ namespace Cars.Services.Implementations
         public const string SonarLoc = "D:/SonarScan";
 
         private const string MetricsUri =
-            "http://localhost:9000/api/measures/component?metricKeys=bugs,code_smells,duplicated_lines,duplicated_lines_density,complexity,cognitive_complexity,violations,coverage,lines,sqale_rating,reliability_rating,security_hotspots,security_rating&component=aas";
+            "http://localhost:9000/api/measures/component?metricKeys=bugs,code_smells,duplicated_lines,duplicated_lines_density,complexity,cognitive_complexity,violations,coverage,lines,sqale_rating,reliability_rating,security_hotspots,security_rating&component=test";
 
         public AnalysisService(IServiceScopeFactory scopeFactory, ILogger<AnalysisService> logger)
         {
@@ -59,6 +59,19 @@ namespace Cars.Services.Implementations
         {
             try
             {
+                // Task.Factory.StartNew(() =>
+                //     {
+                //         //executes in thread pool.
+                //         return GetSomething(); // returns a Task.
+                //     }) // returns a Task<Task>.
+                //     .Unwrap() // "unwraps" the outer task, returning a proxy
+                //     // for the inner one returned by GetSomething().
+                //     .ContinueWith(task =>
+                //     {
+                //         // executes in UI thread.
+                //         Prop = task.Result;
+                //     }, TaskScheduler.FromCurrentSynchronizationContext());
+                
                 await RunJobAsync();
             }
             catch (Exception exception)
@@ -72,7 +85,6 @@ namespace Cars.Services.Implementations
         private static async Task PerformScan(string projectDir)
         {
             var cmd =
-                //$"cd \"{projectDir}\" && " +
                 $"sonar-scanner.bat -D\"sonar.projectKey=test\" -D\"sonar.sources=.\" " +
                 $"-D\"sonar.host.url=http://localhost:9000\" " +
                 $"-D\"sonar.login=2a717a00e2600f862f49a8fcc9b28f2029040369\"";
@@ -100,19 +112,41 @@ namespace Cars.Services.Implementations
                         try
                         {
                             var projectDir = Path.Combine(SonarLoc, ne.ApplicantId, project.Id.ToString());
+                            var dirInfo = new DirectoryInfo(projectDir);
                             
-                            Directory.CreateDirectory(projectDir);
+                            if (dirInfo.Exists)
+                            {
+                                UpdateFileAttributes(new DirectoryInfo(projectDir));
+                                dirInfo.Delete(true);
+                            }
+                            dirInfo.Create();
+                            
                             await RepositoryLoader.Clone("https://github.com/pamsolik/TestRepo", projectDir);
 
                             await PerformScan(projectDir);
                             
                             var analysis = http.GetResponse(MetricsUri);
-                            var ass = context.CodeQualityAssessments.Add(new CodeQualityAssessment
+                            var ass = new CodeQualityAssessment
                             {
                                 CompletedTime = DateTime.Now,
-                                Success = true
-                            });
-                            ne.CodeQualityAssessment = ass.Entity;
+                                Success = true,
+                                CodeSmells = analysis.GetValue("code_smells"),
+                                Maintainability = analysis.GetValue("sqale_rating"),
+                                Coverage = analysis.GetValue("coverage"), //Check
+                                CognitiveComplexity = analysis.GetValue("cognitive_complexity"), //Check
+                                Violations = analysis.GetValue("violations"),
+                                SecurityRating = analysis.GetValue("security_rating"),
+                                DuplicatedLines = analysis.GetValue("duplicated_lines"),
+                                Lines = analysis.GetValue("lines"),
+                                DuplicatedLinesDensity = analysis.GetValue("duplicated_lines_density"),
+                                Bugs = analysis.GetValue("bugs"),
+                                SqaleRating = analysis.GetValue("security_rating"),
+                                ReliabilityRating = analysis.GetValue("reliability_rating"),
+                                Complexity = analysis.GetValue("complexity"),  //Check
+                                SecurityHotspots = analysis.GetValue("security_hotspots"),
+                                OverallRating = 0f //TODO: Calculate
+                            };
+                            ne.CodeQualityAssessment = ass;
                             
                             await context.SaveChangesAsync();
                         }
@@ -144,6 +178,26 @@ namespace Cars.Services.Implementations
             {
                 // Wait until the task completes or the stop token triggers
                 await Task.WhenAny(_executingTask, Task.Delay(Timeout.Infinite, cancellationToken));
+            }
+        }
+        
+        private static void UpdateFileAttributes(DirectoryInfo dInfo)
+        {
+            // Set Directory attribute
+            dInfo.Attributes &= ~FileAttributes.ReadOnly;
+
+            // get list of all files in the directory and clear 
+            // the Read-Only flag
+
+            foreach (var file in dInfo.GetFiles())
+            {
+                file.Attributes &= ~FileAttributes.ReadOnly;
+            }
+
+            // recurse all of the subdirectories
+            foreach (var subDir in dInfo.GetDirectories())
+            {
+                UpdateFileAttributes(subDir);
             }
         }
     }
