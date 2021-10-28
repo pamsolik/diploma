@@ -23,5 +23,11 @@ namespace Cars.Models.DataModels
         [Required]
         [StringLength(1000, ErrorMessage = "Url cannot be longer than 1000 characters.")]
         public string Url { get; set; }
+        
+        //null if not calculated yet
+        public int? CodeQualityAssessmentId { get; set; }
+
+        [ForeignKey("CodeQualityAssessmentId")]
+        public virtual CodeQualityAssessment CodeQualityAssessment { get; set; }
     }
 }

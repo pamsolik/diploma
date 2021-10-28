@@ -41,9 +41,9 @@ namespace Cars.Models.DataModels
         public bool ClauseOpt2Accepted { get; set; }
 
         //null if not calculated yet
-        public int? CodeQualityAssessmentId { get; set; }
+        public int? CodeOverallQualityId { get; set; }
 
-        [ForeignKey("CodeQualityAssessmentId")]
-        public virtual CodeQualityAssessment CodeQualityAssessment { get; set; }
+        [ForeignKey("CodeOverallQualityId")]
+        public virtual CodeOverallQuality CodeOverallQuality { get; set; }
     }
 }

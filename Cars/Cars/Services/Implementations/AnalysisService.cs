@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -8,193 +9,184 @@ using Cars.Models.DataModels;
 using Cars.Models.SonarQubeDataModels;
 using Cars.Services.Interfaces;
 using Cars.Services.Other;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace Cars.Services.Implementations
 {
-    public class AnalysisService : IAnalysisService
+    public class AnalysisService : CronJobService
     {
         private readonly IServiceScopeFactory _scopeFactory;
 
-        private readonly ILogger<AnalysisService> _logger;
-        private Timer _timer;
-        private Task _executingTask;
         private readonly CancellationTokenSource _stoppingCts = new();
 
         private TimeSpan Interval { get; } = TimeSpan.FromSeconds(30);
         private TimeSpan FirstRunAfter { get; } = TimeSpan.FromSeconds(30);
 
-        public const string SonarLoc = "D:/SonarScan";
+        private const string SonarLoc = "D:/SonarScan";
 
         private const string MetricsUri =
             "http://localhost:9000/api/measures/component?metricKeys=bugs,code_smells,duplicated_lines,duplicated_lines_density,complexity,cognitive_complexity,violations,coverage,lines,sqale_rating,reliability_rating,security_hotspots,security_rating&component=test";
 
-        public AnalysisService(IServiceScopeFactory scopeFactory, ILogger<AnalysisService> logger)
+
+        private readonly ILogger<AnalysisService> _logger;
+
+        public AnalysisService(IScheduleConfig<AnalysisService> config, ILogger<AnalysisService> logger,
+            IServiceScopeFactory scopeFactory)
+            : base(config.CronExpression, config.TimeZoneInfo)
         {
-            _scopeFactory = scopeFactory;
             _logger = logger;
-            StartAsync(_stoppingCts.Token);
+            _scopeFactory = scopeFactory;
         }
 
-        ~AnalysisService()
+        public override Task StartAsync(CancellationToken cancellationToken)
         {
-            _stoppingCts.Cancel();
-            _timer?.Dispose();
+            _logger.LogInformation("CronJobAnalysis starts");
+            return base.StartAsync(cancellationToken);
         }
 
-        private void StartAsync(CancellationToken cancellationToken)
+        public override Task DoWork(CancellationToken cancellationToken)
         {
-            _timer = new Timer(ExecuteTask, null, FirstRunAfter, TimeSpan.FromMilliseconds(-1));
+            _logger.LogInformation($"{DateTime.Now:hh:mm:ss} CronJobAnalysis is working");
+            var t = PerformFullAnalysisTask(cancellationToken);
+            return t;
         }
 
-        private void ExecuteTask(object state)
+        private Task PerformFullAnalysisTask(CancellationToken cancellationToken)
         {
-            _timer?.Change(Timeout.Infinite, 0);
-            _executingTask = ExecuteTaskAsync(_stoppingCts.Token);
+            return Task.Run(async () => { await PerformFullAnalysis(cancellationToken); }, cancellationToken);
         }
 
-        private async Task ExecuteTaskAsync(CancellationToken stoppingToken)
+        private async Task PerformFullAnalysis(CancellationToken cancellationToken)
+        {
+            using var scope = _scopeFactory.CreateScope();
+            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var notExamined = GetNotExamined(context);
+
+            if (!notExamined.Any()) return;
+
+            var http = new HttpRequestHandler<CodeAnalysis>();
+
+            foreach (var application in notExamined)
+            {
+                var projects = GetProjects(context, application);
+                foreach (var project in projects)
+                {
+                    await ExamineSingleProject(application, project, http, context, cancellationToken);
+                }
+            }
+        }
+
+        private async Task ExamineSingleProject(RecruitmentApplication application, Project project,
+            HttpRequestHandler<CodeAnalysis> http, DbContext context, CancellationToken cancellationToken)
         {
             try
             {
-                // Task.Factory.StartNew(() =>
-                //     {
-                //         //executes in thread pool.
-                //         return GetSomething(); // returns a Task.
-                //     }) // returns a Task<Task>.
-                //     .Unwrap() // "unwraps" the outer task, returning a proxy
-                //     // for the inner one returned by GetSomething().
-                //     .ContinueWith(task =>
-                //     {
-                //         // executes in UI thread.
-                //         Prop = task.Result;
-                //     }, TaskScheduler.FromCurrentSynchronizationContext());
-                
-                await RunJobAsync();
+                var projectDir = Path.Combine(SonarLoc, application.ApplicantId, project.Id.ToString());
+
+                EnsureDirectoryIsCreated(projectDir);
+
+                await RepositoryLoader.Clone(project.Url, projectDir);
+
+                await PerformScan(projectDir);
+
+                var analysis = http.GetResponse(MetricsUri);
+                var ass = analysis is null ? GetErrorCodeQualityAssessment() : GetCodeQualityAssessment(analysis);
+
+                project.CodeQualityAssessment = ass;
+                await context.SaveChangesAsync(cancellationToken);
             }
-            catch (Exception exception)
+            catch (Exception e)
             {
-                _logger.LogError(exception, "BackgroundTask Failed");
+                _logger.LogError(e, "CodeQualityAssessments Error");
+            }
+        }
+
+        private static CodeQualityAssessment GetCodeQualityAssessment(CodeAnalysis analysis)
+        {
+            return new CodeQualityAssessment
+            {
+                CompletedTime = DateTime.Now,
+                Success = true,
+                CodeSmells = analysis.GetValue("code_smells"),
+                Maintainability = analysis.GetValue("sqale_rating"),
+                Coverage = analysis.GetValue("coverage"), //Check
+                CognitiveComplexity = analysis.GetValue("cognitive_complexity"), //Check
+                Violations = analysis.GetValue("violations"),
+                SecurityRating = analysis.GetValue("security_rating"),
+                DuplicatedLines = analysis.GetValue("duplicated_lines"),
+                Lines = analysis.GetValue("lines"),
+                DuplicatedLinesDensity = analysis.GetValue("duplicated_lines_density"),
+                Bugs = analysis.GetValue("bugs"),
+                SqaleRating = analysis.GetValue("security_rating"),
+                ReliabilityRating = analysis.GetValue("reliability_rating"),
+                Complexity = analysis.GetValue("complexity"), //Check
+                SecurityHotspots = analysis.GetValue("security_hotspots"),
+                OverallRating = 0f //TODO: Calculate
+            };
+        }
+
+        private static CodeQualityAssessment GetErrorCodeQualityAssessment()
+        {
+            return new CodeQualityAssessment
+            {
+                CompletedTime = DateTime.Now,
+                Success = false
+            };
+        }
+
+        private static void EnsureDirectoryIsCreated(string projectDir)
+        {
+            var dirInfo = new DirectoryInfo(projectDir);
+
+            if (dirInfo.Exists)
+            {
+                UpdateFileAttributes(new DirectoryInfo(projectDir));
+                dirInfo.Delete(true);
             }
 
-            _timer.Change(Interval, TimeSpan.FromMilliseconds(-1));
+            dirInfo.Create();
+        }
+
+        private static IQueryable<Project> GetProjects(ApplicationDbContext context, RecruitmentApplication notExamined)
+        {
+            return context.Projects.Where(p =>
+                p.ApplicationId == notExamined.Id &&
+                (p.CodeQualityAssessmentId == null || p.CodeQualityAssessment.Success));
+        }
+
+        private static List<RecruitmentApplication> GetNotExamined(ApplicationDbContext context)
+        {
+            return context.Applications
+                .Where(a => a.Projects.Any(
+                    p => p.CodeQualityAssessmentId == null || p.CodeQualityAssessment.Success))
+                .ToList();
         }
 
         private static async Task PerformScan(string projectDir)
         {
             var cmd =
-                $"sonar-scanner.bat -D\"sonar.projectKey=test\" -D\"sonar.sources=.\" " +
-                $"-D\"sonar.host.url=http://localhost:9000\" " +
-                $"-D\"sonar.login=2a717a00e2600f862f49a8fcc9b28f2029040369\"";
-            
+                $"sonar-scanner.bat -D\"sonar.projectKey=test\" -D\"sonar.sources=.\" -D\"sonar.host.url=http://localhost:9000\" -D\"sonar.login=2a717a00e2600f862f49a8fcc9b28f2029040369\"";
+
             await CommandExecutor.ExecuteCommandAsync(cmd, projectDir);
         }
-        
-        private async Task RunJobAsync()
+
+        public override Task StopAsync(CancellationToken cancellationToken)
         {
-            using var scope = _scopeFactory.CreateScope();
-            await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            var notExamined = context.Applications
-                .Where(a => a.CodeQualityAssessment == null || !a.CodeQualityAssessment.Success)
-                .ToList();
-
-            if (notExamined.Any())
-            {
-                var http = new HttpRequestHandler<CodeAnalysis>();
-                
-                foreach (var ne in notExamined)
-                {
-                    var projects = context.Projects.Where(p => p.ApplicationId == ne.Id);
-                    foreach (var project in projects)
-                    {
-                        try
-                        {
-                            var projectDir = Path.Combine(SonarLoc, ne.ApplicantId, project.Id.ToString());
-                            var dirInfo = new DirectoryInfo(projectDir);
-                            
-                            if (dirInfo.Exists)
-                            {
-                                UpdateFileAttributes(new DirectoryInfo(projectDir));
-                                dirInfo.Delete(true);
-                            }
-                            dirInfo.Create();
-                            
-                            await RepositoryLoader.Clone("https://github.com/pamsolik/TestRepo", projectDir);
-
-                            await PerformScan(projectDir);
-                            
-                            var analysis = http.GetResponse(MetricsUri);
-                            var ass = new CodeQualityAssessment
-                            {
-                                CompletedTime = DateTime.Now,
-                                Success = true,
-                                CodeSmells = analysis.GetValue("code_smells"),
-                                Maintainability = analysis.GetValue("sqale_rating"),
-                                Coverage = analysis.GetValue("coverage"), //Check
-                                CognitiveComplexity = analysis.GetValue("cognitive_complexity"), //Check
-                                Violations = analysis.GetValue("violations"),
-                                SecurityRating = analysis.GetValue("security_rating"),
-                                DuplicatedLines = analysis.GetValue("duplicated_lines"),
-                                Lines = analysis.GetValue("lines"),
-                                DuplicatedLinesDensity = analysis.GetValue("duplicated_lines_density"),
-                                Bugs = analysis.GetValue("bugs"),
-                                SqaleRating = analysis.GetValue("security_rating"),
-                                ReliabilityRating = analysis.GetValue("reliability_rating"),
-                                Complexity = analysis.GetValue("complexity"),  //Check
-                                SecurityHotspots = analysis.GetValue("security_hotspots"),
-                                OverallRating = 0f //TODO: Calculate
-                            };
-                            ne.CodeQualityAssessment = ass;
-                            
-                            await context.SaveChangesAsync();
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.LogError(e, "CodeQualityAssessments Error");
-                        }
-                    }
-                }
-            }
+            _logger.LogInformation("CronJobAnalysis is stopping");
+            return base.StopAsync(cancellationToken);
         }
 
-        public async Task StopAsync(CancellationToken cancellationToken)
-        {
-            _timer?.Change(Timeout.Infinite, 0);
-
-            // Stop called without start
-            if (_executingTask == null)
-            {
-                return;
-            }
-
-            try
-            {
-                // Signal cancellation to the executing method
-                _stoppingCts.Cancel();
-            }
-            finally
-            {
-                // Wait until the task completes or the stop token triggers
-                await Task.WhenAny(_executingTask, Task.Delay(Timeout.Infinite, cancellationToken));
-            }
-        }
-        
         private static void UpdateFileAttributes(DirectoryInfo dInfo)
         {
-            // Set Directory attribute
             dInfo.Attributes &= ~FileAttributes.ReadOnly;
-
-            // get list of all files in the directory and clear 
-            // the Read-Only flag
 
             foreach (var file in dInfo.GetFiles())
             {
                 file.Attributes &= ~FileAttributes.ReadOnly;
             }
 
-            // recurse all of the subdirectories
             foreach (var subDir in dInfo.GetDirectories())
             {
                 UpdateFileAttributes(subDir);

@@ -6,6 +6,7 @@ using Cars.Models.Exceptions;
 using Cars.Services.EmailSender;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
+using Cars.Services.Other;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,7 +43,8 @@ namespace Cars
             services.AddMvc().AddRazorRuntimeCompilation();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection"))
+                options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")),
+                ServiceLifetime.Transient
             );
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -57,8 +59,14 @@ namespace Cars
             services.AddScoped<IRecruitmentService, RecruitmentService>();
             services.AddScoped<IAdminService, AdminService>();
             
-            services.AddSingleton<IAnalysisService, AnalysisService>();
-
+            //services.AddSingleton<IAnalysisService, AnalysisService>();
+            
+            services.AddCronJob<AnalysisService>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Local;
+                c.CronExpression = @"*/1 * * * *";
+            });
+            
             services.AddAuthentication().AddIdentityServerJwt();
             
             services.AddControllersWithViews();

@@ -100,7 +100,14 @@ namespace Cars.Services.Implementations
             res.ForEach(app =>
             {
                 app.Applicant = _context.ApplicationUsers.FirstOrDefault(u => u.Id == app.ApplicantId);
-                app.CodeQualityAssessment = _context.CodeQualityAssessments.FirstOrDefault(q => q.Id == app.CodeQualityAssessmentId);
+                app.Projects = _context.Projects.Where(p => app.Id == p.ApplicationId).ToList();
+
+                if (app.Projects == null) return;
+                foreach (var p in app.Projects)
+                {
+                    p.CodeQualityAssessment = _context.CodeQualityAssessments
+                        .FirstOrDefault(q => q.Id == p.CodeQualityAssessmentId);
+                }
             });
             
             var dest = res.Adapt<List<ApplicationView>>();
