@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Cars.Models.SonarQubeDataModels;
 
 namespace Cars.Models.DataModels
 {

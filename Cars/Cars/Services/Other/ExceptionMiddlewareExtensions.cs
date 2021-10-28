@@ -1,9 +1,10 @@
 ﻿using System.Net;
+using Cars.Models.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 
-namespace Cars.Models.Exceptions
+namespace Cars.Services.Other
 {
     public static class ExceptionMiddlewareExtensions
     {

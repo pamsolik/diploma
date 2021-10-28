@@ -1,19 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using Cars.Data;
-using Cars.Models.DataModels;
-using Cars.Models.SonarQubeDataModels;
-using Cars.Services.Interfaces;
-using Cars.Services.Other;
 using Cronos;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace Cars.Services.Implementations
 {
@@ -40,22 +30,24 @@ namespace Cars.Services.Implementations
             if (next.HasValue)
             {
                 var delay = next.Value - DateTimeOffset.Now;
-                if (delay.TotalMilliseconds <= 0)   // prevent non-positive values from being passed into Timer
+                if (delay.TotalMilliseconds <= 0) // prevent non-positive values from being passed into Timer
                 {
                     await ScheduleJob(cancellationToken);
                 }
+
                 _timer = new System.Timers.Timer(delay.TotalMilliseconds);
                 _timer.Elapsed += timerOnElapsed(cancellationToken);
                 _timer.Start();
             }
+
             await Task.CompletedTask;
         }
 
         private ElapsedEventHandler timerOnElapsed(CancellationToken cancellationToken)
         {
-            return async (sender, args) =>
+            async void TimerOnElapsed(object sender, ElapsedEventArgs args)
             {
-                _timer.Dispose();  // reset and dispose timer
+                _timer.Dispose(); // reset and dispose timer
                 _timer = null;
 
                 if (!cancellationToken.IsCancellationRequested)
@@ -65,14 +57,16 @@ namespace Cars.Services.Implementations
 
                 if (!cancellationToken.IsCancellationRequested)
                 {
-                    await ScheduleJob(cancellationToken);    // reschedule next
+                    await ScheduleJob(cancellationToken); // reschedule next
                 }
-            };
+            }
+
+            return TimerOnElapsed;
         }
 
-        public virtual async Task DoWork(CancellationToken cancellationToken)
+        protected virtual async Task DoWork(CancellationToken cancellationToken)
         {
-            await Task.Delay(5000, cancellationToken);  // do the work
+            await Task.Delay(5000, cancellationToken); // do the work
         }
 
         public virtual async Task StopAsync(CancellationToken cancellationToken)

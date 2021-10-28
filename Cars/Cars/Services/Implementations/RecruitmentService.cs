@@ -82,7 +82,8 @@ namespace Cars.Services.Implementations
             return paginated;
         }
 
-        public async Task<RecruitmentApplication> AddApplication(AddApplicationDto addApplicationDto, string applicantId)
+        public async Task<RecruitmentApplication> AddApplication(AddApplicationDto addApplicationDto,
+            string applicantId)
         {
             var dest = addApplicationDto.Adapt<RecruitmentApplication>(); //TODO: check if valid and respond accordingly
             dest.ApplicantId = applicantId;
@@ -109,7 +110,7 @@ namespace Cars.Services.Implementations
                         .FirstOrDefault(q => q.Id == p.CodeQualityAssessmentId);
                 }
             });
-            
+
             var dest = res.Adapt<List<ApplicationView>>();
             return dest;
         }
@@ -136,7 +137,7 @@ namespace Cars.Services.Implementations
                 }
                 catch (IOException e)
                 {
-                    _logger.LogInformation(e,"IOException, reverting to the default image");
+                    _logger.LogInformation(e, "IOException, reverting to the default image");
                     res.Entity.ImgUrl = ImgPath.PlaceHolder;
                 }
 
@@ -210,10 +211,5 @@ namespace Cars.Services.Implementations
                     return filter.Count > val && filter[val] == true;
                 });
         }
-
-        // async Task<PaginatedList<RecruitmentView>> ConvertToPaginatedList()
-        // {
-        //     //Maybe in the future
-        // }
     }
 }

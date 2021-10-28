@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Cars.Data;
 using Cars.Models.DataModels;
-using Cars.Models.Exceptions;
 using Cars.Services.EmailSender;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
@@ -36,10 +35,6 @@ namespace Cars
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddDbContext<ApplicationDbContext>(options =>
-            //     options.UseSqlServer(
-            //         Configuration.GetConnectionString("DefaultConnection")));
-
             services.AddMvc().AddRazorRuntimeCompilation();
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -59,9 +54,9 @@ namespace Cars
             services.AddScoped<IRecruitmentService, RecruitmentService>();
             services.AddScoped<IAdminService, AdminService>();
             
-            //services.AddSingleton<IAnalysisService, AnalysisService>();
+            services.AddScoped<IAnalysisDataService, AnalysisDataDataService>();
             
-            services.AddCronJob<AnalysisService>(c =>
+            services.AddCronJob<AnalysisHostedService>(c =>
             {
                 c.TimeZoneInfo = TimeZoneInfo.Local;
                 c.CronExpression = @"*/1 * * * *";
@@ -121,7 +116,7 @@ namespace Cars
                 app.UseHsts();
             }
             
-            app.ApplicationServices.GetService<IAnalysisService>();
+            //app.ApplicationServices.GetService<AnalysisService>();
 
             //app.ConfigureExceptionHandler();
             app.ConfigureCustomExceptionMiddleware();

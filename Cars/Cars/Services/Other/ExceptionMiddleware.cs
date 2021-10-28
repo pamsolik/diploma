@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Cars.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 
-namespace Cars.Models.Exceptions
+namespace Cars.Services.Other
 {
     public class ExceptionMiddleware
     {
