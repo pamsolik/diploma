@@ -94,10 +94,13 @@
             <img [src]="createImgPath(offer.imgUrl)"
                  alt="Thumbnail image"
                  class="img-fluid">
+
           </div>
           <div class="job-desc col">
             <h5 class="card-title">{{offer.title}}</h5>
             <p>{{offer.shortDescription}}</p>
+
+            <p class="mt-2">{{offer.daysAgo}}</p>
           </div>
         </div>
       </mat-card>

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace Cars.Services.Other
 {
@@ -33,6 +34,16 @@ namespace Cars.Services.Other
         {
             UpdateFileAttributes(dirInfo);
             dirInfo.Delete(true);
+        }
+
+        public static string MoveAndGetUrl(string file, int id, string path, string filename)
+        {
+            var basePath = Directory.GetCurrentDirectory();
+            var ext = Path.GetExtension(file);
+            var fileLocation = Path.Combine(path, $"{filename}_{id}{ext}");
+            File.Move(Path.Combine(basePath, file ?? throw new FileNotFoundException()),
+                Path.Combine(basePath, fileLocation), true);
+            return fileLocation;
         }
     }
 }

@@ -22,7 +22,6 @@
         </li>
         <li>
             <p>Zeskanuj kod QR lub wprowadź ten klucz <kbd>@Model.SharedKey</kbd> do aplikacji do uwierzytelniania dwustopniowego. Spacje i wielkość liter nie mają znaczenia.</p>
-            @* <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation TODO</a>.</div> *@
             <div id="qrCode"></div>
             <div id="qrCodeData" data-url="@Html.Raw(Model.AuthenticatorUri)"></div>
         </li>

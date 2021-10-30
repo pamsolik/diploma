@@ -22,7 +22,7 @@ namespace Cars.Controllers
         [HttpGet("recruitments")]
         public async Task<IActionResult> GetRecruitments()
         {
-            var res = await _adminService.GetRecruitments();
+            //var res = await _adminService.GetRecruitments();
 
             return Ok("");
         }

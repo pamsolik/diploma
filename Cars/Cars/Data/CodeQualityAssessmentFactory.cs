@@ -2,7 +2,7 @@
 using Cars.Models.DataModels;
 using Cars.Models.SonarQubeDataModels;
 
-namespace Cars.Services.Other
+namespace Cars.Data
 {
     public static class CodeQualityAssessmentFactory
     {

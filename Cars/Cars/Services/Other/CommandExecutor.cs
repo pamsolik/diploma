@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Cars.Services.Other
 {
     public static class CommandExecutor
     {
-        public static Task ExecuteCommandAsync(object command, string projectDir)
+        public static Task ExecuteCommandAsync(object command, string projectDir, ILogger logger)
         {
             return Task.Run(() =>
             {
@@ -31,10 +32,9 @@ namespace Cars.Services.Other
 
                     Console.WriteLine(result);
                 }
-                catch (Exception objException)
+                catch (Exception e)
                 {
-                    // ignored
-                    // TODO: Maybe log
+                    logger.LogError(e, "Command execution error");
                 }
             });
         }

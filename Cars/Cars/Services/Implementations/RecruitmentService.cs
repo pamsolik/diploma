@@ -11,11 +11,13 @@ using Cars.Models.Dto;
 using Cars.Models.Enums;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
+using Cars.Services.Other;
 using IdentityServer4.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
+using static Cars.Services.Other.FileService;
 
 namespace Cars.Services.Implementations
 {
@@ -24,10 +26,14 @@ namespace Cars.Services.Implementations
         private readonly ILogger<RecruitmentService> _logger;
         private readonly ApplicationDbContext _context;
 
-        public RecruitmentService(ApplicationDbContext context, ILogger<RecruitmentService> logger)
+        private readonly IDateTimeProvider _dateTimeProvider;
+
+        public RecruitmentService(ApplicationDbContext context, ILogger<RecruitmentService> logger,
+            IDateTimeProvider dateTimeProvider)
         {
             _context = context;
             _logger = logger;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         public async Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId)
@@ -53,13 +59,13 @@ namespace Cars.Services.Implementations
             return res.Entity.Id;
         }
 
-        public async Task<bool> EditRecruitment(EditRecruitmentDto addRecruitmentDto)
+        public async Task<int> EditRecruitment(EditRecruitmentDto addRecruitmentDto)
         {
-            var recruitment = await _context.Recruitments.FindAsync(addRecruitmentDto.Id); //TODO 
+            var recruitment = await _context.Recruitments.FindAsync(addRecruitmentDto.Id);
             var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
             var res = _context.Recruitments.Update(dest);
             await _context.SaveChangesAsync();
-            return true;
+            return res.Entity.Id;
         }
 
         public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
@@ -77,6 +83,7 @@ namespace Cars.Services.Implementations
 
             var recruitmentList = FilterOutAndSortRecruitments(ref recruitments, filter).ToList();
             var dest = recruitmentList.Adapt<List<RecruitmentView>>();
+            GetDaysAgoDescriptions(ref dest);
             var paginated = PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);
 
             return paginated;
@@ -118,34 +125,29 @@ namespace Cars.Services.Implementations
         private async Task<EntityEntry<Recruitment>> CopyAndSaveThumbnail(AddRecruitmentDto addRecruitmentDto,
             EntityEntry<Recruitment> res)
         {
-            if (addRecruitmentDto.ImgUrl.IsNullOrEmpty())
-            {
-                res.Entity.ImgUrl = ImgPath.PlaceHolder;
-                res = _context.Recruitments.Update(res.Entity);
-                await _context.SaveChangesAsync();
-            }
-            else if (addRecruitmentDto.ImgUrl != ImgPath.PlaceHolder)
-            {
-                try
-                {
-                    var basePath = Directory.GetCurrentDirectory();
-                    var ext = Path.GetExtension(addRecruitmentDto.ImgUrl);
-                    var imgUrl = Path.Combine("Resources", "Images", "Thumbnails", $"Recruitment_{res.Entity.Id}{ext}");
-                    File.Move(Path.Combine(basePath, addRecruitmentDto.ImgUrl ?? throw new FileNotFoundException()),
-                        Path.Combine(basePath, imgUrl), true);
-                    res.Entity.ImgUrl = imgUrl;
-                }
-                catch (IOException e)
-                {
-                    _logger.LogInformation(e, "IOException, reverting to the default image");
-                    res.Entity.ImgUrl = ImgPath.PlaceHolder;
-                }
+            if (addRecruitmentDto.ImgUrl == ImgPath.PlaceHolder) return res;
 
-                res = _context.Recruitments.Update(res.Entity);
-                await _context.SaveChangesAsync();
-            }
+            res.Entity.ImgUrl = MoveRecruitmentAndGetUrl(addRecruitmentDto, res);
+            res = _context.Recruitments.Update(res.Entity);
+            await _context.SaveChangesAsync();
 
             return res;
+        }
+
+        private string MoveRecruitmentAndGetUrl(AddRecruitmentDto addRecruitmentDto, EntityEntry<Recruitment> res)
+        {
+            if (addRecruitmentDto.ImgUrl.IsNullOrEmpty()) return ImgPath.PlaceHolder;
+
+            try
+            {
+                var path = Path.Combine("Resources", "Images", "Thumbnails");
+                return MoveAndGetUrl(addRecruitmentDto.ImgUrl, res.Entity.Id, path, "Recruitment");
+            }
+            catch (IOException e)
+            {
+                _logger.LogInformation(e, "IOException, reverting to the default image");
+                return ImgPath.PlaceHolder;
+            }
         }
 
         private static Expression<Func<City, bool>> CompareCities(AddRecruitmentDto addRecruitmentDto)
@@ -167,7 +169,8 @@ namespace Cars.Services.Implementations
             };
         }
 
-        private static IEnumerable<Recruitment> FilterOutAndSortRecruitments(ref IQueryable<Recruitment> recruitments,
+        private static IEnumerable<Recruitment> FilterOutAndSortRecruitments(
+            ref IQueryable<Recruitment> recruitments,
             RecruitmentFilterDto filter)
         {
             if (!string.IsNullOrEmpty(filter.SearchString))
@@ -186,14 +189,15 @@ namespace Cars.Services.Implementations
                 SortOrder.NameDesc => filtered.OrderByDescending(s => s.Title),
                 SortOrder.DateAddedAsc => filtered.OrderBy(s => s.StartDate),
                 SortOrder.DateAddedDesc => filtered.OrderByDescending(s => s.StartDate),
-                //TODO: Order by closest
+                SortOrder.Closest => filtered.OrderByDescending(s =>
+                    CalculateDistance(s, filter.City.Latitude, filter.City.Longitude)),
                 _ => recruitments.OrderBy(s => s.Title)
             };
 
             return filtered;
         }
 
-        private double CalculateDistance(Recruitment recruitment, double latitude, double longitude)
+        private static double CalculateDistance(Recruitment recruitment, double latitude, double longitude)
         {
             var sCoord = new GeoCoordinate(recruitment.City.Latitude, recruitment.City.Longitude);
             var eCoord = new GeoCoordinate(latitude, longitude);
@@ -201,8 +205,7 @@ namespace Cars.Services.Implementations
         }
 
         private static void FilterPickedValues(ref IEnumerable<Recruitment> list,
-            IReadOnlyList<bool?> filter,
-            Func<Recruitment, int> predicate)
+            IReadOnlyList<bool?> filter, Func<Recruitment, int> predicate)
         {
             if (filter.Any(f => f == true))
                 list = list.Where(li =>
@@ -210,6 +213,11 @@ namespace Cars.Services.Implementations
                     var val = predicate(li);
                     return filter.Count > val && filter[val] == true;
                 });
+        }
+
+        public void GetDaysAgoDescriptions(ref List<RecruitmentView> dest)
+        {
+            dest.ForEach(dst => dst.DaysAgo = _dateTimeProvider.GetTimeAgoDescription(dst.StartDate));
         }
     }
 }

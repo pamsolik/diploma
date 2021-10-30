@@ -10,7 +10,7 @@ namespace Cars.Services.Interfaces
     public interface IRecruitmentService
     {
         Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId);
-        Task<bool> EditRecruitment(EditRecruitmentDto addRecruitmentDto);
+        Task<int> EditRecruitment(EditRecruitmentDto addRecruitmentDto);
         Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId);
 
         Task<PaginatedList<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto filter,

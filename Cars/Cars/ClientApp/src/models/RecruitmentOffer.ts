@@ -10,5 +10,7 @@ export interface RecruitmentOffer {
   type: number,
   jobType: string,
   jobLevel: number,
-  imgUrl: string
+  imgUrl: string,
+  startDate: Date,
+  daysAgo: string
 }

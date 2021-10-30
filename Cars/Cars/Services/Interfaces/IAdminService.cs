@@ -6,6 +6,6 @@ namespace Cars.Services.Interfaces
 {
     public interface IAdminService
     {
-        public Task<List<RecruitmentView>> GetRecruitments();
+
     }
 }

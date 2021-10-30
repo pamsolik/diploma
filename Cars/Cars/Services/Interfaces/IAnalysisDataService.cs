@@ -11,8 +11,12 @@ namespace Cars.Services.Interfaces
 
         public Task<Project> SaveCodeQualityAnalysis(Project project, CodeQualityAssessment ass);
 
-        public List<RecruitmentApplication> GetNotExamined();
+        public List<RecruitmentApplication> GetNotExaminedApplications();
 
-        public List<Project> GetProjects(RecruitmentApplication notExamined);
+        public List<Project> GetNotExaminedProjects(RecruitmentApplication notExamined);
+        
+        public List<Project> GetAllProjects(RecruitmentApplication notExamined);
+        
+        public Task<RecruitmentApplication> SaveCodeOverallQuality(RecruitmentApplication notExamined, CodeOverallQuality ass);
     }
 }

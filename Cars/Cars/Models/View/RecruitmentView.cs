@@ -1,4 +1,5 @@
-﻿using Cars.Models.DataModels;
+﻿using System;
+using Cars.Models.DataModels;
 using Cars.Models.Enums;
 
 namespace Cars.Models.View
@@ -13,9 +14,10 @@ namespace Cars.Models.View
 
         public City City { get; set; }
 
-        public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
-
-        //TODO: Calculate
-        public int DaysAgo { get; set; }
+        public string ImgUrl { get; set; }
+        
+        public DateTime StartDate { get; set; }
+        public string DaysAgo { get; set; } 
+        
     }
 }

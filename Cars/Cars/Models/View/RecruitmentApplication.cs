@@ -24,6 +24,6 @@ namespace Cars.Models.View
 
         public bool ClauseOpt2Accepted { get; set; }
 
-        public CodeQualityAssessment CodeQualityAssessment { get; set; }
+        public CodeOverallQuality CodeOverallQuality { get; set; }
     }
 }

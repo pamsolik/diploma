@@ -54,7 +54,9 @@ namespace Cars
             services.AddScoped<IRecruitmentService, RecruitmentService>();
             services.AddScoped<IAdminService, AdminService>();
             
-            services.AddScoped<IAnalysisDataService, AnalysisDataDataService>();
+            services.AddScoped<IAnalysisDataService, AnalysisDataService>();
+            
+            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             
             services.AddCronJob<AnalysisHostedService>(c =>
             {
