@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -9,7 +8,6 @@ using Cars.Models.DataModels;
 using Cars.Models.SonarQubeDataModels;
 using Cars.Services.Interfaces;
 using Cars.Services.Other;
-using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using static Cars.Data.CodeQualityAssessmentFactory;

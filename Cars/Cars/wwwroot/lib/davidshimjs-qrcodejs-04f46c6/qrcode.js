@@ -808,8 +808,7 @@ var QRCode;
             this._elImage.style.display = "block";
             this._elCanvas.style.display = "none";
         }
-
-        // Android 2.1 bug workaround
+        
         // http://code.google.com/p/android/issues/detail?id=5141
         if (this._android && this._android <= 2.1) {
             var factor = 1 / window.devicePixelRatio;

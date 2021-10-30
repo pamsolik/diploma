@@ -3,6 +3,9 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Cars.Models.View;
+using Cars.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -13,12 +16,12 @@ namespace Cars.Controllers
     [Route("api/files/upload")]
     public class FilesController : ControllerBase
     {
-        //private readonly IAdminService _adminService;
         private readonly ILogger<FilesController> _logger;
-
-        public FilesController(ILogger<FilesController> logger)
+        private readonly IFileUploadService _fileUploadService;
+        public FilesController(ILogger<FilesController> logger, IFileUploadService fileUploadService)
         {
             _logger = logger;
+            _fileUploadService = fileUploadService;
         }
 
         //Limit: 25mb
@@ -30,25 +33,37 @@ namespace Cars.Controllers
             {
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files[0];
-                var folderName = Path.Combine("Resources", "Temp");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                
+                if (ValidateFile(file, out var badRequest)) return badRequest;
 
-                if (file.Length <= 0) return BadRequest("File lenght is equal to 0");
-                var name = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
-                if (name == null) return BadRequest("File name cannot be empty");
-                var fileName =
-                    $"File_{User.FindFirstValue(ClaimTypes.NameIdentifier)}_{DateTime.Now:yyyy-dd-MM-HH-mm-ss}{Path.GetExtension(name).Trim('"')}";
-                var fullPath = Path.Combine(pathToSave, fileName);
-                var dbPath = Path.Combine(folderName, fileName);
-
-                await using var stream = new FileStream(fullPath, FileMode.Create);
-                await file.CopyToAsync(stream);
-                return Ok(new { dbPath });
+                var res = await _fileUploadService.SaveFile(file, User.FindFirstValue(ClaimTypes.NameIdentifier));
+               
+                return Ok(res);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
+        }
+
+        private bool ValidateFile(IFormFile file, out IActionResult badRequest)
+        {
+            var name = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
+
+            if (file.Length <= 0)
+            {
+                badRequest = BadRequest("File lenght is equal to 0");
+                return true;
+            }
+
+            if (name == null)
+            {
+                badRequest = BadRequest("File name cannot be empty");
+                return true;
+            }
+
+            badRequest = null;
+            return false;
         }
     }
 }

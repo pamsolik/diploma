@@ -215,7 +215,7 @@ namespace Cars.Services.Implementations
                 });
         }
 
-        public void GetDaysAgoDescriptions(ref List<RecruitmentView> dest)
+        internal void GetDaysAgoDescriptions(ref List<RecruitmentView> dest)
         {
             dest.ForEach(dst => dst.DaysAgo = _dateTimeProvider.GetTimeAgoDescription(dst.StartDate));
         }

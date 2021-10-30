@@ -55,6 +55,7 @@ namespace Cars
             services.AddScoped<IAdminService, AdminService>();
             
             services.AddScoped<IAnalysisDataService, AnalysisDataService>();
+            services.AddScoped<IFileUploadService, FileUploadService>();
             
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             

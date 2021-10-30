@@ -53,7 +53,14 @@ namespace Cars.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (!ModelState.IsValid) return Page();
-            var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+            var user = new ApplicationUser
+            {
+                UserName = Input.Email,
+                Email = Input.Email, 
+                Name = Input.Name, 
+                Surname = Input.Surname
+            };
+            
             var result = await _userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded)
             {
@@ -89,6 +96,14 @@ namespace Cars.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "E-mail")]
             public string Email { get; set; }
+
+            [StringLength(200, ErrorMessage = "Imię nie może być dłuższe niż 200 znaków.")]
+            [Display(Name = "Imię")]
+            public string Name { get; set; }
+
+            [StringLength(200, ErrorMessage = "Nazwisko nie może być dłuższe niż 200 znaków.")]
+            [Display(Name = "Nazwisko")]
+            public string Surname { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "{0} musi składać się z od {2} do {1} znaków.", MinimumLength = 6)]

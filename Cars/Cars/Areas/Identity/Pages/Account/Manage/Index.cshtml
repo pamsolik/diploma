@@ -1,5 +1,8 @@
 ﻿@page
+@using Microsoft.AspNetCore.Components.Web
 @model IndexModel
+@namespace Cars.Areas.Identity.Pages.Account.Manage
+
 @{
     ViewData["Title"] = "Profil";
     ViewData["ActivePage"] = ManageNavPages.Index;
@@ -7,23 +10,65 @@
 
 <h4>@ViewData["Title"]</h4>
 <partial name="_StatusMessage" model="Model.StatusMessage"/>
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
+
+<form method="post" asp-page-handler="view" enctype="multipart/form-data">
+    <input type="file" asp-for="Upload"/>
+    <input type="submit"/>
+</form>
+
+<form id="profile-form" method="post">
+    <div class="row">
+        <div class="col-md-6">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username"></label>
                 <input asp-for="Username" class="form-control" disabled/>
             </div>
+
+
             <div class="form-group">
                 <label asp-for="Input.PhoneNumber"></label>
                 <input asp-for="Input.PhoneNumber" class="form-control"/>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Zapisz</button>
-        </form>
+
+
+            <div class="form-group">
+                <label asp-for="Input.Github"></label>
+                <input asp-for="Input.Github" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.LinkedIn"></label>
+                <input asp-for="Input.LinkedIn" class="form-control"/>
+            </div>
+
+            <p>TODO: Profile, City and experience etc</p>
+
+            <button id="update-profile-button" type="submit" class="btn btn-primary mb-3">Zapisz</button>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.Name"></label>
+                <input asp-for="Input.Name" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Surname"></label>
+                <input asp-for="Input.Surname" class="form-control"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Description"></label>
+                <textarea asp-for="Input.Description" class="form-control" rows="5"></textarea>
+            </div>
+        </div>
+
     </div>
-</div>
+</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>
