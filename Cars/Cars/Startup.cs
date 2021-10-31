@@ -38,9 +38,12 @@ namespace Cars
             services.AddMvc().AddRazorRuntimeCompilation();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")),
+                options.UseLazyLoadingProxies().
+                UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")),
                 ServiceLifetime.Transient
+                
             );
+
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -57,12 +60,14 @@ namespace Cars
             services.AddScoped<IAnalysisDataService, AnalysisDataService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
             
+            services.AddScoped<IUserService, UserService>();
+            
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
             
             services.AddCronJob<AnalysisHostedService>(c =>
             {
                 c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"*/1 * * * *";
+                c.CronExpression = @"*/5 * * * *";
             });
             
             services.AddAuthentication().AddIdentityServerJwt();

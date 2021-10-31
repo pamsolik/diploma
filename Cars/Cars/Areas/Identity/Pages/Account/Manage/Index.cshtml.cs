@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Threading.Tasks;
 using Cars.Models.DataModels;
-using Cars.Services.Implementations;
+using Cars.Models.Dto;
+using Cars.Models.Enums;
+using static Cars.Services.Other.FileService;
 using Cars.Services.Interfaces;
 using IdentityServer4.Extensions;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Logging;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage
 {
@@ -19,14 +23,20 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly IFileUploadService _fileUploadService;
-        
+        private readonly IUserService _userService;
+
+        private readonly ILogger<IndexModel> _logger;
+
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, IFileUploadService fileUploadService)
+            SignInManager<ApplicationUser> signInManager, IFileUploadService fileUploadService,
+            ILogger<IndexModel> logger, IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _fileUploadService = fileUploadService;
+            _logger = logger;
+            _userService = userService;
         }
 
         [Display(Name = "Nazwa użytkownika")] public string Username { get; set; }
@@ -34,19 +44,25 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         [TempData] public string StatusMessage { get; set; }
 
         public string Filename { get; set; }
-        
+
+
+        public string ProfileUrl { get; set; }
         [BindProperty] public InputModel Input { get; set; }
 
-        [BindProperty]
-        public IFormFile Upload { get; set; }
-        
+        [BindProperty] public IFormFile Upload { get; set; }
+
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            
+            if (user.ProfilePicture.IsNullOrEmpty()) user.ProfilePicture = ImgPath.BaseProfilePic;
+            
             Filename = user.ProfilePicture;
+            
+            ProfileUrl = "https://" + HttpContext.Request.Host + "/" + Filename;
             
             Input = new InputModel
             {
@@ -93,31 +109,62 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Nieoczekiwany błąd podczas próby ustawienia numeru telefonu.";
                 }
             }
+
             CheckChanges(user);
-            
+
             await _userManager.UpdateAsync(user);
-            
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Twój profil został zaktualizowany";
             return RedirectToPage();
         }
 
-        public async Task OnPostView()
+        public async Task<IActionResult> OnPostView()
         {
+            if (Upload is null) return RedirectToPage();
+            var user = await _userManager.GetUserAsync(User);
             var filePath = await _fileUploadService.SaveFile(Upload, User.GetSubjectId());
             Filename = filePath.DbPath;
+            if (Filename != user.ProfilePicture)
+                await CopyAndSaveProfilePicture(Filename, _userManager.GetUserId(User));
+            return RedirectToPage();
         }
-        
+
         private void CheckChanges(ApplicationUser user)
         {
             if (Input.Name != user.Name) user.Name = Input.Name;
             if (Input.Surname != user.Surname) user.Surname = Input.Surname;
             if (Input.Description != user.Description) user.Description = Input.Description;
-            if (Input.ProfilePicture != user.ProfilePicture) user.ProfilePicture = Input.ProfilePicture;
             if (Input.City != user.City) user.City = Input.City;
             if (Input.Github != user.Github) user.Github = Input.Github;
             if (Input.LinkedIn != user.LinkedIn) user.LinkedIn = Input.LinkedIn;
             if (Input.City != user.City) user.City = Input.City;
+        }
+
+        private async Task CopyAndSaveProfilePicture(string imgUrl,
+            string userId)
+        {
+            if (imgUrl == ImgPath.BaseProfilePic) return;
+
+            var newPicture = MovePictureAndGetUrl(imgUrl, userId);
+
+            await _userService.SetProfilePictureAsync(userId, newPicture);
+        }
+
+        private string MovePictureAndGetUrl(string imgUrl, string userId)
+        {
+            if (imgUrl.IsNullOrEmpty()) return ImgPath.BaseProfilePic;
+
+            try
+            {
+                var path = Path.Combine("Resources", "Images", "Profile");
+                return MoveAndGetUrl(imgUrl, userId, path, "Profile");
+            }
+            catch (IOException e)
+            {
+                _logger.LogInformation(e, "IOException, reverting to the default image");
+                return ImgPath.BaseProfilePic;
+            }
         }
 
         public class InputModel
@@ -125,29 +172,24 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Numer telefonu")]
             public string PhoneNumber { get; set; }
-            
-            [Display(Name = "Imię")]
-            public string Name { get; set; }
-            
-            [Display(Name = "Nazwisko")]
-            public string Surname { get; set; }
 
-            [Display(Name = "Opis")]
-            public string Description { get; set; }
+            [Display(Name = "Imię")] public string Name { get; set; }
 
-            [Display(Name = "Nazwisko")]
-            public string ProfilePicture { get; set; }
-            
-            
-            [Display(Name = "Lokalizacja")]
-            public City City { get; set; }
-            
+            [Display(Name = "Nazwisko")] public string Surname { get; set; }
+
+            [Display(Name = "Opis")] public string Description { get; set; }
+
+            [Display(Name = "Nazwisko")] public string ProfilePicture { get; set; }
+
+
+            [Display(Name = "Lokalizacja")] public City City { get; set; }
+
             [Display(Name = "Link do profilu GitHub")]
             public string Github { get; set; }
-            
+
             [Display(Name = "Link do profilu LinkedIn")]
             public string LinkedIn { get; set; }
-            
+
             //TODO: add Skills/Education/Experience module
             public ICollection<Skill> Skills { get; set; }
 

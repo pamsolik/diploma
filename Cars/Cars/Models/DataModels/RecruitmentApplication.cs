@@ -2,26 +2,22 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cars.Models.DataModels
 {
-    public sealed class RecruitmentApplication
+    public class RecruitmentApplication
     {
-        public RecruitmentApplication()
-        {
-            Projects = new HashSet<Project>();
-        }  
-        
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required] public int RecruitmentId { get; set; }
 
-        [ForeignKey("RecruitmentId")] public Recruitment Recruitment { get; set; }
+        [ForeignKey("RecruitmentId")] public virtual Recruitment Recruitment { get; set; }
 
         [Required] public string ApplicantId { get; set; }
 
-        [ForeignKey("ApplicantId")] public ApplicationUser Applicant { get; set; }
+        [ForeignKey("ApplicantId")] public virtual ApplicationUser Applicant { get; set; }
 
         [StringLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
         public string Description { get; set; }
@@ -30,7 +26,7 @@ namespace Cars.Models.DataModels
 
         public string ClFile { get; set; }
 
-        public ICollection<Project> Projects { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
         
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -44,6 +40,6 @@ namespace Cars.Models.DataModels
         public int? CodeOverallQualityId { get; set; }
 
         [ForeignKey("CodeOverallQualityId")]
-        public CodeOverallQuality CodeOverallQuality { get; set; }
+        public virtual CodeOverallQuality CodeOverallQuality { get; set; }
     }
 }

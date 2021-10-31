@@ -70,8 +70,7 @@ namespace Cars.Services.Implementations
 
         public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
         {
-            var res = await _context.Recruitments.FindAsync(recruitmentId);
-            res.City = await _context.Cities.FindAsync(res.CityId); //TODO: FIX
+            var res = await _context.Recruitments.FirstOrDefaultAsync(r => r.Id == recruitmentId);
             var dest = res.Adapt<RecruitmentDetailsView>();
             return dest;
         }
@@ -104,20 +103,7 @@ namespace Cars.Services.Implementations
             var res = await _context.Applications
                 .Where(a => a.RecruitmentId == recruitmentId)
                 .ToListAsync();
-
-            res.ForEach(app =>
-            {
-                app.Applicant = _context.ApplicationUsers.FirstOrDefault(u => u.Id == app.ApplicantId);
-                app.Projects = _context.Projects.Where(p => app.Id == p.ApplicationId).ToList();
-
-                if (app.Projects == null) return;
-                foreach (var p in app.Projects)
-                {
-                    p.CodeQualityAssessment = _context.CodeQualityAssessments
-                        .FirstOrDefault(q => q.Id == p.CodeQualityAssessmentId);
-                }
-            });
-
+            
             var dest = res.Adapt<List<ApplicationView>>();
             return dest;
         }
@@ -141,7 +127,7 @@ namespace Cars.Services.Implementations
             try
             {
                 var path = Path.Combine("Resources", "Images", "Thumbnails");
-                return MoveAndGetUrl(addRecruitmentDto.ImgUrl, res.Entity.Id, path, "Recruitment");
+                return MoveAndGetUrl(addRecruitmentDto.ImgUrl, res.Entity.Id.ToString(), path, "Recruitment");
             }
             catch (IOException e)
             {
@@ -170,8 +156,7 @@ namespace Cars.Services.Implementations
         }
 
         private static IEnumerable<Recruitment> FilterOutAndSortRecruitments(
-            ref IQueryable<Recruitment> recruitments,
-            RecruitmentFilterDto filter)
+            ref IQueryable<Recruitment> recruitments, RecruitmentFilterDto filter)
         {
             if (!string.IsNullOrEmpty(filter.SearchString))
                 recruitments = recruitments.Where(s =>
@@ -215,9 +200,7 @@ namespace Cars.Services.Implementations
                 });
         }
 
-        internal void GetDaysAgoDescriptions(ref List<RecruitmentView> dest)
-        {
+        private void GetDaysAgoDescriptions(ref List<RecruitmentView> dest) =>
             dest.ForEach(dst => dst.DaysAgo = _dateTimeProvider.GetTimeAgoDescription(dst.StartDate));
-        }
     }
 }

@@ -3,7 +3,7 @@ using Cars.Models.DataModels;
 
 namespace Cars.Models.View
 {
-    public class ApplicantView
+    public class UserView
     {
         public string Id { get; set; }
         

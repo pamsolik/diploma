@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Cars.Models.DataModels;
+using Cars.Models.Enums;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -58,7 +59,8 @@ namespace Cars.Areas.Identity.Pages.Account
                 UserName = Input.Email,
                 Email = Input.Email, 
                 Name = Input.Name, 
-                Surname = Input.Surname
+                Surname = Input.Surname,
+                ProfilePicture = ImgPath.BaseProfilePic
             };
             
             var result = await _userManager.CreateAsync(user, Input.Password);

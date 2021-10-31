@@ -10,7 +10,7 @@ namespace Cars.Models.View
 
         public string RecruiterId { get; set; }
 
-        public ApplicationUser Recruiter { get; set; }
+        public UserView Recruiter { get; set; }
 
         public string Title { get; set; }
 

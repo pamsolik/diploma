@@ -8,6 +8,7 @@ import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 import {AlertService} from "../../services/alert.service";
 import {ApiAnswer} from "../../models/ApiAnswer";
 import {RecruitmentApplication} from "../../models/RecruitmentApplication";
+import {BaseValues} from "../../models/enums/BaseValues";
 
 
 @Component({
@@ -55,5 +56,11 @@ export class ApplicationDetailsComponent {
 
   close() {
     this.modalService.dismissAll();
+  }
+
+  createImgPath() {
+    let pp = this.details.applicant.profilePicture
+    if (!pp) pp = BaseValues.BaseProfileUrl
+    return `${this.baseUrl}${pp}`;
   }
 }

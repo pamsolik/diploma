@@ -56,7 +56,7 @@ namespace Cars.Controllers
                 return true;
             }
 
-            if (name == null)
+            if (name is null)
             {
                 badRequest = BadRequest("File name cannot be empty");
                 return true;

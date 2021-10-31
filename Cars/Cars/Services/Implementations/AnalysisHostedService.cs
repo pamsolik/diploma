@@ -87,6 +87,7 @@ namespace Cars.Services.Implementations
             {
                 var projects = service.GetAllProjects(application);
                 var coq = GetCodeOverallQuality(projects);
+                if (coq is null) return;
                 await service.SaveCodeOverallQuality(application, coq);
             }
             catch (Exception e)
@@ -106,7 +107,7 @@ namespace Cars.Services.Implementations
 
                 EnsureDirectoryIsCreated(dirInfo);
 
-                await RepositoryLoader.Clone(project.Url, projectDir);
+                RepositoryLoader.Clone(project.Url, projectDir);
 
                 //TODO: Add project on SonarQube
 

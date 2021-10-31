@@ -42,10 +42,7 @@ namespace Cars.Services.Implementations
 
         public List<Project> GetAllProjects(RecruitmentApplication notExamined)
         {
-            var x = _context.Projects.Where(p => p.ApplicationId == notExamined.Id).ToList();
-                x.ForEach(p => p.CodeQualityAssessment = 
-                        _context.CodeQualityAssessments.First(c => c.Id == p.CodeQualityAssessmentId));
-                return x;
+            return _context.Projects.Where(p => p.ApplicationId == notExamined.Id).ToList();
         }
 
         public async Task<RecruitmentApplication> SaveCodeOverallQuality(RecruitmentApplication application,

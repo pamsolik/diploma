@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {AuthorizeService} from '../authorize.service';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -13,7 +13,7 @@ export class LoginMenuComponent implements OnInit {
   public userName: Observable<string>;
   public displayProfile: boolean = false;
 
-  constructor(private authorizeService: AuthorizeService) {
+  constructor(private authorizeService: AuthorizeService, @Inject('BASE_URL') private baseUrl: string) {
   }
 
   ngOnInit() {
@@ -27,5 +27,9 @@ export class LoginMenuComponent implements OnInit {
 
   mouseLeave() {
     this.displayProfile = false;
+  }
+
+  createImgPath() {
+    return `${this.baseUrl}${this.authorizeService.ProfileUrl}`;
   }
 }

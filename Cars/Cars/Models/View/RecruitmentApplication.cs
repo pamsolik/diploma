@@ -8,7 +8,7 @@ namespace Cars.Models.View
     {
         public int Id { get; set; }
 
-        public ApplicantView Applicant { get; set; }
+        public UserView User { get; set; }
 
         public string Description { get; set; }
 

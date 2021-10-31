@@ -10,14 +10,22 @@
 
 <h4>@ViewData["Title"]</h4>
 <partial name="_StatusMessage" model="Model.StatusMessage"/>
+<div class="row">
+    <div class="col-6">
+        <img class="img-thumbnail rounded img-fluid" alt="Profile picture"  src="@Model.ProfileUrl"/>
+        @* style="width: 200px; height: 200px" *@
+    </div>
+    <div class="col-6">
+        <form method="post" asp-page-handler="view" enctype="multipart/form-data">
+            <input type="file" asp-for="Upload" class="row my-2"/>
+            <button id="update-profile-picture-button" type="submit" class="btn btn-success my-2 row">Zmień zdjęcie</button>
+        </form>
+    </div>
+</div>
 
-<form method="post" asp-page-handler="view" enctype="multipart/form-data">
-    <input type="file" asp-for="Upload"/>
-    <input type="submit"/>
-</form>
 
 <form id="profile-form" method="post">
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-md-6">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
