@@ -8,7 +8,7 @@ namespace Cars.Models.View
     {
         public int Id { get; set; }
 
-        public UserView User { get; set; }
+        public UserView Applicant { get; set; }
 
         public string Description { get; set; }
 
@@ -16,7 +16,7 @@ namespace Cars.Models.View
 
         public string ClFile { get; set; }
 
-        public List<Project> Projects { get; set; }
+        public List<ProjectView> Projects { get; set; }
 
         public DateTime Time { get; set; }
 
@@ -25,5 +25,7 @@ namespace Cars.Models.View
         public bool ClauseOpt2Accepted { get; set; }
 
         public CodeOverallQuality CodeOverallQuality { get; set; }
+        
+        public bool Selected { get; set; }
     }
 }

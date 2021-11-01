@@ -30,7 +30,7 @@ namespace Cars.Services.Other
 
                     proc.WaitForExit();
 
-                    Console.WriteLine(result);
+                    logger.LogInformation(result);
                 }
                 catch (Exception e)
                 {

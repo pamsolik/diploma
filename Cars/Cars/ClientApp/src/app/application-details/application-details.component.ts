@@ -3,10 +3,7 @@ import {Component, Inject, Input} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ApplicationDto, ApplicationDtoDefault} from "../../models/ApplicationDto";
-import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 import {AlertService} from "../../services/alert.service";
-import {ApiAnswer} from "../../models/ApiAnswer";
 import {RecruitmentApplication} from "../../models/RecruitmentApplication";
 import {BaseValues} from "../../models/enums/BaseValues";
 
@@ -17,8 +14,6 @@ import {BaseValues} from "../../models/enums/BaseValues";
   styleUrls: ['./application-details.component.scss'],
 })
 export class ApplicationDetailsComponent {
-
-  newProj: string;
 
   @Input()
   details: RecruitmentApplication;

@@ -1,7 +1,10 @@
-﻿export interface ProjectDto {
-  Title: string,
-  Description: string,
-  Url: string
+﻿import {CodeQualityAssessment} from "./CodeQualityAssessment";
+
+export interface ProjectDto {
+  title: string,
+  description: string,
+  url: string
+  codeQualityAssessment: CodeQualityAssessment
 }
 
 

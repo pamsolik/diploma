@@ -51,7 +51,7 @@ namespace Cars.Services.Implementations
 
             dest.City = existingCity;
             dest.RecruiterId = recruiterId;
-
+            dest.StartDate = _dateTimeProvider.GetTimeNow();
             var res = _context.Recruitments.Add(dest);
             await _context.SaveChangesAsync();
 

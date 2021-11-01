@@ -8,6 +8,7 @@ import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 import {AlertService} from "../../services/alert.service";
 import {ApiAnswer} from "../../models/ApiAnswer";
 import {ProjectDto} from "../../models/ProjectDto";
+import {NgbModalRef} from "@ng-bootstrap/ng-bootstrap/modal/modal-ref";
 
 
 @Component({
@@ -42,13 +43,13 @@ export class ApplyComponent {
     this.alertService.showLoading("Dodawanie aplikacji");
     console.log(this.application);
     this.http.post<ApiAnswer>(`${this.baseUrl}api/recruitments/apply`, this.application).subscribe(result => {
-      this.alertService.showResultAndRedirect("Gratulacje", "Zapisano aplikację", '/recruitments')
+      this.close();
       console.log(result);
+      this.alertService.showResultAndRedirect("Gratulacje", "Zapisano aplikację", '/recruitments');
     }, error => {
       this.alertService.showResult("Błąd", error.message)
       console.error(error);
     })
-
 
   }
 
@@ -72,11 +73,11 @@ export class ApplyComponent {
 
   addProject(proj: string) {
     if (proj) {
-      if (this.application.projects.find(p => p.Url == proj)) {
+      if (this.application.projects.find(p => p.url == proj)) {
         this.alertService.showResult("Błąd", "Projekt już istnieje na liście.");
         return;
       }
-      this.application.projects.push({Description: 'desc', Title: 'title', Url: proj} as ProjectDto);
+      this.application.projects.push({description: 'desc', title: 'title', url: proj} as ProjectDto);
       this.newProj = "";
     } else {
       this.alertService.showResult("Błąd", "Nie można dodać pustego projektu.")

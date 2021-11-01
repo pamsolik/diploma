@@ -17,7 +17,11 @@
           <h6 class="col">Ilość aplikacji: {{recruitmentApplications.length}}</h6>
 
           <div class="col-auto">
-            <button class="btn btn-success" (click)="selectCandidates()">Wybierz kandydatów i zakończ rekrutację</button>
+
+            <a [routerLink]="['/recruitment-settings/' + id]" class="btn btn-primary me-5" >Edycja rekrutacji</a>
+
+            <button class="btn btn-success" (click)="selectCandidates()">Wybierz kandydatów i zakończ rekrutację
+            </button>
           </div>
         </section>
 
@@ -67,7 +71,8 @@
           </div>
           <div class="row">
 
-            <mat-card *ngFor="let application of recruitmentApplications" class="mb-1 {{application.selected ? 'selected' : 'base'}}">
+            <mat-card *ngFor="let application of recruitmentApplications"
+                      class="mb-1 {{application.selected ? 'selected' : 'base'}}">
               <div class="row">
                 <div class="col-2">
                   <img alt="Thumbnail image"
@@ -77,7 +82,7 @@
                 </div>
 
                 <div class="col-3 border-end border-dark">
-                  <h5 class="card-title">{{application.applicant.userName}}</h5>
+                  <h5 class="card-title">{{application.applicant.name}}</h5>
                   <p>{{application.description}}</p>
 
                   <app-application-details [details]="application"></app-application-details>
@@ -91,34 +96,41 @@
                   </div>
                 </div>
 
-                <div class="col-1 border-end border-dark text-center">
-                  <h5 class="card-title">{{application.codeQualityAssessment.errors}}</h5>
-                </div>
 
-                <div class="col-1 border-end border-dark text-center">
-                  <h5 class="card-title">{{application.codeQualityAssessment.security}}</h5>
-                </div>
+                <h3 class="col justify-content-center align-self-center"
+                    *ngIf="!application.codeOverallQuality else examined">Projekt nie został jeszcze zbadany</h3>
 
-                <div class="col-1 border-end border-dark text-center">
-                  <h5 class="card-title">{{application.codeQualityAssessment.codeSmells}}</h5>
-                </div>
+                <ng-template #examined>
+                  <div class="col-1 border-end border-dark text-center">
+                    <h5 class="card-title">{{application.codeOverallQuality.bugs}}</h5>
+                  </div>
 
-                <div class="col-1 border-end border-dark text-center">
-                  <h5 class="card-title">{{application.codeQualityAssessment.duplications}}</h5>
-                </div>
+                  <div class="col-1 border-end border-dark text-center">
+                    <h5 class="card-title">{{application.codeOverallQuality.securityRating}}</h5>
+                  </div>
 
-                <div class="col-1 border-end border-dark text-center">
-                  <h5 class="card-title">{{application.codeQualityAssessment.readability}}</h5>
-                </div>
+                  <div class="col-1 border-end border-dark text-center">
+                    <h5 class="card-title">{{application.codeOverallQuality.codeSmells}}</h5>
+                  </div>
 
-                <div class="col-1 border-end border-dark text-center">
-                  <h5 class="card-title">{{application.codeQualityAssessment.maintainability}}</h5>
-                </div>
+                  <div class="col-1 border-end border-dark text-center">
+                    <h5 class="card-title">{{application.codeOverallQuality.duplicatedLinesDensity}}</h5>
+                  </div>
 
-                <div class="col-1 text-center">
-                  <h5 class="card-title">{{application.codeQualityAssessment.technicalDebt}}</h5>
-                </div>
+                  <div class="col-1 border-end border-dark text-center">
+                    <h5 class="card-title">{{application.codeOverallQuality.reliabilityRating}}</h5>
+                  </div>
+
+                  <div class="col-1 border-end border-dark text-center">
+                    <h5 class="card-title">{{application.codeOverallQuality.maintainability}}</h5>
+                  </div>
+
+                  <div class="col-1 text-center">
+                    <h5 class="card-title">{{application.codeOverallQuality.sqaleRating}}</h5>
+                  </div>
+                </ng-template>
               </div>
+
             </mat-card>
           </div>
         </section>

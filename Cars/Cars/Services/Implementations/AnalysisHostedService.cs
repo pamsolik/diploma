@@ -10,8 +10,10 @@ using Cars.Services.Interfaces;
 using Cars.Services.Other;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RestSharp;
 using static Cars.Data.CodeQualityAssessmentFactory;
 using static Cars.Data.CodeOverallQualityFactory;
+using static Cars.Data.HttpRequestHandler;
 using static Cars.Services.Other.SonarQubeRequestHandler;
 using static Cars.Services.Other.FileService;
 
@@ -61,22 +63,30 @@ namespace Cars.Services.Implementations
 
             if (!notExamined.Any()) return;
 
-            var http = new HttpRequestHandler<CodeAnalysis>();
+            var http = new HttpRequestHandler();
+            var projects = GetResponse<Projects>(GetProjectsUri());
 
-            foreach (var application in notExamined)
+            if (projects is not null)
             {
-                var projects = service.GetNotExaminedProjects(application);
-                if (!projects.Any() && application.CodeOverallQualityId is null)
+                foreach (var application in notExamined)
                 {
-                    await CalculateAndSaveCodeOverallQuality(service, application);
-                }
-                else
-                {
-                    foreach (var project in projects)
+                    var projectsToExamine = service.GetNotExaminedProjects(application);
+
+                    foreach (var project in projectsToExamine)
                     {
-                        await ExamineSingleProject(application, project, http, service);
+                        await ExamineSingleProject(application, project, service, projects);
+                    }
+
+                    projectsToExamine = service.GetNotExaminedProjects(application);
+                    if (!projectsToExamine.Any() && application.CodeOverallQualityId is null)
+                    {
+                        await CalculateAndSaveCodeOverallQuality(service, application);
                     }
                 }
+            }
+            else
+            {
+                _logger.LogWarning($"Cannot reach SonarQube on {BasePath}");
             }
         }
 
@@ -96,28 +106,43 @@ namespace Cars.Services.Implementations
             }
         }
 
-        private async Task ExamineSingleProject(RecruitmentApplication application, Project project,
-            HttpRequestHandler<CodeAnalysis> http, IAnalysisDataService dataService)
+        private async Task ExamineSingleProject(RecruitmentApplication application, Project project, IAnalysisDataService dataService, Projects projects)
         {
             try
             {
-                var retry = project.CodeQualityAssessmentId is not null;
                 var projectDir = Path.Combine(SonarLoc, application.ApplicantId, project.Id.ToString());
                 var dirInfo = new DirectoryInfo(projectDir);
+                var saved = false;
+                var projectKey = $"Project_{project.Id}";
 
-                EnsureDirectoryIsCreated(dirInfo);
+                var projectCreated = projects.Components.Any(c => c.Key == projectKey);
+                
+                if (!projectCreated)
+                {
+                    var sonarProject = GetResponse<ProjectCreate>(GetCreateProjectUri(projectKey), Method.POST);
+                    projectCreated = sonarProject is not null;
+                }
+                else
+                {
+                    saved = await TryToReadAnalysis(project, dataService, projectKey);
+                }
+                
+                if (projectCreated && !saved)
+                {
+                    EnsureDirectoryIsCreated(dirInfo);
 
-                RepositoryLoader.Clone(project.Url, projectDir);
+                    RepositoryLoader.Clone(project.Url, projectDir);
+                    
+                    await PerformScan(projectDir, projectKey);
 
-                //TODO: Add project on SonarQube
-
-                await PerformScan(projectDir);
-
-                var analysis = http.GetResponse(GetMetricsUri("test"));
-                var ass = analysis is null ? CreateInstance() : CreateInstance(analysis);
-                if (retry) ass.Success = true;
-                await dataService.SaveCodeQualityAnalysis(project, ass);
-                DeleteWithoutPermissions(dirInfo);
+                    await TryToReadAnalysis(project, dataService, projectKey);
+                    DeleteWithoutPermissions(dirInfo);
+                }
+                else
+                {
+                    if (projectCreated) _logger.LogWarning($"Project {project.Id} failed to create");
+                    if (!saved) _logger.LogWarning($"Project {project.Id} not saved");
+                }
             }
             catch (Exception e)
             {
@@ -125,10 +150,27 @@ namespace Cars.Services.Implementations
             }
         }
 
-        private async Task PerformScan(string projectDir)
+        private static async Task<bool> TryToReadAnalysis(Project project, IAnalysisDataService dataService, string projectKey)
+        {
+            var retry = project.CodeQualityAssessmentId is not null;
+            var analysis = GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
+
+            var loaded = analysis is not null && analysis.Component.Measures.Any();
+            
+            var ass = loaded? CreateInstance(analysis) : CreateInstance();
+
+            if (!loaded) return false;
+            
+            if (retry) ass.Success = true;
+            await dataService.SaveCodeQualityAnalysis(project, ass);
+            GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST);
+            return true;
+        }
+
+        private async Task PerformScan(string projectDir, string projectKey)
         {
             var cmd =
-                $"sonar-scanner.bat -D\"sonar.projectKey=test\" -D\"sonar.sources=.\" -D\"sonar.host.url=http://localhost:9000\" -D\"sonar.login=2a717a00e2600f862f49a8fcc9b28f2029040369\"";
+                $"sonar-scanner.bat -D\"sonar.projectKey={projectKey}\" -D\"sonar.sources=.\" -D\"sonar.host.url=http://localhost:9000\" -D\"sonar.login={Key}\"";
 
             await CommandExecutor.ExecuteCommandAsync(cmd, projectDir, _logger);
         }

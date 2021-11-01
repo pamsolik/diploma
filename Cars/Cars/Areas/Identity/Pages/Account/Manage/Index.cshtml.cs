@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Cars.Models.DataModels;
 using Cars.Models.Dto;
-using Cars.Models.Enums;
 using static Cars.Services.Other.FileService;
 using Cars.Services.Interfaces;
 using IdentityServer4.Extensions;
@@ -14,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
+using static Cars.Models.Enums.ImgPath;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage
 {
@@ -57,13 +57,13 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-            
-            if (user.ProfilePicture.IsNullOrEmpty()) user.ProfilePicture = ImgPath.BaseProfilePic;
-            
+
+            if (user.ProfilePicture.IsNullOrEmpty()) user.ProfilePicture = BaseProfilePic;
+
             Filename = user.ProfilePicture;
-            
+
             ProfileUrl = "https://" + HttpContext.Request.Host + "/" + Filename;
-            
+
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
@@ -125,8 +125,12 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             var filePath = await _fileUploadService.SaveFile(Upload, User.GetSubjectId());
             Filename = filePath.DbPath;
+            var userId = _userManager.GetUserId(User);
+            var newPicture = CopyAndSaveProfilePicture(Filename, userId);
             if (Filename != user.ProfilePicture)
-                await CopyAndSaveProfilePicture(Filename, _userManager.GetUserId(User));
+                await _userService.SetProfilePictureAsync(userId, newPicture);
+            
+            Filename = newPicture;
             return RedirectToPage();
         }
 
@@ -141,19 +145,12 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             if (Input.City != user.City) user.City = Input.City;
         }
 
-        private async Task CopyAndSaveProfilePicture(string imgUrl,
-            string userId)
-        {
-            if (imgUrl == ImgPath.BaseProfilePic) return;
-
-            var newPicture = MovePictureAndGetUrl(imgUrl, userId);
-
-            await _userService.SetProfilePictureAsync(userId, newPicture);
-        }
+        private string CopyAndSaveProfilePicture(string imgUrl, string userId) =>
+            imgUrl == BaseProfilePic ? BaseProfilePic : MovePictureAndGetUrl(imgUrl, userId);
 
         private string MovePictureAndGetUrl(string imgUrl, string userId)
         {
-            if (imgUrl.IsNullOrEmpty()) return ImgPath.BaseProfilePic;
+            if (imgUrl.IsNullOrEmpty()) return BaseProfilePic;
 
             try
             {
@@ -163,7 +160,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             catch (IOException e)
             {
                 _logger.LogInformation(e, "IOException, reverting to the default image");
-                return ImgPath.BaseProfilePic;
+                return BaseProfilePic;
             }
         }
 

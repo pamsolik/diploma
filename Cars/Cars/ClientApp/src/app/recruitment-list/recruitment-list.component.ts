@@ -75,7 +75,6 @@ export class RecruitmentListComponent implements OnInit {
 
     this.http.post<RecruitmentList>(this.baseUrl + this.apiUrl, this.filters).subscribe(result => {
       this.offers = result;
-      console.log(result)
     }, error => console.error(error));
   }
 

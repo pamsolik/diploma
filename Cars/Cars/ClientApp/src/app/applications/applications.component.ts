@@ -26,37 +26,11 @@ export class ApplicationsComponent {
 
     http.get<RecruitmentApplication[]>(baseUrl + 'api/recruitments/applications/' + this.id).subscribe(result => {
       this.recruitmentApplications = result;
-      //this.recruitmentApplications = this.recruitmentApplicationsBase;
-
-      if (this.recruitmentApplications){
-        this.recruitmentApplications[0].codeQualityAssessment = {
-          codeSmells: "B",
-          completedTime: undefined,
-          duplications: 5.2,
-          errors: 2,
-          id: 0,
-          maintainability: "B",
-          readability: "C",
-          security: "A",
-          success: false,
-          technicalDebt: "3 dni 2godz"
-        };
-
-        this.recruitmentApplications[1].codeQualityAssessment = {
-          codeSmells: "A",
-          completedTime: undefined,
-          duplications: 1.3,
-          errors: 2400,
-          id: 0,
-          maintainability: "A",
-          readability: "F",
-          security: "D",
-          success: false,
-          technicalDebt: "69 dni"
-        }
-      }
-
     }, error => console.error(error));
+  }
+
+  getValue(application: RecruitmentApplication, value: number): string{
+    return !application.codeOverallQuality ? "N/A" : value.toString();
   }
 
   selectCandidates() {

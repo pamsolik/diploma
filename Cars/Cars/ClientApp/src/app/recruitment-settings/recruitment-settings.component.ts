@@ -4,6 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 import {ApiAnswer} from "../../models/ApiAnswer";
 import {AlertService} from "../../services/alert.service";
+import {ActivatedRoute} from "@angular/router";
+import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 
 @Component({
   selector: 'app-recruitment-settings-component',
@@ -12,13 +14,26 @@ import {AlertService} from "../../services/alert.service";
 })
 export class RecruitmentSettingsComponent {
   enums: RecruitmentEnums = new RecruitmentEnums();
-  settings: RecruitmentDetailsDto = new RecruitmentDetailsDto();
+  settings: RecruitmentDetailsDto;
   editMode: boolean = false;
   clauseOpt1: boolean = false;
   clauseOpt2: boolean = false;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private alertService: AlertService) {
-    console.log(this.settings);
+  id: string = this.route.snapshot.paramMap.get('id');
+
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private alertService: AlertService, private route: ActivatedRoute) {
+    if (this.id){
+      this.editMode = true;
+
+      http.get<RecruitmentDetailsDto>(baseUrl + 'api/recruitments/' + this.id).subscribe(result => {
+        this.settings = result;
+        console.log(this.settings);
+      }, error => console.error(error));
+
+    }
+    else {
+      this.settings = new RecruitmentDetailsDto();
+    }
   }
 
   public createImgPath = (serverPath: string) => {

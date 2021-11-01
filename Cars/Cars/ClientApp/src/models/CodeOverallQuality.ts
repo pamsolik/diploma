@@ -1,7 +1,7 @@
-﻿export interface CodeQualityAssessment {
+﻿export interface CodeOverallQuality {
   id: number,
   success: boolean,
-  ProjectsCount: number,
+
   completedTime: Date,
 
   codeSmells: number,

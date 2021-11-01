@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Cars.Models.SonarQubeDataModels
 {
-    public class Component
+    public class ScanComponent
     {
         public string Key { get; set; }
         
@@ -11,10 +11,8 @@ namespace Cars.Models.SonarQubeDataModels
         
         public string Qualifier { get; set; }
 
-        public string Visibility { get; set; }
-        
-        public string LastAnalysisDate { get; set; }
-        
-        public string Revision { get; set; }
+        public List<Measure> Measures { get; set; }
+
+        public Measure? GetMeasure(string key) => Measures.FirstOrDefault(measure => measure.Metric.Equals(key));
     }
 }

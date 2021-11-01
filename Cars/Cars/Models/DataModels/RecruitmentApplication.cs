@@ -41,5 +41,7 @@ namespace Cars.Models.DataModels
 
         [ForeignKey("CodeOverallQualityId")]
         public virtual CodeOverallQuality CodeOverallQuality { get; set; }
+
+        public bool Selected { get; set; } = false;
     }
 }

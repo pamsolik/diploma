@@ -2,8 +2,7 @@
 
 export interface Applicant {
   id: number,
-  userName: string,
-  eMail: string,
+  email: string,
   phoneNumber: string,
   name: string,
   surname: string,

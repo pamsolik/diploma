@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Cars.Data;
 using Cars.Models.DataModels;
+using Cars.Models.View;
 using Cars.Services.EmailSender;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
 using Cars.Services.Other;
+using Mapster;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +33,7 @@ namespace Cars
             Configuration = configuration;
         }
 
+
         private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -43,8 +47,7 @@ namespace Cars
                 ServiceLifetime.Transient
                 
             );
-
-
+            
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -67,7 +70,7 @@ namespace Cars
             services.AddCronJob<AnalysisHostedService>(c =>
             {
                 c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"*/5 * * * *";
+                c.CronExpression = @"*/1 * * * *";
             });
             
             services.AddAuthentication().AddIdentityServerJwt();
