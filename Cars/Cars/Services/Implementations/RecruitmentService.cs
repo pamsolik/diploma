@@ -95,6 +95,7 @@ namespace Cars.Services.Implementations
             dest.ApplicantId = applicantId;
             var res = _context.Applications.Add(dest);
             await _context.SaveChangesAsync();
+            res = await CopyAndSaveApplicationFiles(addApplicationDto, res);
             return res.Entity;
         }
 
@@ -103,7 +104,7 @@ namespace Cars.Services.Implementations
             var res = await _context.Applications
                 .Where(a => a.RecruitmentId == recruitmentId)
                 .ToListAsync();
-            
+
             var dest = res.Adapt<List<ApplicationView>>();
             return dest;
         }
@@ -198,6 +199,38 @@ namespace Cars.Services.Implementations
                     var val = predicate(li);
                     return filter.Count > val && filter[val] == true;
                 });
+        }
+
+        private async Task<EntityEntry<RecruitmentApplication>> CopyAndSaveApplicationFiles(
+            AddApplicationDto applicationDto,
+            EntityEntry<RecruitmentApplication> res)
+        {
+            if (applicationDto.ClFile.IsNullOrEmpty() && applicationDto.CvFile.IsNullOrEmpty()) return res;
+
+            res.Entity.ClFile = MoveApplicationFileAndGetUrl(applicationDto.ClFile, res.Entity.Id, "CL");
+
+            res.Entity.CvFile = MoveApplicationFileAndGetUrl(applicationDto.CvFile, res.Entity.Id, "CV");
+
+            res = _context.Applications.Update(res.Entity);
+            await _context.SaveChangesAsync();
+
+            return res;
+        }
+
+        private string MoveApplicationFileAndGetUrl(string parameter, int id, string subfolder)
+        {
+            if (parameter.IsNullOrEmpty()) return "";
+
+            try
+            {
+                var path = Path.Combine("Resources", "Files", subfolder);
+                return MoveAndGetUrl(parameter, id.ToString(), path, subfolder);
+            }
+            catch (IOException e)
+            {
+                _logger.LogInformation(e, "IOException, could not save" + subfolder);
+                return "";
+            }
         }
 
         private void GetDaysAgoDescriptions(ref List<RecruitmentView> dest) =>

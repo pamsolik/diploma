@@ -10,9 +10,24 @@
             <img [src]="createImgPath()"
                  alt="Thumbnail image"
                  class="img-thumbnail rounded ">
+
           </div>
 
-          <p class="col">{{details.description}}</p>
+          <div class="col">
+            <div *ngIf="details.applicant.github" class="mb-2">
+              <h5>Profil GitHub</h5>
+              <a [href]="details.applicant.github" >{{details.applicant.github}}</a>
+            </div>
+
+            <div *ngIf="details.applicant.github" class="mb-2">
+              <h5>Profil LinkedIn</h5>
+              <a [href]="details.applicant.linkedIn" >{{details.applicant.linkedIn}}</a>
+            </div>
+
+            <h5>Opis</h5>
+            <p>{{details.description}}</p>
+          </div>
+
         </div>
 
         <div class="border-top my-2"></div>
@@ -29,8 +44,8 @@
 
         <h5>Klauzule:</h5>
 
+        <p>{{details.clauseOptAccepted}}</p>
         <p>{{details.clauseOpt2Accepted}}</p>
-
       </div>
 
       <div class="col">

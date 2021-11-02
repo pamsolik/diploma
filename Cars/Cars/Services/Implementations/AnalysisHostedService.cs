@@ -36,13 +36,13 @@ namespace Cars.Services.Implementations
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("CronJobAnalysis starts");
+            _logger.LogInformation("AnalysisHostedService starts");
             return base.StartAsync(cancellationToken);
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("CronJobAnalysis is stopping");
+            _logger.LogInformation("AnalysisHostedService is stopping");
             return base.StopAsync(cancellationToken);
         }
 
@@ -140,7 +140,7 @@ namespace Cars.Services.Implementations
                 }
                 else
                 {
-                    if (projectCreated) _logger.LogWarning($"Project {project.Id} failed to create");
+                    if (!projectCreated) _logger.LogWarning($"Project {project.Id} failed to create");
                     if (!saved) _logger.LogWarning($"Project {project.Id} not saved");
                 }
             }

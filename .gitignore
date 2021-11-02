@@ -282,3 +282,8 @@ Thumbs.db
 .sonarqube
 *.sonarqube
 **/.scannerwork
+
+**/Resouces/Images/Profile
+**/Resouces/Images/Thumbnails
+**/Resouces/Files/CL
+**/Resouces/Files/CV
