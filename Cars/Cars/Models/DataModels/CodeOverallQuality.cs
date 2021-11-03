@@ -10,14 +10,14 @@ namespace Cars.Models.DataModels
         public int Id { get; set; }
 
         public bool Success { get; set; }
-        
+
         public int ProjectsCount { get; set; }
-        
+
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CompletedTime { get; set; }
 
         public float? CodeSmells { get; set; }
-        
+
         public float? Maintainability { get; set; }
         public float? Coverage { get; set; }
         public float? CognitiveComplexity { get; set; }
@@ -31,7 +31,7 @@ namespace Cars.Models.DataModels
         public float? ReliabilityRating { get; set; }
         public float? Complexity { get; set; }
         public float? SecurityHotspots { get; set; }
-        
+
         public float? OverallRating { get; set; }
     }
 }

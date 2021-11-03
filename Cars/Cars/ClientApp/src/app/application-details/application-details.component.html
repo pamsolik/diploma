@@ -16,12 +16,12 @@
           <div class="col">
             <div *ngIf="details.applicant.github" class="mb-2">
               <h5>Profil GitHub</h5>
-              <a [href]="details.applicant.github" >{{details.applicant.github}}</a>
+              <a [href]="details.applicant.github">{{details.applicant.github}}</a>
             </div>
 
             <div *ngIf="details.applicant.github" class="mb-2">
               <h5>Profil LinkedIn</h5>
-              <a [href]="details.applicant.linkedIn" >{{details.applicant.linkedIn}}</a>
+              <a [href]="details.applicant.linkedIn">{{details.applicant.linkedIn}}</a>
             </div>
 
             <h5>Opis</h5>
@@ -33,12 +33,12 @@
         <div class="border-top my-2"></div>
 
         <h5>CV:</h5>
-        <p>{{details.cvFile? details.cvFile : 'brak'}}</p>
+        <p>{{details.cvFile ? details.cvFile : 'brak'}}</p>
 
         <div class="border-top my-2"></div>
 
         <h5>List motywacyjny:</h5>
-        <p>{{details.clFile? details.clFile : 'brak'}}</p>
+        <p>{{details.clFile ? details.clFile : 'brak'}}</p>
 
         <div class="border-top my-2"></div>
 
@@ -51,7 +51,7 @@
       <div class="col">
         <h5>Projekty</h5>
         <div *ngFor="let p of details.projects">
-          <a [href]="p.url" >{{p.url}}</a>
+          <a [href]="p.url">{{p.url}}</a>
         </div>
       </div>
 

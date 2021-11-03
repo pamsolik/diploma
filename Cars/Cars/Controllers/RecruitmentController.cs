@@ -5,11 +5,9 @@ using Cars.Models.Enums;
 using Cars.Models.Exceptions;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
-using Cars.Services.Other;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Namotion.Reflection;
 
 namespace Cars.Controllers
 {
@@ -33,7 +31,7 @@ namespace Cars.Controllers
         {
             var usr = User.Identity.GetUserId();
             var res = await _recruitmentService.AddRecruitment(addRecruitmentDto, usr);
-            
+
             return Ok(new ApiAnswer("Added", res));
         }
 
@@ -47,12 +45,25 @@ namespace Cars.Controllers
             return Ok(new ApiAnswer("Edited", res));
         }
 
-        [HttpPut("status/{id:int}")]
-        public IActionResult CloseRecruitment([FromBody] RecruitmentStatus status, [FromRoute] int id)
+        [HttpPut("close")]
+        public async Task<IActionResult> CloseRecruitment([FromBody] CloseRecruitmentDto closeRecruitmentDto)
         {
-            //TODO: Maybe delete
-            //var res = await _recruitmentService.();
-            return Ok("Not implemented " + status);
+            await _recruitmentService.CloseRecruitment(closeRecruitmentDto);
+            return Ok(new ApiAnswer("Closed"));
+        }
+
+        [HttpPut("hide/{id:int}")]
+        public async Task<IActionResult> HideRecruitment([FromRoute] int id)
+        {
+            await _recruitmentService.HideRecruitment(id);
+            return Ok(new ApiAnswer("Hidden"));
+        }
+
+        [HttpPut("unhide/{id:int}")]
+        public async Task<IActionResult> UnHideRecruitment([FromRoute] int id)
+        {
+            await _recruitmentService.UnHideRecruitment(id);
+            return Ok(new ApiAnswer("UnHidden"));
         }
 
         [HttpPost("public")]

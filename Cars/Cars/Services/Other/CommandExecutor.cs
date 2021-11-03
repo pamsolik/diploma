@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +13,7 @@ namespace Cars.Services.Other
             {
                 try
                 {
-                    var procStartInfo = new System.Diagnostics.ProcessStartInfo("cmd", "/c " + command)
+                    var procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
                     {
                         RedirectStandardOutput = true,
                         UseShellExecute = false,
@@ -21,9 +21,9 @@ namespace Cars.Services.Other
                         WorkingDirectory = projectDir
                     };
 
-                    var proc = new System.Diagnostics.Process();
+                    var proc = new Process();
                     proc.StartInfo = procStartInfo;
-                    
+
                     proc.Start();
 
                     var result = proc.StandardOutput.ReadToEnd();

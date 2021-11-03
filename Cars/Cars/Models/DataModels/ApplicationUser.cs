@@ -7,14 +7,14 @@ namespace Cars.Models.DataModels
     public class ApplicationUser : IdentityUser
     {
         //TODO: Add user properties to the ui
-        
+
         [StringLength(200, ErrorMessage = "Name cannot be longer than 200 characters.")]
         public string Name { get; set; }
-        
+
         [StringLength(200, ErrorMessage = "Surname cannot be longer than 200 characters.")]
         public string Surname { get; set; }
 
-        
+
         [StringLength(2000, ErrorMessage = "Description cannot be longer than 2000 characters.")]
         public string Description { get; set; }
 
@@ -23,10 +23,10 @@ namespace Cars.Models.DataModels
 
         public virtual City City { get; set; }
 
-        
+
         [StringLength(200, ErrorMessage = "Github link cannot be longer than 200 characters.")]
         public string Github { get; set; }
-        
+
         [StringLength(200, ErrorMessage = "LinkedIn link cannot be longer than 200 characters.")]
         public string LinkedIn { get; set; }
 

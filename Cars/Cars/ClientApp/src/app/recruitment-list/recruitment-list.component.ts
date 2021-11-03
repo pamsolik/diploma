@@ -37,6 +37,10 @@ export class RecruitmentListComponent implements OnInit {
   // @ViewChild('address-input') qElementRef: ElementRef;
   // private places: any;
 
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+    this.filters = FiltersDefault;
+  }
+
   ngOnInit() {
     this.clearFilters();
     this.loadData();
@@ -59,10 +63,6 @@ export class RecruitmentListComponent implements OnInit {
     // this.places.on('change', function resultSelected(e) {
     //   //...
     // });
-  }
-
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    this.filters = FiltersDefault;
   }
 
   applyFilter(pageEvent: PageEvent) {

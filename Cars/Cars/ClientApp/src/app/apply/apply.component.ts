@@ -8,7 +8,6 @@ import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 import {AlertService} from "../../services/alert.service";
 import {ApiAnswer} from "../../models/ApiAnswer";
 import {ProjectDto} from "../../models/ProjectDto";
-import {NgbModalRef} from "@ng-bootstrap/ng-bootstrap/modal/modal-ref";
 
 
 @Component({

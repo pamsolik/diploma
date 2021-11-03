@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Cars.Models.SonarQubeDataModels;
 
 namespace Cars.Models.DataModels
 {
@@ -16,7 +15,7 @@ namespace Cars.Models.DataModels
         public DateTime CompletedTime { get; set; }
 
         public float? CodeSmells { get; set; }
-        
+
         public float? Maintainability { get; set; }
         public float? Coverage { get; set; }
         public float? CognitiveComplexity { get; set; }
@@ -30,7 +29,7 @@ namespace Cars.Models.DataModels
         public float? ReliabilityRating { get; set; }
         public float? Complexity { get; set; }
         public float? SecurityHotspots { get; set; }
-        
+
         public float? OverallRating { get; set; }
     }
 }

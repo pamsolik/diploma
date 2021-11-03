@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Microsoft.Extensions.Logging;
 
 namespace Cars.Services.Other
 {
@@ -9,23 +8,14 @@ namespace Cars.Services.Other
         {
             dInfo.Attributes &= ~FileAttributes.ReadOnly;
 
-            foreach (var file in dInfo.GetFiles())
-            {
-                file.Attributes &= ~FileAttributes.ReadOnly;
-            }
+            foreach (var file in dInfo.GetFiles()) file.Attributes &= ~FileAttributes.ReadOnly;
 
-            foreach (var subDir in dInfo.GetDirectories())
-            {
-                UpdateFileAttributes(subDir);
-            }
+            foreach (var subDir in dInfo.GetDirectories()) UpdateFileAttributes(subDir);
         }
-        
+
         public static void EnsureDirectoryIsCreated(DirectoryInfo dirInfo)
         {
-            if (dirInfo.Exists)
-            {
-                DeleteWithoutPermissions(dirInfo);
-            }
+            if (dirInfo.Exists) DeleteWithoutPermissions(dirInfo);
 
             dirInfo.Create();
         }

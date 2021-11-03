@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http.Headers;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using Cars.Models.DataModels;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +14,7 @@ namespace Cars.Services.Implementations
         {
             var folderName = Path.Combine("Resources", "Temp");
             var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            
+
             var name = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
 
             var fileName = $"File_{userId}_{DateTime.Now:yyyy-dd-MM-HH-mm-ss}{Path.GetExtension(name)?.Trim('"')}";

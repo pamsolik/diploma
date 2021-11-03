@@ -1,11 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Cars.Data;
-using Cars.Models.DataModels;
-using Cars.Models.View;
+﻿using Cars.Data;
 using Cars.Services.Interfaces;
-using Mapster;
-using Microsoft.EntityFrameworkCore;
 
 namespace Cars.Services.Implementations
 {
@@ -19,6 +13,5 @@ namespace Cars.Services.Implementations
             _context = context;
             _dateTimeProvider = dateTimeProvider;
         }
-
     }
 }

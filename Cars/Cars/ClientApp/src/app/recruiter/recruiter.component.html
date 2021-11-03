@@ -1,10 +1,14 @@
 <div class="card mb-4 box-shadow page-content container-lg p-0">
   <div class="card-header">
-    <h4 class="my-0 font-weight-normal">Panel rekrutera</h4>
+    <div class=" row">
+      <h4 class="my-0 font-weight-normal col">Panel rekrutera</h4>
+      <a [routerLinkActive]="['link-active']" [routerLink]="['/recruitment-settings']" class="btn btn-primary col-auto"
+         role="button">Dodaj nową ofertę</a>
+    </div>
+
   </div>
   <div class="card-body">
-    <a [routerLinkActive]="['link-active']" [routerLink]="['/recruitment-settings']" class="btn btn-primary mb-2"
-       role="button">Dodaj nową ofertę</a>
+
 
     <app-recruitment-list-component apiUrl="api/recruitments/recruiter"
                                     redirectUrl="/recruitment-applications/"></app-recruitment-list-component>

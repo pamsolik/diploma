@@ -1,4 +1,4 @@
-import {Component, Directive, EventEmitter, Inject, Input, Output, QueryList, ViewChildren} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
@@ -6,7 +6,6 @@ import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AlertService} from "../../services/alert.service";
 import {RecruitmentApplication} from "../../models/RecruitmentApplication"
-import {compare, NgbdSortableHeader, SortEvent} from "../../components/NgbdSortableHeader";
 
 @Component({
   selector: 'app-applications',
@@ -29,7 +28,7 @@ export class ApplicationsComponent {
     }, error => console.error(error));
   }
 
-  getValue(application: RecruitmentApplication, value: number): string{
+  getValue(application: RecruitmentApplication, value: number): string {
     return !application.codeOverallQuality ? "N/A" : value.toString();
   }
 

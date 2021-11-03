@@ -3,29 +3,26 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 using Cars.Models.DataModels;
-using Cars.Models.Dto;
-using static Cars.Services.Other.FileService;
 using Cars.Services.Interfaces;
 using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
+using static Cars.Services.Other.FileService;
 using static Cars.Models.Enums.ImgPath;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-
         private readonly IFileUploadService _fileUploadService;
-        private readonly IUserService _userService;
 
         private readonly ILogger<IndexModel> _logger;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserService _userService;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
@@ -105,9 +102,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
-                {
                     StatusMessage = "Nieoczekiwany błąd podczas próby ustawienia numeru telefonu.";
-                }
             }
 
             CheckChanges(user);
@@ -129,7 +124,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             var newPicture = CopyAndSaveProfilePicture(Filename, userId);
             if (Filename != user.ProfilePicture)
                 await _userService.SetProfilePictureAsync(userId, newPicture);
-            
+
             Filename = newPicture;
             return RedirectToPage();
         }
@@ -145,8 +140,10 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             if (Input.City != user.City) user.City = Input.City;
         }
 
-        private string CopyAndSaveProfilePicture(string imgUrl, string userId) =>
-            imgUrl == BaseProfilePic ? BaseProfilePic : MovePictureAndGetUrl(imgUrl, userId);
+        private string CopyAndSaveProfilePicture(string imgUrl, string userId)
+        {
+            return imgUrl == BaseProfilePic ? BaseProfilePic : MovePictureAndGetUrl(imgUrl, userId);
+        }
 
         private string MovePictureAndGetUrl(string imgUrl, string userId)
         {

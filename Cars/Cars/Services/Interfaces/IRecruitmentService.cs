@@ -11,6 +11,13 @@ namespace Cars.Services.Interfaces
     {
         Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId);
         Task<int> EditRecruitment(EditRecruitmentDto addRecruitmentDto);
+
+        Task<bool> CloseRecruitment(CloseRecruitmentDto closeRecruitmentDto);
+
+        Task<bool> HideRecruitment(int id);
+
+        Task<bool> UnHideRecruitment(int id);
+
         Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId);
 
         Task<PaginatedList<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto filter,

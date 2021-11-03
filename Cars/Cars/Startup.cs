@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Cars.Data;
 using Cars.Models.DataModels;
-using Cars.Models.View;
 using Cars.Services.EmailSender;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
 using Cars.Services.Other;
-using Mapster;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,12 +39,11 @@ namespace Cars
             services.AddMvc().AddRazorRuntimeCompilation();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseLazyLoadingProxies().
-                UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")),
+                    options.UseLazyLoadingProxies()
+                        .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")),
                 ServiceLifetime.Transient
-                
             );
-            
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -59,25 +55,25 @@ namespace Cars
 
             services.AddScoped<IRecruitmentService, RecruitmentService>();
             services.AddScoped<IAdminService, AdminService>();
-            
+
             services.AddScoped<IAnalysisDataService, AnalysisDataService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
-            
+
             services.AddScoped<IUserService, UserService>();
-            
+
             services.AddScoped<IDateTimeProvider, DateTimeProvider>();
-            
+
             services.AddCronJob<AnalysisHostedService>(c =>
             {
                 c.TimeZoneInfo = TimeZoneInfo.Local;
                 c.CronExpression = @"*/1 * * * *";
             });
-            
+
             services.AddAuthentication().AddIdentityServerJwt();
-            
+
             services.AddControllersWithViews();
             services.AddRazorPages();
-            
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
@@ -126,7 +122,7 @@ namespace Cars
                 // // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            
+
             //app.ApplicationServices.GetService<AnalysisService>();
 
             //app.ConfigureExceptionHandler();

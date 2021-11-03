@@ -5,7 +5,6 @@ import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 import {ApiAnswer} from "../../models/ApiAnswer";
 import {AlertService} from "../../services/alert.service";
 import {ActivatedRoute} from "@angular/router";
-import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 
 @Component({
   selector: 'app-recruitment-settings-component',
@@ -22,7 +21,7 @@ export class RecruitmentSettingsComponent {
   id: string = this.route.snapshot.paramMap.get('id');
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private alertService: AlertService, private route: ActivatedRoute) {
-    if (this.id){
+    if (this.id) {
       this.editMode = true;
 
       http.get<RecruitmentDetailsDto>(baseUrl + 'api/recruitments/' + this.id).subscribe(result => {
@@ -30,8 +29,7 @@ export class RecruitmentSettingsComponent {
         console.log(this.settings);
       }, error => console.error(error));
 
-    }
-    else {
+    } else {
       this.settings = new RecruitmentDetailsDto();
     }
   }

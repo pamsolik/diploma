@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Cars.Models.View;
 using Cars.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +14,9 @@ namespace Cars.Controllers
     [Route("api/files/upload")]
     public class FilesController : ControllerBase
     {
-        private readonly ILogger<FilesController> _logger;
         private readonly IFileUploadService _fileUploadService;
+        private readonly ILogger<FilesController> _logger;
+
         public FilesController(ILogger<FilesController> logger, IFileUploadService fileUploadService)
         {
             _logger = logger;
@@ -33,11 +32,11 @@ namespace Cars.Controllers
             {
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files[0];
-                
+
                 if (ValidateFile(file, out var badRequest)) return badRequest;
 
                 var res = await _fileUploadService.SaveFile(file, User.FindFirstValue(ClaimTypes.NameIdentifier));
-               
+
                 return Ok(res);
             }
             catch (Exception ex)

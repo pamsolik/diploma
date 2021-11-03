@@ -36,23 +36,23 @@ import {ApplicationDetailsComponent} from "./application-details/application-det
 
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        NavMenuComponent,
-        HomeComponent,
-        RecruitmentComponent,
-        RecruitmentDetailsComponent,
-        RecruitmentSettingsComponent,
-        RecruiterComponent,
-        AdminComponent,
-        FooterComponent,
-        RecruitmentListComponent,
-        FileUploadComponent,
-        ApplicationsComponent,
-        ApplyComponent,
-        NgbdSortableHeader,
-        ApplicationDetailsComponent
-    ],
+  declarations: [
+    AppComponent,
+    NavMenuComponent,
+    HomeComponent,
+    RecruitmentComponent,
+    RecruitmentDetailsComponent,
+    RecruitmentSettingsComponent,
+    RecruiterComponent,
+    AdminComponent,
+    FooterComponent,
+    RecruitmentListComponent,
+    FileUploadComponent,
+    ApplicationsComponent,
+    ApplyComponent,
+    NgbdSortableHeader,
+    ApplicationDetailsComponent
+  ],
   imports: [
     BrowserModule, // .withServerTransition({appId: 'ng-cli-universal'}),
     CommonModule,

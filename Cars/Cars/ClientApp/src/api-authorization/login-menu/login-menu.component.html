@@ -11,8 +11,8 @@
     <div *ngIf="displayProfile" class="user_c">
 
       <div class="user_info l">
-        <img alt="user" class="info_img"
-             [src]="createImgPath()">
+        <img [src]="createImgPath()" alt="user"
+             class="info_img">
         <p>Patryk Amsolik</p>
         <p>{{ userName | async }}</p>
       </div>

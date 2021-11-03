@@ -6,8 +6,9 @@ namespace Cars.Data
 {
     public static class CodeQualityAssessmentFactory
     {
-        public static CodeQualityAssessment CreateInstance(CodeAnalysis analysis) =>
-            new()
+        public static CodeQualityAssessment CreateInstance(CodeAnalysis analysis)
+        {
+            return new()
             {
                 CompletedTime = DateTime.Now,
                 Success = true,
@@ -27,12 +28,15 @@ namespace Cars.Data
                 SecurityHotspots = analysis.GetValue("security_hotspots"),
                 OverallRating = 0f //TODO: Calculate
             };
+        }
 
-        public static CodeQualityAssessment CreateInstance() =>
-            new()
+        public static CodeQualityAssessment CreateInstance()
+        {
+            return new()
             {
                 CompletedTime = DateTime.Now,
                 Success = false
             };
+        }
     }
 }

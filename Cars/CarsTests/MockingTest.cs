@@ -19,12 +19,12 @@ namespace CarsTests
                 new Recruitment
                 {
                     Id = 1,
-                    Title = "Rec 1", 
+                    Title = "Rec 1",
                     ShortDescription = "a",
                     Description = "a",
                     StartDate = DateTime.Now,
                     Status = RecruitmentStatus.Open,
-                    Type = RecruitmentType.Open, 
+                    Type = RecruitmentType.Open,
                     JobType = JobType.Hybrid,
                     JobLevel = JobLevel.Junior,
                     TeamSize = TeamSize.From10To100,
@@ -34,12 +34,12 @@ namespace CarsTests
                 new Recruitment
                 {
                     Id = 2,
-                    Title = "Rec 2", 
+                    Title = "Rec 2",
                     ShortDescription = "b",
                     Description = "b",
                     StartDate = DateTime.Now,
                     Status = RecruitmentStatus.Open,
-                    Type = RecruitmentType.Open, 
+                    Type = RecruitmentType.Open,
                     JobType = JobType.Hybrid,
                     JobLevel = JobLevel.Junior,
                     TeamSize = TeamSize.From10To100,
@@ -48,10 +48,10 @@ namespace CarsTests
                 }
             );
             await dbContext.SaveChangesAsync();
-            
+
             //Act  
             var result = await dbContext.Recruitments.Select(p => p).ToArrayAsync();
-            
+
             //Assert  
             Assert.NotNull(result);
             Assert.NotEmpty(result);

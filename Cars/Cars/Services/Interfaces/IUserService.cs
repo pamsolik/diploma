@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Cars.Models.DataModels;
-using Cars.Models.View;
 
 namespace Cars.Services.Interfaces
 {

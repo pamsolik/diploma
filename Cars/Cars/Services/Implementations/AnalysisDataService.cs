@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper.Internal;
 using Cars.Data;
 using Cars.Models.DataModels;
 using Cars.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Cars.Services.Implementations
 {

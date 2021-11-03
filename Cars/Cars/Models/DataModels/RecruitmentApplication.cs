@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Cars.Models.DataModels
 {
@@ -27,7 +26,7 @@ namespace Cars.Models.DataModels
         public string ClFile { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
-        
+
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Time { get; set; } = DateTime.Now;
@@ -39,8 +38,7 @@ namespace Cars.Models.DataModels
         //null if not calculated yet
         public int? CodeOverallQualityId { get; set; }
 
-        [ForeignKey("CodeOverallQualityId")]
-        public virtual CodeOverallQuality CodeOverallQuality { get; set; }
+        [ForeignKey("CodeOverallQualityId")] public virtual CodeOverallQuality CodeOverallQuality { get; set; }
 
         public bool Selected { get; set; } = false;
     }

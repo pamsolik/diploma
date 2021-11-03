@@ -1,5 +1,4 @@
 ﻿import {Applicant} from "./Applicant";
-import {CodeQualityAssessment} from "./CodeQualityAssessment";
 import {ProjectDto} from "./ProjectDto";
 import {CodeOverallQuality} from "./CodeOverallQuality";
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Cars.Models.DataModels;
 
 namespace Cars.Models.Dto
 {

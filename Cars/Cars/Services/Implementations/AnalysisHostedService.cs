@@ -21,10 +21,9 @@ namespace Cars.Services.Implementations
 {
     internal class AnalysisHostedService : CronJobService
     {
-        private readonly IServiceScopeFactory _scopeFactory;
-        private readonly ILogger<AnalysisHostedService> _logger;
-
         private const string SonarLoc = "D:/SonarScan";
+        private readonly ILogger<AnalysisHostedService> _logger;
+        private readonly IServiceScopeFactory _scopeFactory;
 
         public AnalysisHostedService(IScheduleConfig<AnalysisHostedService> config, IServiceScopeFactory scopeFactory,
             ILogger<AnalysisHostedService> logger)
@@ -48,7 +47,7 @@ namespace Cars.Services.Implementations
 
         protected override Task DoWork(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"{DateTime.Now:hh:mm:ss} CronJobAnalysis is working");
+            _logger.LogInformation($"{DateTime.Now:hh:mm:ss} AnalysisHostedService is working");
             var t = Task.Run(async () => { await PerformFullAnalysis(); }, cancellationToken);
             return t;
         }
@@ -67,27 +66,19 @@ namespace Cars.Services.Implementations
             var projects = GetResponse<Projects>(GetProjectsUri());
 
             if (projects is not null)
-            {
                 foreach (var application in notExamined)
                 {
                     var projectsToExamine = service.GetNotExaminedProjects(application);
 
                     foreach (var project in projectsToExamine)
-                    {
                         await ExamineSingleProject(application, project, service, projects);
-                    }
 
                     projectsToExamine = service.GetNotExaminedProjects(application);
                     if (!projectsToExamine.Any() && application.CodeOverallQualityId is null)
-                    {
                         await CalculateAndSaveCodeOverallQuality(service, application);
-                    }
                 }
-            }
             else
-            {
                 _logger.LogWarning($"Cannot reach SonarQube on {BasePath}");
-            }
         }
 
         private async Task CalculateAndSaveCodeOverallQuality(IAnalysisDataService service,
@@ -106,7 +97,8 @@ namespace Cars.Services.Implementations
             }
         }
 
-        private async Task ExamineSingleProject(RecruitmentApplication application, Project project, IAnalysisDataService dataService, Projects projects)
+        private async Task ExamineSingleProject(RecruitmentApplication application, Project project,
+            IAnalysisDataService dataService, Projects projects)
         {
             try
             {
@@ -116,7 +108,7 @@ namespace Cars.Services.Implementations
                 var projectKey = $"Project_{project.Id}";
 
                 var projectCreated = projects.Components.Any(c => c.Key == projectKey);
-                
+
                 if (!projectCreated)
                 {
                     var sonarProject = GetResponse<ProjectCreate>(GetCreateProjectUri(projectKey), Method.POST);
@@ -126,13 +118,13 @@ namespace Cars.Services.Implementations
                 {
                     saved = await TryToReadAnalysis(project, dataService, projectKey);
                 }
-                
+
                 if (projectCreated && !saved)
                 {
                     EnsureDirectoryIsCreated(dirInfo);
 
                     RepositoryLoader.Clone(project.Url, projectDir);
-                    
+
                     await PerformScan(projectDir, projectKey);
 
                     await TryToReadAnalysis(project, dataService, projectKey);
@@ -150,27 +142,33 @@ namespace Cars.Services.Implementations
             }
         }
 
-        private static async Task<bool> TryToReadAnalysis(Project project, IAnalysisDataService dataService, string projectKey)
+        private static async Task<bool> TryToReadAnalysis(Project project, IAnalysisDataService dataService,
+            string projectKey)
         {
             var retry = project.CodeQualityAssessmentId is not null;
             var analysis = GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
 
             var loaded = analysis is not null && analysis.Component.Measures.Any();
-            
-            var ass = loaded? CreateInstance(analysis) : CreateInstance();
+
+            var ass = loaded ? CreateInstance(analysis) : CreateInstance();
 
             if (!loaded) return false;
-            
+
             if (retry) ass.Success = true;
             await dataService.SaveCodeQualityAnalysis(project, ass);
-            GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST);
+            //GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST);
             return true;
         }
 
         private async Task PerformScan(string projectDir, string projectKey)
         {
-            var cmd =
-                $"sonar-scanner.bat -D\"sonar.projectKey={projectKey}\" -D\"sonar.sources=.\" -D\"sonar.host.url=http://localhost:9000\" -D\"sonar.login={Key}\"";
+            var cmd = GetNormalScanCommand(projectKey);
+
+
+            // plugins {
+            //     id "org.sonarqube" version "3.3"
+            // }
+
 
             await CommandExecutor.ExecuteCommandAsync(cmd, projectDir, _logger);
         }

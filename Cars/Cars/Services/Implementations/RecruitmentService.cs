@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Device.Location;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Cars.Data;
 using Cars.Models.DataModels;
@@ -11,22 +9,22 @@ using Cars.Models.Dto;
 using Cars.Models.Enums;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
-using Cars.Services.Other;
 using IdentityServer4.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
+using static Cars.Services.Other.FilterUtilities;
 using static Cars.Services.Other.FileService;
 
 namespace Cars.Services.Implementations
 {
     public class RecruitmentService : IRecruitmentService
     {
-        private readonly ILogger<RecruitmentService> _logger;
         private readonly ApplicationDbContext _context;
 
         private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly ILogger<RecruitmentService> _logger;
 
         public RecruitmentService(ApplicationDbContext context, ILogger<RecruitmentService> logger,
             IDateTimeProvider dateTimeProvider)
@@ -66,6 +64,34 @@ namespace Cars.Services.Implementations
             var res = _context.Recruitments.Update(dest);
             await _context.SaveChangesAsync();
             return res.Entity.Id;
+        }
+
+        public async Task<bool> CloseRecruitment(CloseRecruitmentDto closeRecruitmentDto)
+        {
+            var recruitment = await _context.Recruitments.FindAsync(closeRecruitmentDto.RecruitmentId);
+            recruitment.Status = RecruitmentStatus.Closed;
+            foreach (var recruitmentApplication in closeRecruitmentDto.RecruitmentsToClose)
+            {
+                var application =
+                    recruitment.Applications.FirstOrDefault(a => a.Id == recruitmentApplication.ApplicationId);
+                if (application is not null) application.Selected = recruitmentApplication.Selected;
+            }
+
+            _context.Recruitments.Update(recruitment);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> HideRecruitment(int id)
+        {
+            await ChangeRecruitmentStatus(id, RecruitmentStatus.Hidden);
+            return true;
+        }
+
+        public async Task<bool> UnHideRecruitment(int id)
+        {
+            await ChangeRecruitmentStatus(id, RecruitmentStatus.Open);
+            return true;
         }
 
         public async Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId)
@@ -109,6 +135,15 @@ namespace Cars.Services.Implementations
             return dest;
         }
 
+        private async Task ChangeRecruitmentStatus(int id, RecruitmentStatus status)
+        {
+            var recruitment = await _context.Recruitments.FindAsync(id);
+
+            recruitment.Status = status;
+            var res = _context.Recruitments.Update(recruitment);
+            await _context.SaveChangesAsync();
+        }
+
         private async Task<EntityEntry<Recruitment>> CopyAndSaveThumbnail(AddRecruitmentDto addRecruitmentDto,
             EntityEntry<Recruitment> res)
         {
@@ -137,14 +172,6 @@ namespace Cars.Services.Implementations
             }
         }
 
-        private static Expression<Func<City, bool>> CompareCities(AddRecruitmentDto addRecruitmentDto)
-        {
-            //TODO: Refactor
-            return c => c.Name == addRecruitmentDto.City.Name &&
-                        c.Latitude == addRecruitmentDto.City.Latitude &&
-                        c.Longitude == addRecruitmentDto.City.Longitude;
-        }
-
         private IQueryable<Recruitment> GetRecruitments(RecruitmentMode recruitmentMode, string userId = "")
         {
             return recruitmentMode switch
@@ -154,51 +181,6 @@ namespace Cars.Services.Implementations
                 RecruitmentMode.Admin => _context.Recruitments,
                 _ => throw new ArgumentException("This mode doesn't exist")
             };
-        }
-
-        private static IEnumerable<Recruitment> FilterOutAndSortRecruitments(
-            ref IQueryable<Recruitment> recruitments, RecruitmentFilterDto filter)
-        {
-            if (!string.IsNullOrEmpty(filter.SearchString))
-                recruitments = recruitments.Where(s =>
-                    s.Title.Contains(filter.SearchString) || s.Description.Contains(filter.SearchString));
-
-            var filtered = recruitments.AsEnumerable();
-
-            FilterPickedValues(ref filtered, filter.JobLevels, x => (int)x.JobLevel);
-            FilterPickedValues(ref filtered, filter.JobTypes, x => (int)x.JobType);
-            FilterPickedValues(ref filtered, filter.TeamSizes, x => (int)x.TeamSize);
-
-            filtered = filter.SortOrder switch
-            {
-                SortOrder.NameAsc => filtered.OrderBy(s => s.Title),
-                SortOrder.NameDesc => filtered.OrderByDescending(s => s.Title),
-                SortOrder.DateAddedAsc => filtered.OrderBy(s => s.StartDate),
-                SortOrder.DateAddedDesc => filtered.OrderByDescending(s => s.StartDate),
-                SortOrder.Closest => filtered.OrderByDescending(s =>
-                    CalculateDistance(s, filter.City.Latitude, filter.City.Longitude)),
-                _ => recruitments.OrderBy(s => s.Title)
-            };
-
-            return filtered;
-        }
-
-        private static double CalculateDistance(Recruitment recruitment, double latitude, double longitude)
-        {
-            var sCoord = new GeoCoordinate(recruitment.City.Latitude, recruitment.City.Longitude);
-            var eCoord = new GeoCoordinate(latitude, longitude);
-            return sCoord.GetDistanceTo(eCoord);
-        }
-
-        private static void FilterPickedValues(ref IEnumerable<Recruitment> list,
-            IReadOnlyList<bool?> filter, Func<Recruitment, int> predicate)
-        {
-            if (filter.Any(f => f == true))
-                list = list.Where(li =>
-                {
-                    var val = predicate(li);
-                    return filter.Count > val && filter[val] == true;
-                });
         }
 
         private async Task<EntityEntry<RecruitmentApplication>> CopyAndSaveApplicationFiles(
@@ -233,7 +215,9 @@ namespace Cars.Services.Implementations
             }
         }
 
-        private void GetDaysAgoDescriptions(ref List<RecruitmentView> dest) =>
+        private void GetDaysAgoDescriptions(ref List<RecruitmentView> dest)
+        {
             dest.ForEach(dst => dst.DaysAgo = _dateTimeProvider.GetTimeAgoDescription(dst.StartDate));
+        }
     }
 }

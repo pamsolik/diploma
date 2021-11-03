@@ -39,7 +39,5 @@ namespace Cars.Data
                     return null;
             }
         }
-        
-        
     }
 }

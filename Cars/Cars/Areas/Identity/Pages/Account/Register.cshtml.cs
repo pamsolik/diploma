@@ -57,12 +57,12 @@ namespace Cars.Areas.Identity.Pages.Account
             var user = new ApplicationUser
             {
                 UserName = Input.Email,
-                Email = Input.Email, 
-                Name = Input.Name, 
+                Email = Input.Email,
+                Name = Input.Name,
                 Surname = Input.Surname,
                 ProfilePicture = ImgPath.BaseProfilePic
             };
-            
+
             var result = await _userManager.CreateAsync(user, Input.Password);
             if (result.Succeeded)
             {
