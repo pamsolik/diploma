@@ -13,8 +13,8 @@ export class RecruitmentEnums {
   jobTypes: string[] = Object.values(JobType);
   jobType: string;
 
-  recruitmentStatuses: string[] = Object.values(RecruitmentStatus);
-  recruitmentStatus: string;
+  // recruitmentStatuses: string[] = Object.values(RecruitmentStatus);
+  // recruitmentStatus: string;
 
   recruitmentTypes: string[] = Object.values(RecruitmentType);
   recruitmentType: string;
@@ -25,7 +25,7 @@ export class RecruitmentEnums {
   public updateRecruitmentSettings(settings: RecruitmentDetailsDto) {
     settings.jobLevel = getEnumKeyByEnumValue(JobLevel, this.jobLevel);
     settings.jobType = getEnumKeyByEnumValue(JobType, this.jobType);
-    settings.status = getEnumKeyByEnumValue(RecruitmentStatus, this.recruitmentStatus);
+    settings.status = 0; //getEnumKeyByEnumValue(RecruitmentStatus, this.recruitmentStatus);
     settings.type = getEnumKeyByEnumValue(RecruitmentType, this.recruitmentType);
     settings.teamSize = getEnumKeyByEnumValue(TeamSize, this.teamSize);
   }
