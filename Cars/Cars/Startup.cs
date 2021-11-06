@@ -66,7 +66,7 @@ namespace Cars
             services.AddCronJob<AnalysisHostedService>(c =>
             {
                 c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"*/1 * * * *";
+                c.CronExpression = @"*/5 * * * *";
             });
 
             services.AddAuthentication().AddIdentityServerJwt();

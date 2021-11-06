@@ -1,19 +1,17 @@
 
 img {
-  max-width: 60%;
-  max-height: 60%;
-  margin: auto;
+  width: 200px;
+  height: 200px;
   object-fit: contain;
 }
 
-.job-wrapper {
-  display: flex;
-  justify-content: center;
-}
+//.job-wrapper {
+//  display: flex;
+//  justify-content: center;
+//}
 
 .mat-card {
   color: black;
-  height: 20vh;
 }
 
 .base {
@@ -23,9 +21,31 @@ img {
 .selected {
   background: lightgreen;
 }
-
-//.mat-card:hover {
-//  background: darkgrey;
-//  color: white;
-//  cursor: pointer;
+//
+//table {
+//  width: 100%;
+//}
+//
+//th.mat-sort-header-sorted {
+//  color: black;
+//}
+//
+//td.mat-cell {
+//  /* row border */
+//  text-align: center;
+//  border: 1px solid #a2a2a2;
+//}
+//
+//tr.mat-row:hover {
+//  background-color: #818181;
+//}
+//
+//td.mat-header-cell{
+//  /* row border */
+//  border: 1px solid #a2a2a2;
+//}
+//
+//table {
+//  /* row spacing / margin */
+//  border-spacing: 0 8px !important;
 //}

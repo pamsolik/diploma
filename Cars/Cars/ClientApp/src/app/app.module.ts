@@ -33,6 +33,9 @@ import {RecruitmentListComponent} from './recruitment-list/recruitment-list.comp
 import {ApplicationsComponent} from './applications/applications.component';
 import {NgbdSortableHeader} from "../components/NgbdSortableHeader";
 import {ApplicationDetailsComponent} from "./application-details/application-details.component";
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
+import {SortDirective} from "../directives/sort-directive";
 
 
 @NgModule({
@@ -51,7 +54,8 @@ import {ApplicationDetailsComponent} from "./application-details/application-det
     ApplicationsComponent,
     ApplyComponent,
     NgbdSortableHeader,
-    ApplicationDetailsComponent
+    ApplicationDetailsComponent,
+    SortDirective
   ],
   imports: [
     BrowserModule, // .withServerTransition({appId: 'ng-cli-universal'}),
@@ -79,7 +83,9 @@ import {ApplicationDetailsComponent} from "./application-details/application-det
     MatSelectModule,
     MatInputModule,
     MatSliderModule,
-    NgxSliderModule
+    NgxSliderModule,
+    MatTableModule,
+    MatSortModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true},
