@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cars.Models.DataModels;
+using Cars.Models.Enums;
 
 namespace Cars.Models.View
 {
@@ -20,9 +21,9 @@ namespace Cars.Models.View
 
         public DateTime Time { get; set; }
 
-        public bool ClauseOptAccepted { get; set; }
+        public ClauseAccept ClauseOptAccepted { get; set; }
 
-        public bool ClauseOpt2Accepted { get; set; }
+        public ClauseAccept ClauseOpt2Accepted { get; set; }
 
         public CodeOverallQuality CodeOverallQuality { get; set; }
 

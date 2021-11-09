@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Cars.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cars.Models.Dto
 {
@@ -15,5 +16,8 @@ namespace Cars.Models.Dto
         [Required]
         [StringLength(1000, ErrorMessage = "Url cannot be longer than 1000 characters.")]
         public string Url { get; set; }
+        
+        [Required]
+        public Technology Technology { get; set; }
     }
 }

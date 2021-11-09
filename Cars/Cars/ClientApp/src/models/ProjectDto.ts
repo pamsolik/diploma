@@ -3,7 +3,8 @@
 export interface ProjectDto {
   title: string,
   description: string,
-  url: string
+  url: string,
+  technology: number,
   codeQualityAssessment: CodeQualityAssessment
 }
 

@@ -78,7 +78,7 @@ export class ApplyComponent implements OnInit {
 
   addProject() {
     if (this.application.projects.length < 5) {
-      this.application.projects.push({description: '', title: '', url: ''} as ProjectDto);
+      this.application.projects.push({description: '', title: '', url: '', technology: 0} as ProjectDto);
     } else {
       this.alertService.showResult("Błąd", "Nie można dodać więcej niż 5 projektów.")
     }

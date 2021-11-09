@@ -1,4 +1,5 @@
 ﻿using Cars.Models.DataModels;
+using Cars.Models.Enums;
 
 namespace Cars.Models.View
 {
@@ -13,6 +14,8 @@ namespace Cars.Models.View
         public string Title { get; set; }
 
         public string Url { get; set; }
+
+        public Technology Technology { get; set; }
 
         public int? CodeQualityAssessmentId { get; set; }
 
