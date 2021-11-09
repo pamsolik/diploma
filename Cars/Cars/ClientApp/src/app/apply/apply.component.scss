@@ -18,3 +18,8 @@
 .stick {
   float: right;
 }
+
+.scroll-content{
+  overflow: auto;
+  max-height: 60vh;
+}

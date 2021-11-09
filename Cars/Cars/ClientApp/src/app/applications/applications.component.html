@@ -1,5 +1,5 @@
 <div class="card mb-4 box-shadow container-lg p-0">
-  <h1 *ngIf="!recruitmentApplications else loaded"></h1>
+  <h1 *ngIf="!recruitmentApplications || !details else loaded"></h1>
 
   <ng-template #loaded>
 
@@ -11,11 +11,15 @@
 
     <div class="card-body">
       <div class="col-auto">
+        <h5 class="alert alert-warning" *ngIf="details.status==1">Rekrutacja zamknięta</h5>
 
-        <a [routerLink]="['/recruitment-settings/' + id]" class="btn btn-primary me-5">Edycja rekrutacji</a>
+        <button [routerLink]="['/recruitment-settings/' + id]" class="btn btn-warning me-5">Edycja rekrutacji</button>
+        <button [routerLink]="['/recruitment-details/' + id]" class="btn btn-primary me-5">Pogląd rekrutacji</button>
 
-        <button (click)="selectCandidates()" class="btn btn-success">Wybierz kandydatów i zakończ rekrutację
+        <button *ngIf="details.status!=1" (click)="selectCandidates()" class="btn btn-success">
+          Wybierz kandydatów i zakończ rekrutację
         </button>
+
       </div>
 
       <h1 *ngIf="recruitmentApplications.length == 0 else any">Brak aplikacji</h1>
@@ -27,21 +31,21 @@
 
         <section class="me-1">
           <div class="row">
-            <h5 class="col-5 border-end border-dark" [appSort]="recruitmentApplications" data-order="desc"
-                data-name="application.applicant.name">Lista aplikacji</h5>
-            <p class="col-1 border-end border-dark" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="application.codeOverallQuality.bugs">Błędy</p>
-            <p class="col-1 border-end border-dark" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="application.codeOverallQuality.securityRating">Bezpieczeństwo</p>
-            <p class="col-1 border-end border-dark" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="application.codeOverallQuality.codeSmells">Code Smells</p>
-            <p class="col-1 border-end border-dark" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="application.codeOverallQuality.duplicatedLinesDensity">Powtórzenia (%)</p>
-            <p class="col-1 border-end border-dark" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="application.codeOverallQuality.reliabilityRating">Niezawodność</p>
-            <p class="col-1 border-end border-dark" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="application.codeOverallQuality.maintainability">Utrzymywalność</p>
-            <p class="col-1">Dług techniczny</p>
+            <h5 class="col-5 border-end border-dark th-sm search" [appSort]="recruitmentApplications"
+                data-name="applicant.name">Lista aplikacji</h5>
+            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
+               data-name="codeOverallQuality.bugs">Błędy</p>
+            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
+               data-name="codeOverallQuality.securityRating">Bezpieczeństwo</p>
+            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
+               data-name="codeOverallQuality.codeSmells">Code Smells</p>
+            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
+               data-name="codeOverallQuality.duplicatedLinesDensity">Powtórzenia (%)</p>
+            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
+               data-name="codeOverallQuality.reliabilityRating">Niezawodność</p>
+            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
+               data-name="codeOverallQuality.maintainability">Utrzymywalność</p>
+            <p class="col-1 search">Dług techniczny</p>
           </div>
           <div class="row">
 
@@ -64,7 +68,7 @@
                   <div class="form-check pt-2">
                     <input [(ngModel)]="application.selected" class="form-check-input"
                            id="flexSelected{{application.id}}"
-                           type="checkbox">
+                           type="checkbox" [disabled]="details.status == 1">
                     <label class="form-check-label" for="flexSelected{{application.id}}">
                       Wybrano
                     </label>
@@ -77,31 +81,31 @@
 
                 <ng-template #examined>
                   <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{application.codeOverallQuality.bugs}}</h5>
+                    <h5 class="card-title">{{getValue(application.codeOverallQuality.bugs)}}</h5>
                   </div>
 
                   <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{application.codeOverallQuality.securityRating}}</h5>
+                    <h5 class="card-title">{{getValue(application.codeOverallQuality.securityRating)}}</h5>
                   </div>
 
                   <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{application.codeOverallQuality.codeSmells}}</h5>
+                    <h5 class="card-title">{{getValue(application.codeOverallQuality.codeSmells)}}</h5>
                   </div>
 
                   <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{application.codeOverallQuality.duplicatedLinesDensity}}</h5>
+                    <h5 class="card-title">{{getValue(application.codeOverallQuality.duplicatedLinesDensity)}}</h5>
                   </div>
 
                   <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{application.codeOverallQuality.reliabilityRating}}</h5>
+                    <h5 class="card-title">{{getValue(application.codeOverallQuality.reliabilityRating)}}</h5>
                   </div>
 
                   <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{application.codeOverallQuality.maintainability}}</h5>
+                    <h5 class="card-title">{{getValue(application.codeOverallQuality.maintainability)}}</h5>
                   </div>
 
                   <div class="col-1 text-center">
-                    <h5 class="card-title">{{application.codeOverallQuality.sqaleRating}}</h5>
+                    <h5 class="card-title">{{getValue(application.codeOverallQuality.sqaleRating)}}</h5>
                   </div>
                 </ng-template>
               </div>

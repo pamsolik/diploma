@@ -13,7 +13,7 @@ export class Sort {
   }
 
   public resolve(path, obj = self, separator = '.') {
-    let properties = Array.isArray(path) ? path : path.split(separator).slice(1)
+    let properties = Array.isArray(path) ? path : path.split(separator);
     return properties.reduce((prev, curr) => prev && prev[curr], obj);
   }
 

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Cars.Models.Enums;
 
 namespace Cars.Models.DataModels
 {
@@ -23,7 +24,10 @@ namespace Cars.Models.DataModels
         [Required]
         [StringLength(1000, ErrorMessage = "Url cannot be longer than 1000 characters.")]
         public string Url { get; set; }
-
+        
+        [Required]
+        public Technology Technology { get; set; }
+        
         //null if not calculated yet
         public int? CodeQualityAssessmentId { get; set; }
 

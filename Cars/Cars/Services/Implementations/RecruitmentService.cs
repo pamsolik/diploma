@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Cars.Data;
 using Cars.Models.DataModels;
 using Cars.Models.Dto;
 using Cars.Models.Enums;
+using Cars.Models.Exceptions;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
 using IdentityServer4.Extensions;
@@ -14,6 +16,7 @@ using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
+using RestSharp;
 using static Cars.Services.Other.FilterUtilities;
 using static Cars.Services.Other.FileService;
 
@@ -69,6 +72,12 @@ namespace Cars.Services.Implementations
         public async Task<bool> CloseRecruitment(CloseRecruitmentDto closeRecruitmentDto)
         {
             var recruitment = await _context.Recruitments.FindAsync(closeRecruitmentDto.RecruitmentId);
+            
+            if (recruitment is null) 
+                throw new AppBaseException(HttpStatusCode.NotFound, "Recruitment not found");
+            if (recruitment.Status == RecruitmentStatus.Closed)
+                throw new AppBaseException(HttpStatusCode.Forbidden, "Recruitment has allready been closed");
+            
             recruitment.Status = RecruitmentStatus.Closed;
             foreach (var recruitmentApplication in closeRecruitmentDto.RecruitmentsToClose)
             {

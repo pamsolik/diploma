@@ -26,19 +26,6 @@ export class ApplicationDetailsComponent {
 
   }
 
-  apply() {
-    // this.application.recruitmentId = this.details.id;
-    // this.alertService.showLoading("Dodawanie aplikacji");
-    // console.log(this.application);
-    // this.http.post<ApiAnswer>(`${this.baseUrl}api/recruitments/apply`, this.application).subscribe(result => {
-    //   this.alertService.showResultAndRedirect("Gratulacje", "Zapisano aplikację", '/recruitments')
-    //   console.log(result);
-    // }, error => {
-    //   this.alertService.showResult("Błąd", error.message)
-    //   console.error(error);
-    // })
-  }
-
   open(content: any) {
     let settings = {
       ariaLabelledBy: 'modal-basic-title',

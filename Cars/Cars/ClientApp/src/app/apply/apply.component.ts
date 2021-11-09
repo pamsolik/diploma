@@ -1,4 +1,4 @@
-import {Component, Inject, Input} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 
 import {HttpClient} from '@angular/common/http';
 
@@ -15,8 +15,8 @@ import {ProjectDto} from "../../models/ProjectDto";
   templateUrl: './apply.component.html',
   styleUrls: ['./apply.component.scss'],
 })
-export class ApplyComponent {
-  application: ApplicationDto = ApplicationDtoDefault;
+export class ApplyComponent implements OnInit {
+  application: ApplicationDto;
   newProj: string;
 
   @Input()
@@ -27,6 +27,12 @@ export class ApplyComponent {
               private http: HttpClient,
               private alertService: AlertService) {
 
+  }
+
+  ngOnInit() {
+    this.application = ApplicationDtoDefault;
+
+    this.addProject()
   }
 
   public uploadFinishedCv = (event) => {
@@ -70,16 +76,11 @@ export class ApplyComponent {
     this.application.projects.splice(i, 1);
   }
 
-  addProject(proj: string) {
-    if (proj) {
-      if (this.application.projects.find(p => p.url == proj)) {
-        this.alertService.showResult("Błąd", "Projekt już istnieje na liście.");
-        return;
-      }
-      this.application.projects.push({description: 'desc', title: 'title', url: proj} as ProjectDto);
-      this.newProj = "";
+  addProject() {
+    if (this.application.projects.length < 5) {
+      this.application.projects.push({description: '', title: '', url: ''} as ProjectDto);
     } else {
-      this.alertService.showResult("Błąd", "Nie można dodać pustego projektu.")
+      this.alertService.showResult("Błąd", "Nie można dodać więcej niż 5 projektów.")
     }
   }
 }

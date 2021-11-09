@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Cars.Models.Enums;
 
 namespace Cars.Models.DataModels
 {
@@ -31,9 +32,9 @@ namespace Cars.Models.DataModels
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Time { get; set; } = DateTime.Now;
 
-        public bool ClauseOptAccepted { get; set; }
+        public ClauseAccept ClauseOptAccepted { get; set; }
 
-        public bool ClauseOpt2Accepted { get; set; }
+        public ClauseAccept ClauseOpt2Accepted { get; set; }
 
         //null if not calculated yet
         public int? CodeOverallQualityId { get; set; }

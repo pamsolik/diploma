@@ -12,21 +12,31 @@ namespace Cars.Data
             {
                 CompletedTime = DateTime.Now,
                 Success = true,
-                CodeSmells = analysis.GetValue("code_smells"),
-                Maintainability = analysis.GetValue("sqale_rating"),
-                Coverage = analysis.GetValue("coverage"), //Check
-                CognitiveComplexity = analysis.GetValue("cognitive_complexity"), //Check
-                Violations = analysis.GetValue("violations"),
-                SecurityRating = analysis.GetValue("security_rating"),
+                //Complexity
+                Complexity = analysis.GetValue("complexity"),
+                CognitiveComplexity = analysis.GetValue("cognitive_complexity"),
+                //Duplications
                 DuplicatedLines = analysis.GetValue("duplicated_lines"),
-                Lines = analysis.GetValue("lines"),
                 DuplicatedLinesDensity = analysis.GetValue("duplicated_lines_density"),
+                //Issues
+                Violations = analysis.GetValue("violations"),
+                //Maintability
+                CodeSmells = analysis.GetValue("code_smells"),
+                MaintainabilityRating = analysis.GetValue("sqale_rating"),
+                TechnicalDebt = analysis.GetValue("sqale_index"),
+                //Reliability
                 Bugs = analysis.GetValue("bugs"),
-                SqaleRating = analysis.GetValue("security_rating"),
                 ReliabilityRating = analysis.GetValue("reliability_rating"),
-                Complexity = analysis.GetValue("complexity"), //Check
+                //Tests
+                Coverage = analysis.GetValue("coverage"),
+                Tests = analysis.GetValue("tests"),
+                //Security
+                SecurityRating = analysis.GetValue("security_rating"),
                 SecurityHotspots = analysis.GetValue("security_hotspots"),
-                OverallRating = 0f //TODO: Calculate
+                //Size
+                LinesOfCode = analysis.GetValue("lines"),
+                //Overall
+                OverallRating = null
             };
         }
 

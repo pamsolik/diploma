@@ -18,6 +18,10 @@ a {
 /*  background-color: #62727b;*/
 /*}*/
 
+.modal-xl {
+  max-width: 80%;
+}
+
 code {
   color: #e01a76;
 }

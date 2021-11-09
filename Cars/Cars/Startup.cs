@@ -40,8 +40,7 @@ namespace Cars
 
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseLazyLoadingProxies()
-                        .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")),
-                ServiceLifetime.Transient
+                        .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection"))
             );
 
             services.AddDatabaseDeveloperPageExceptionFilter();

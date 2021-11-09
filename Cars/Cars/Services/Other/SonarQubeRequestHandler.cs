@@ -7,7 +7,8 @@
         public const string BasePath = "http://localhost:9000";
 
         private const string Metrics =
-            "bugs,code_smells,duplicated_lines,duplicated_lines_density,complexity,cognitive_complexity,violations,coverage,lines,sqale_rating,reliability_rating,security_hotspots,security_rating";
+            "complexity,cognitive_complexity,duplicated_lines,duplicated_lines_density,violations,code_smells," +
+            "sqale_index,sqale_rating,bugs,reliability_rating,coverage,tests,security_hotspots,security_rating,lines";
 
         private static readonly string MetricsUriBase =
             $"{BasePath}/api/measures/component?metricKeys={Metrics}&component=";

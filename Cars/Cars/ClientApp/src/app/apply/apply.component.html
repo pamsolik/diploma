@@ -1,6 +1,11 @@
 <ng-template #content class="" let-modal>
   <div class="card p-0 m-0">
-    <h4 class="card-header">Podaj dane do aplikaji</h4>
+
+    <div class="row card-header">
+      <h4 class="col">Podaj dane do aplikaji</h4>
+      <button (click)="apply()" class="btn btn-success px-2 me-2 col-auto" type="submit">Aplikuj</button>
+    </div>
+
     <div class="mt-2 card-body row">
       <!--      <form class="g-3 needs-validation" novalidate>-->
       <div class="col-8 border-end">
@@ -47,21 +52,21 @@
         <!--      </form>-->
       </div>
 
-      <div class="col">
-        <h5>Projekty (Linki do publicznych repuzytorium GitHub):</h5>
-        <div class="mx-3">
+      <div class="col scroll-content">
+        <h5>Projekty:</h5>
+        <div class="mx-3 form-group">
           <p *ngIf="application.projects.length == 0" class="alert alert-warning">Brak projektów</p>
-          <div *ngFor="let proj of application.projects; let i = index" class="form-group mb-2 row">
-            <input [(ngModel)]="application.projects[i]" class="form-control col ms-0" disabled
-                   placeholder="Podaj tytuł" type="text">
+          <div class="card mb-2 card-body" *ngFor="let proj of application.projects; let i = index">
+            <input [(ngModel)]="proj.title" class="form-control col ms-0 mb-1" placeholder="Podaj tytuł" type="text">
+            <input [(ngModel)]="proj.description" class="form-control col ms-0 mb-1" placeholder="Opis projektu" type="text">
+            <input [(ngModel)]="proj.url" class="form-control col ms-0 mb-1" placeholder="Url GitHub projektu" type="text">
+
             <button (click)="deleteProject(i)" class="btn btn-danger col-auto mx-2">×</button>
           </div>
         </div>
 
-        <input [(ngModel)]="newProj" class="form-control m-2" placeholder="Podaj nowy projekt" type="text">
-        <button (click)="addProject(newProj)" class="btn btn-success">Dodaj kolejny projekt</button>
-
-        <button (click)="apply()" class="btn btn-success px-2 my-2 w-100" type="submit">Aplikuj</button>
+<!--        <input [(ngModel)]="newProj" class="form-control m-2" placeholder="Podaj nowy projekt" type="text">-->
+        <button (click)="addProject()" class="btn btn-success">Dodaj kolejny projekt</button>
       </div>
 
     </div>

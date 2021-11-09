@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cars.Models.DataModels;
 
 namespace Cars.Data
 {
-    public class CodeOverallQualityFactory
+    public static class CodeOverallQualityFactory
     {
         public static CodeOverallQuality GetCodeOverallQuality(List<Project> projects)
         {
@@ -13,30 +14,55 @@ namespace Cars.Data
                 case 0:
                     return null;
                 case 1:
-                    var q = projects.First().CodeQualityAssessment;
+                {
+                    var p = projects.First().CodeQualityAssessment;
                     return new CodeOverallQuality
                     {
                         Success = true,
                         ProjectsCount = 1,
-                        CompletedTime = q.CompletedTime,
-                        CodeSmells = q.CodeSmells,
-                        Maintainability = q.Maintainability,
-                        Coverage = q.Coverage,
-                        CognitiveComplexity = q.CognitiveComplexity,
-                        Violations = q.Violations,
-                        SecurityRating = q.SecurityRating,
-                        DuplicatedLines = q.DuplicatedLines,
-                        Lines = q.Lines,
-                        DuplicatedLinesDensity = q.DuplicatedLinesDensity,
-                        Bugs = q.Bugs,
-                        SqaleRating = q.SqaleRating,
-                        ReliabilityRating = q.ReliabilityRating,
-                        Complexity = q.Complexity,
-                        SecurityHotspots = q.SecurityHotspots,
-                        OverallRating = q.OverallRating
+                        CompletedTime = DateTime.Now,
+                        CodeSmells = p.CodeSmells,
+                        MaintainabilityRating = p.MaintainabilityRating,
+                        Coverage = p.Coverage,
+                        CognitiveComplexity = p.CognitiveComplexity,
+                        Violations = p.Violations,
+                        SecurityRating = p.SecurityRating,
+                        DuplicatedLines = p.DuplicatedLines,
+                        LinesOfCode = p.LinesOfCode,
+                        DuplicatedLinesDensity = p.DuplicatedLinesDensity,
+                        Bugs = p.Bugs,
+                        TechnicalDebt = p.TechnicalDebt,
+                        ReliabilityRating = p.ReliabilityRating,
+                        Complexity = p.Complexity,
+                        SecurityHotspots = p.SecurityHotspots,
+                        OverallRating = p.OverallRating
                     };
+                }
                 default:
-                    return null;
+                {
+                    var p = projects.Select(a => a.CodeQualityAssessment).ToList();
+                    return new CodeOverallQuality
+                    {
+                        Success = true,
+                        ProjectsCount = p.Count,
+                        CompletedTime = DateTime.Now,
+                        CodeSmells = p.Sum(x => x.CodeSmells),
+                        MaintainabilityRating = p.Average(x => x.MaintainabilityRating),
+                        Coverage = p.Average(x => x.Coverage),
+                        CognitiveComplexity = p.Average(x => x.CognitiveComplexity),
+                        Violations = p.Sum(x => x.Violations),
+                        SecurityRating = p.Average(x => x.SecurityRating),
+                        DuplicatedLines = p.Sum(x => x.DuplicatedLines),
+                        LinesOfCode = p.Sum(x => x.LinesOfCode),
+                        DuplicatedLinesDensity = p.Average(x => x.DuplicatedLinesDensity),
+                        Bugs = p.Sum(x => x.Bugs),
+                        TechnicalDebt = p.Average(x => x.TechnicalDebt),
+                        ReliabilityRating = p.Average(x => x.ReliabilityRating),
+                        Complexity = p.Average(x => x.Complexity),
+                        SecurityHotspots = p.Sum(x => x.SecurityHotspots),
+                        OverallRating = p.Average(x => x.OverallRating)
+                    };
+                }
             }
         }
     }

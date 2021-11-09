@@ -16,6 +16,7 @@ using static Cars.Data.CodeOverallQualityFactory;
 using static Cars.Data.HttpRequestHandler;
 using static Cars.Services.Other.SonarQubeRequestHandler;
 using static Cars.Services.Other.FileService;
+using static Cars.Services.Other.OverallQualityCalculator;
 
 namespace Cars.Services.Implementations
 {
@@ -89,6 +90,7 @@ namespace Cars.Services.Implementations
                 var projects = service.GetAllProjects(application);
                 var coq = GetCodeOverallQuality(projects);
                 if (coq is null) return;
+                coq.OverallRating = CalculateOverallRating(coq);
                 await service.SaveCodeOverallQuality(application, coq);
             }
             catch (Exception e)
@@ -152,6 +154,8 @@ namespace Cars.Services.Implementations
 
             var ass = loaded ? CreateInstance(analysis) : CreateInstance();
 
+            ass.OverallRating = CalculateOverallRating(ass);
+            
             if (!loaded) return false;
 
             if (retry) ass.Success = true;
@@ -163,12 +167,6 @@ namespace Cars.Services.Implementations
         private async Task PerformScan(string projectDir, string projectKey)
         {
             var cmd = GetNormalScanCommand(projectKey);
-
-
-            // plugins {
-            //     id "org.sonarqube" version "3.3"
-            // }
-
 
             await CommandExecutor.ExecuteCommandAsync(cmd, projectDir, _logger);
         }

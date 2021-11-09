@@ -14,6 +14,7 @@ export class SortDirective {
   constructor(private renderer: Renderer2, private targetElement: ElementRef) { }
 
   @HostListener("click")
+
   sortData() {
     const sort = new Sort();
 
