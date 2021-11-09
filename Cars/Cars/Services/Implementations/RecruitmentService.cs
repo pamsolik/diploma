@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using RestSharp;
 using static Cars.Services.Other.FilterUtilities;
 using static Cars.Services.Other.FileService;
+using Duende.IdentityServer.Extensions;
 
 namespace Cars.Services.Implementations
 {

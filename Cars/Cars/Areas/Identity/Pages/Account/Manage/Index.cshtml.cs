@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using static Cars.Services.Other.FileService;
 using static Cars.Models.Enums.ImgPath;
+using Duende.IdentityServer.Extensions;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage
 {
