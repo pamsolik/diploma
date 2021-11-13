@@ -1,16 +1,17 @@
 ﻿using System;
 using Cars.Models.DataModels;
 using Cars.Models.SonarQubeDataModels;
+using Cars.Services.Interfaces;
 
 namespace Cars.Data
 {
     public static class CodeQualityAssessmentFactory
     {
-        public static CodeQualityAssessment CreateInstance(CodeAnalysis analysis)
+        public static CodeQualityAssessment CreateInstance(CodeAnalysis analysis, IDateTimeProvider dateTimeProvider)
         {
             return new()
             {
-                CompletedTime = DateTime.Now,
+                CompletedTime = dateTimeProvider.GetTimeNow(),
                 Success = true,
                 //Complexity
                 Complexity = analysis.GetValue("complexity"),
@@ -40,11 +41,11 @@ namespace Cars.Data
             };
         }
 
-        public static CodeQualityAssessment CreateInstance()
+        public static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider)
         {
             return new()
             {
-                CompletedTime = DateTime.Now,
+                CompletedTime = dateTimeProvider.GetTimeNow(),
                 Success = false
             };
         }

@@ -6,6 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AlertService} from "../../services/alert.service";
 import {RecruitmentApplication} from "../../models/RecruitmentApplication";
 import {BaseValues} from "../../models/enums/BaseValues";
+import {Technology} from "../../models/enums/Technology";
 
 
 @Component({
@@ -17,14 +18,12 @@ export class ApplicationDetailsComponent {
 
   @Input()
   details: RecruitmentApplication;
+  technologies: string[] = Object.values(Technology);
 
   constructor(private modalService: NgbModal,
               @Inject('BASE_URL') private baseUrl: string,
               private http: HttpClient,
-              private alertService: AlertService) {
-
-
-  }
+              private alertService: AlertService) { }
 
   open(content: any) {
     let settings = {

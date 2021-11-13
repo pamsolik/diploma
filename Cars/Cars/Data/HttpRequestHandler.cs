@@ -22,7 +22,7 @@ namespace Cars.Data
                 var response = client.Execute(request);
                 return JsonConvert.DeserializeObject<T>(response.Content);
             }
-            catch (Exception e)
+            catch
             {
                 return default;
             }

@@ -11,6 +11,7 @@ import {CloseRecruitmentDto, RecruitmentToClose} from "../../models/CloseRecruit
 import {City} from "../../models/City";
 import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 import { Sort } from 'src/util/sort';
+import {Technology} from "../../models/enums/Technology";
 
 @Component({
   selector: 'app-applications',

@@ -53,6 +53,7 @@
         <div class="card mb-2 card-body" *ngFor="let p of details.projects">
           <h6>{{p.title}}</h6>
           <p>{{p.description}}</p>
+          <p>{{technologies[p.technology]}}</p>
           <a [href]="p.url" target="_blank">{{p.url}}</a>
         </div>
       </div>

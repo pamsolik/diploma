@@ -30,7 +30,7 @@ namespace Cars.Models.DataModels
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime Time { get; set; } = DateTime.Now;
+        public DateTime Time { get; set; }
 
         public ClauseAccept ClauseOptAccepted { get; set; }
 

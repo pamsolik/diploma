@@ -61,9 +61,20 @@
             <input [(ngModel)]="proj.description" class="form-control col ms-0 mb-1" placeholder="Opis projektu" type="text">
             <input [(ngModel)]="proj.url" class="form-control col ms-0 mb-1" placeholder="Url GitHub projektu" type="text">
 
-<!--            <input [(ngModel)]="proj.url" class="form-control col ms-0 mb-1" placeholder="Url GitHub projektu" type="text">-->
+            <div class="form-group mb-2 row">
+              <div class="col">
+                <label>Technologia</label>
+                <select [(ngModel)]="technology[i]" class="form-control">
+                  <option *ngFor="let level of technologies">{{level}}</option>
+                </select>
+              </div>
 
-            <button (click)="deleteProject(i)" class="btn btn-danger col-auto mx-2">×</button>
+              <div class="col-auto">
+                <button (click)="deleteProject(i)" class="btn btn-danger col-auto mx-2 mt-4">×</button>
+              </div>
+            </div>
+
+
           </div>
         </div>
 

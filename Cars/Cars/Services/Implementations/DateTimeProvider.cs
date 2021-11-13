@@ -8,7 +8,7 @@ namespace Cars.Services.Implementations
     {
         public DateTime GetTimeNow()
         {
-            return DateTime.Now;
+            return DateTime.UtcNow;
         }
 
         public string GetTimeAgoDescription(DateTime dt)

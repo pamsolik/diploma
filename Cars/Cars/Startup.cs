@@ -61,12 +61,12 @@ namespace Cars
 
             services.AddScoped<IUserService, UserService>();
 
-            services.AddScoped<IDateTimeProvider, DateTimeProvider>();
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
             services.AddCronJob<AnalysisHostedService>(c =>
             {
                 c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"*/5 * * * *";
+                c.CronExpression = @"*/1 * * * *";
             });
 
             services.AddAuthentication().AddIdentityServerJwt();

@@ -1,6 +1,6 @@
 ﻿namespace Cars.Services.Other
 {
-    public static class SonarQubeRequestHandler
+    public class SonarQubeRequestHandler
     {
         public const string Key = "2a717a00e2600f862f49a8fcc9b28f2029040369";
 
@@ -12,6 +12,12 @@
 
         private static readonly string MetricsUriBase =
             $"{BasePath}/api/measures/component?metricKeys={Metrics}&component=";
+
+        public const string SonarLoc = "D:/SonarScan";
+
+        private const string MvnLoc = $"{SonarLoc}\\dependencies\\mvn\\bin\\mvn";
+
+        private const string GradleLoc = $"{SonarLoc}\\dependencies\\gradle\\bin\\gradle";
 
         private static readonly string CreateProjectUriBase = $"{BasePath}/api/projects/create";
 
@@ -43,27 +49,22 @@
 
         public static string GetMvnScanCommand(string projectKey)
         {
-            return $@"mvn sonar:sonar \
-                -Dsonar.projectKey={projectKey} \
-                -Dsonar.host.url={BasePath} \
-                -Dsonar.login={Key}";
+            return $@"{MvnLoc} compile & {MvnLoc} sonar:sonar -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={Key}";
         }
 
+        //Add plugin automatically
         // plugins {
         //     id "org.sonarqube" version "3.3"
         // }
         public static string GetGradleScanCommand(string projectKey)
         {
-            return $@"./gradlew sonarqube \
-                  -Dsonar.projectKey={projectKey} \
-                  -Dsonar.host.url={BasePath} \
-                  -Dsonar.login={Key}";
+            return $@"{GradleLoc} sonarqube -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={Key}";
         }
 
         public static string GetDotNetScanCommand(string projectKey)
         {
             return
-                $"dotnet sonarscanner begin /k:\"{projectKey}\" /d:sonar.host.url=\"{BasePath}\"  /d:sonar.login=\"{Key} &" +
+                $"dotnet sonarscanner begin /k:\"{projectKey}\" /d:sonar.host.url=\"{BasePath}\"  /d:sonar.login=\"{Key}\" & " +
                 $"dotnet build & dotnet sonarscanner end /d:sonar.login=\"{Key}\"";
         }
     }

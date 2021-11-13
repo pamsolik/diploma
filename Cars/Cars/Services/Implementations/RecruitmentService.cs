@@ -116,7 +116,7 @@ namespace Cars.Services.Implementations
         {
             var recruitments = GetRecruitments(recruitmentMode, userId);
 
-            var recruitmentList = FilterOutAndSortRecruitments(ref recruitments, filter).ToList();
+            var recruitmentList = FilterOutAndSortRecruitments(ref recruitments, filter);
             var dest = recruitmentList.Adapt<List<RecruitmentView>>();
             GetDaysAgoDescriptions(ref dest);
             var paginated = PaginatedList<RecruitmentView>.CreateAsync(dest, filter.PageIndex, filter.PageSize);

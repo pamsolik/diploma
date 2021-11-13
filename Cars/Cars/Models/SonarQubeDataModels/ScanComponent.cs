@@ -13,7 +13,7 @@ namespace Cars.Models.SonarQubeDataModels
 
         public List<Measure> Measures { get; set; }
 
-        public Measure? GetMeasure(string key)
+        public Measure GetMeasure(string key)
         {
             return Measures.FirstOrDefault(measure => measure.Metric.Equals(key));
         }

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cars.Data;
 using Cars.Models.DataModels;
+using Cars.Models.Enums;
 using Cars.Models.SonarQubeDataModels;
 using Cars.Services.Interfaces;
 using Cars.Services.Other;
@@ -22,16 +24,16 @@ namespace Cars.Services.Implementations
 {
     internal class AnalysisHostedService : CronJobService
     {
-        private const string SonarLoc = "D:/SonarScan";
         private readonly ILogger<AnalysisHostedService> _logger;
         private readonly IServiceScopeFactory _scopeFactory;
-
+        private readonly IDateTimeProvider _dateTimeProvider;
         public AnalysisHostedService(IScheduleConfig<AnalysisHostedService> config, IServiceScopeFactory scopeFactory,
-            ILogger<AnalysisHostedService> logger)
+            ILogger<AnalysisHostedService> logger, IDateTimeProvider dateTimeProvider)
             : base(config.CronExpression, config.TimeZoneInfo)
         {
             _scopeFactory = scopeFactory;
             _logger = logger;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -88,7 +90,7 @@ namespace Cars.Services.Implementations
             try
             {
                 var projects = service.GetAllProjects(application);
-                var coq = GetCodeOverallQuality(projects);
+                var coq = GetCodeOverallQuality(projects, _dateTimeProvider);
                 if (coq is null) return;
                 coq.OverallRating = CalculateOverallRating(coq);
                 await service.SaveCodeOverallQuality(application, coq);
@@ -127,7 +129,7 @@ namespace Cars.Services.Implementations
 
                     RepositoryLoader.Clone(project.Url, projectDir);
 
-                    await PerformScan(projectDir, projectKey);
+                    await PerformScan(projectDir, projectKey, project.Technology);
 
                     await TryToReadAnalysis(project, dataService, projectKey);
                     DeleteWithoutPermissions(dirInfo);
@@ -140,11 +142,11 @@ namespace Cars.Services.Implementations
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "CodeQualityAssessments Error");
+                _logger.LogError(e, "ExamineSingleProject Error");
             }
         }
 
-        private static async Task<bool> TryToReadAnalysis(Project project, IAnalysisDataService dataService,
+        private async Task<bool> TryToReadAnalysis(Project project, IAnalysisDataService dataService,
             string projectKey)
         {
             var retry = project.CodeQualityAssessmentId is not null;
@@ -152,7 +154,7 @@ namespace Cars.Services.Implementations
 
             var loaded = analysis is not null && analysis.Component.Measures.Any();
 
-            var ass = loaded ? CreateInstance(analysis) : CreateInstance();
+            var ass = loaded ? CreateInstance(analysis, _dateTimeProvider) : CreateInstance(_dateTimeProvider);
 
             ass.OverallRating = CalculateOverallRating(ass);
             
@@ -164,10 +166,17 @@ namespace Cars.Services.Implementations
             return true;
         }
 
-        private async Task PerformScan(string projectDir, string projectKey)
+        private async Task PerformScan(string projectDir, string projectKey, Technology technology)
         {
-            var cmd = GetNormalScanCommand(projectKey);
-
+            var cmd = technology switch
+            {
+                Technology.Other => GetNormalScanCommand(projectKey),
+                Technology.DotNet => GetDotNetScanCommand(projectKey),
+                Technology.Gradle => GetGradleScanCommand(projectKey),
+                Technology.Maven => GetMvnScanCommand(projectKey),
+                _ => throw new ArgumentException("This technology isn't supported")
+            };
+            
             await CommandExecutor.ExecuteCommandAsync(cmd, projectDir, _logger);
         }
     }

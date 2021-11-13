@@ -12,7 +12,6 @@ export interface ApplicationDto {
 }
 
 export const ApplicationDtoDefault: ApplicationDto = {
-
   recruitmentId: 0,
   description: "",
   cvFile: "",

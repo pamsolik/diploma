@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cars.Models.DataModels;
+using Cars.Services.Interfaces;
 
 namespace Cars.Data
 {
     public static class CodeOverallQualityFactory
     {
-        public static CodeOverallQuality GetCodeOverallQuality(List<Project> projects)
+        public static CodeOverallQuality GetCodeOverallQuality(List<Project> projects, IDateTimeProvider dateTimeProvider)
         {
             switch (projects.Count)
             {
@@ -20,7 +21,7 @@ namespace Cars.Data
                     {
                         Success = true,
                         ProjectsCount = 1,
-                        CompletedTime = DateTime.Now,
+                        CompletedTime = dateTimeProvider.GetTimeNow(),
                         CodeSmells = p.CodeSmells,
                         MaintainabilityRating = p.MaintainabilityRating,
                         Coverage = p.Coverage,
@@ -45,7 +46,7 @@ namespace Cars.Data
                     {
                         Success = true,
                         ProjectsCount = p.Count,
-                        CompletedTime = DateTime.Now,
+                        CompletedTime = dateTimeProvider.GetTimeNow(),
                         CodeSmells = p.Sum(x => x.CodeSmells),
                         MaintainabilityRating = p.Average(x => x.MaintainabilityRating),
                         Coverage = p.Average(x => x.Coverage),

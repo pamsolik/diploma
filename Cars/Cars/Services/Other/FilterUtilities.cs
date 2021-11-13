@@ -19,7 +19,7 @@ namespace Cars.Services.Other
                         c.Longitude == addRecruitmentDto.City.Longitude;
         }
 
-        public static IEnumerable<Recruitment> FilterOutAndSortRecruitments(
+        public static List<Recruitment> FilterOutAndSortRecruitments(
             ref IQueryable<Recruitment> recruitments, RecruitmentFilterDto filter)
         {
             if (!string.IsNullOrEmpty(filter.SearchString))
@@ -43,7 +43,7 @@ namespace Cars.Services.Other
                 _ => recruitments.OrderBy(s => s.Title)
             };
 
-            return filtered;
+            return filtered.ToList();
         }
 
         private static double CalculateDistance(Recruitment recruitment, double latitude, double longitude)

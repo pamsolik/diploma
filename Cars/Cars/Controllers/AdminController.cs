@@ -19,12 +19,12 @@ namespace Cars.Controllers
             _adminService = adminService;
         }
 
-        [HttpGet("recruitments")]
-        public async Task<IActionResult> GetRecruitments()
-        {
-            //var res = await _adminService.GetRecruitments();
-
-            return Ok("");
-        }
+        // [HttpGet("recruitments")]
+        // public async Task<IActionResult> GetRecruitments()
+        // {
+        //     //var res = await _adminService.GetRecruitments();
+        //
+        //     return Ok("");
+        // }
     }
 }
