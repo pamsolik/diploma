@@ -96,6 +96,12 @@ namespace Cars
                 o.MemoryBufferThreshold = int.MaxValue;
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login";
+                options.SlidingExpiration = true;
+            });
+            
             //Cookies and data protection token lifespan
 
             // services.ConfigureApplicationCookie(o => {
