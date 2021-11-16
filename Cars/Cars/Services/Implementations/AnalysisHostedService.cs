@@ -177,6 +177,7 @@ namespace Cars.Services.Implementations
                 _ => throw new ArgumentException("This technology isn't supported")
             };
             
+            //TODO: Select project dir when project is in the nested directory
             await CommandExecutor.ExecuteCommandAsync(cmd, projectDir, _logger);
         }
     }

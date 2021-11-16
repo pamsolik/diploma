@@ -13,15 +13,23 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="Rekruterzy">
-      <div class="example-large-box mat-elevation-z4">
-        Rekruterzy
+
+
+    <mat-tab label="Kandydaci">
+      <div class="card-body">
+        <app-user-list-component apiUrl="api/admin/users/"></app-user-list-component>
       </div>
     </mat-tab>
 
-    <mat-tab label="Kandydaci">
-      <div class="example-large-box mat-elevation-z4">
-        Kandydaci
+    <mat-tab label="Rekruterzy">
+      <div class="card-body">
+        <app-user-list-component apiUrl="api/admin/recruiters/"></app-user-list-component>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Administratorzy">
+      <div class="card-body">
+        <app-user-list-component apiUrl="api/admin/admins/"></app-user-list-component>
       </div>
     </mat-tab>
   </mat-tab-group>

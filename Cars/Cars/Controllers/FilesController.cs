@@ -3,13 +3,14 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Cars.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Cars.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "User,Recruiter,Admin")]
     [ApiController]
     [Route("api/files/upload")]
     public class FilesController : ControllerBase

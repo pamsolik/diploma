@@ -1,0 +1,46 @@
+<ng-template #content class="" let-modal>
+  <div class="card p-0 m-0">
+    <h4 class="card-header">{{userAdminView.email}} | {{userAdminView.name}} {{userAdminView.surname}}</h4>
+    <div class="mt-2 card-body row">
+      <div class="row ">
+        <div class="col-auto">
+          <img [src]="createImgPath()"
+               alt="Thumbnail image"
+               class="img-thumbnail rounded mb-2">
+
+          <p *ngIf="userAdminView.city" class="mb-2">{{userAdminView.city.name}}</p>
+          <p class="mb-2">{{userAdminView.phoneNumber}}</p>
+        </div>
+
+        <div class="col">
+          <p>Opis</p>
+          <p class="border-bottom">{{userAdminView.description}}</p>
+
+          <div *ngIf="userAdminView.github" class="mb-2 mt-5">
+            <h5>Profil GitHub</h5>
+            <a [href]="userAdminView.github" target="_blank">{{userAdminView.github}}</a>
+          </div>
+
+          <div *ngIf="userAdminView.github" class="mb-2">
+            <h5>Profil LinkedIn</h5>
+            <a [href]="userAdminView.linkedIn" target="_blank">{{userAdminView.linkedIn}}</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!--      <div class="col">-->
+      <!--        <h5>Projekty</h5>-->
+      <!--        <div class="card mb-2 card-body" *ngFor="let p of details.projects">-->
+      <!--          <h6>{{p.title}}</h6>-->
+      <!--          <p>{{p.description}}</p>-->
+      <!--          <p>{{technologies[p.technology]}}</p>-->
+      <!--          <a [href]="p.url" target="_blank">{{p.url}}</a>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
+    </div>
+  </div>
+</ng-template>
+
+<button (click)="open(content)" class="btn btn-info">Szczegóły</button>

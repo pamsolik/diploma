@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Cars.Models.Dto;
 using Cars.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -19,12 +21,42 @@ namespace Cars.Controllers
             _adminService = adminService;
         }
 
-        // [HttpGet("recruitments")]
-        // public async Task<IActionResult> GetRecruitments()
-        // {
-        //     //var res = await _adminService.GetRecruitments();
-        //
-        //     return Ok("");
-        // }
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers([FromQuery] string searchTerm, 
+            [FromQuery] int pageSize, [FromQuery] int pageIndex)
+        {
+            var res = await _adminService.GetUsersInRole("User", searchTerm, pageSize, pageIndex);
+            return Ok(res);
+        }
+
+        [HttpGet("recruiters")]
+        public async Task<IActionResult> GetRecruiters([FromQuery] string searchTerm, 
+            [FromQuery] int pageSize, [FromQuery] int pageIndex)
+        {
+            var res = await _adminService.GetUsersInRole("Recruiter", searchTerm, pageSize, pageIndex);
+            return Ok(res);
+        }
+
+        [HttpGet("admins")]
+        public async Task<IActionResult> GetAdmins([FromQuery] string searchTerm, 
+            [FromQuery] int pageSize, [FromQuery] int pageIndex)
+        {
+            var res = await _adminService.GetUsersInRole("Admin", searchTerm, pageSize, pageIndex);
+            return Ok(res);
+        }
+
+        [HttpPut("roles/add")]
+        public async Task<IActionResult> AddRoleToUser([FromBody] EditRolesDto editRolesDto)
+        {
+            var res = await _adminService.AddRoleToUser(editRolesDto.UserId, editRolesDto.Role);
+            return Ok(res);
+        }
+
+        [HttpPut("roles/remove")]
+        public async Task<IActionResult> RemoveRoleFromUser([FromBody] EditRolesDto editRolesDto)
+        {
+            var res = await _adminService.DeleteRoleFromUser(editRolesDto.UserId, editRolesDto.Role);
+            return Ok(res);
+        }
     }
 }

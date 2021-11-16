@@ -1,0 +1,74 @@
+.job-desc {
+  flex: 1;
+}
+
+img {
+  max-width: 100%;
+  max-height: 50%;
+  margin: auto;
+  object-fit: contain;
+}
+
+.job-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-card {
+  background: white;
+  color: black;
+  height: 20vh;
+}
+
+.mat-card:hover {
+  background: gray;
+  color: white;
+  cursor: pointer;
+}
+
+
+::ng-deep.custom-slider .ngx-slider .ngx-slider-bar {
+  background: #ffe4d1;
+  height: 2px;
+}
+
+::ng-deep.custom-slider .ngx-slider .ngx-slider-selection {
+  background: orange;
+}
+
+::ng-deep.custom-slider .ngx-slider .ngx-slider-pointer {
+  width: 8px;
+  height: 16px;
+  top: auto; /* to remove the default positioning */
+  bottom: 0;
+  background-color: #333;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+::ng-deep.custom-slider .ngx-slider .ngx-slider-pointer:after {
+  display: none;
+}
+
+::ng-deep.custom-slider .ngx-slider .ngx-slider-bubble {
+  bottom: 14px;
+}
+
+::ng-deep.custom-slider .ngx-slider .ngx-slider-limit {
+  font-weight: bold;
+  color: orange;
+}
+
+::ng-deep.custom-slider .ngx-slider .ngx-slider-tick {
+  width: 1px;
+  height: 10px;
+  margin-left: 4px;
+  border-radius: 0;
+  background: #ffe4d1;
+  top: -1px;
+}
+
+::ng-deep.custom-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+  background: orange;
+}
+

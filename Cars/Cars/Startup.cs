@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Cars.Data;
 using Cars.Models.DataModels;
+using Cars.Models.Enums;
 using Cars.Services.EmailSender;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
@@ -29,8 +30,7 @@ namespace Cars
         {
             Configuration = configuration;
         }
-
-
+        
         private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -40,19 +40,21 @@ namespace Cars
 
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseLazyLoadingProxies()
-                        .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection"))
-                        
-            );
+                        .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
-
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => 
+                    options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, 
+                UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
+            
             services.AddScoped<IRecruitmentService, RecruitmentService>();
             services.AddScoped<IAdminService, AdminService>();
 
@@ -75,7 +77,8 @@ namespace Cars
             services.AddRazorPages();
 
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+            services.AddSpaStaticFiles(configuration => 
+                { configuration.RootPath = "ClientApp/dist"; });
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
@@ -85,7 +88,7 @@ namespace Cars
             //Email Sender
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
-
+            
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;
@@ -104,6 +107,8 @@ namespace Cars
             //     o.TokenLifespan = TimeSpan.FromHours(3));
 
             services.AddSwaggerDocument();
+            
+            RolesExtensions.InitializeAsync(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -122,7 +127,7 @@ namespace Cars
                 // // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
             //app.ApplicationServices.GetService<AnalysisService>();
 
             //app.ConfigureExceptionHandler();

@@ -1,12 +1,13 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {RecruitmentList} from "../../models/RecruitmentOffer";
+
 import {Filters, FiltersDefault} from "../../models/Filters";
 import {PageEvent} from "@angular/material/paginator";
 import {SortOrder} from "../../models/enums/SortOrder";
 import {getEnumKeyByEnumValue} from "../../components/EnumTool";
 import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 import {Options} from "@angular-slider/ngx-slider";
+import {RecruitmentList} from "../../models/RecruitmentList";
 
 @Component({
   selector: 'app-recruitment-list-component',

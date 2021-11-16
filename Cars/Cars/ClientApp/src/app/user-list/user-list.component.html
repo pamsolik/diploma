@@ -1,0 +1,67 @@
+<article class="row">
+  <div class="col-3 card p-0">
+    <div class="card-header">
+      <h5 class="my-0 font-weight-normal">Wyszukaj</h5>
+    </div>
+    <div class="card-body p-0 ">
+
+      <article class="card-group-item">
+        <div class="filter-content">
+          <div class="card-body">
+            <div class="form-row">
+
+              <a (click)="clearFilters(); loadData()" class="btn btn-warning mb-2 w-100" role="button">Wyczyść filtry
+                &raquo;</a>
+              <a (click)="loadData()" class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry &raquo;</a>
+
+              <div class="form-group">
+                <label>Wyszukiwanie</label>
+                <input [(ngModel)]="filters.searchTerm" class="form-control" placeholder="Wyszukaj użytkownika"
+                       type="text">
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </article>
+    </div>
+  </div>
+
+  <div class="col p-1">
+    <h1 *ngIf="!users else loaded">Wczytywanie</h1>
+
+    <ng-template #loaded>
+      <select [(ngModel)]="sortOrder" class="form-control mb-2">
+        <option *ngFor="let order of sortOrders">{{order}}</option>
+      </select>
+
+      <mat-card *ngFor="let user of users.items" class="mb-1">
+        <div class="row">
+          <div class="col-4">
+            <img [src]="createImgPath(user.profilePicture)"
+                 alt="Thumbnail image"
+                 class="img-fluid me-2">
+
+            <app-user-details [userAdminView]="user"></app-user-details>
+          </div>
+          <div class="job-desc col">
+            <h5 class="card-title">{{user.email}}</h5>
+            <b>{{user.name}} {{user.surname}}</b>
+            <p>{{user.description}}</p>
+
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-paginator (page)="applyFilter($event); loadData()"
+                     [length]="users.totalItems"
+                     [pageIndex]="0"
+                     [pageSizeOptions]="[2, 5, 10, 25, 100]"
+                     [pageSize]="filters.pageSize"
+                     aria-label="Wybierz stronę"
+                     id="paginator">
+      </mat-paginator>
+    </ng-template>
+  </div>
+</article>

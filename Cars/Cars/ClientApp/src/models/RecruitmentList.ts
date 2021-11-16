@@ -1,6 +1,8 @@
 ﻿export interface RecruitmentList {
   items: RecruitmentOffer[],
-  totalItems: number
+  totalItems: number,
+  pageIndex: number,
+  pageSize: number
 }
 
 export interface RecruitmentOffer {
