@@ -1,8 +1,11 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable, OnInit} from '@angular/core';
 import {User, UserManager} from 'oidc-client';
 import {BehaviorSubject, concat, from, Observable} from 'rxjs';
 import {filter, map, mergeMap, take, tap} from 'rxjs/operators';
 import {ApplicationName, ApplicationPaths} from './api-authorization.constants';
+import {JwtHelperService} from '@auth0/angular-jwt';
+import {HttpClient} from "@angular/common/http";
+import {ApiAnswer} from "../models/ApiAnswer";
 
 export type IAuthenticationResult =
   SuccessAuthenticationResult |
@@ -36,7 +39,7 @@ export interface IUser {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthorizeService {
+export class AuthorizeService{
   // By default pop ups are disabled because they don't work properly on Edge.
   // If you want to enable pop up authentication simply set this flag to false.
 
@@ -44,6 +47,12 @@ export class AuthorizeService {
   private popUpDisabled = true;
   private userManager: UserManager;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
+
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+
+  public roles: string[];
+  public isAdmin: boolean;
+  public isRecruiter: boolean;
 
   public isAuthenticated(): Observable<boolean> {
     return this.getUser().pipe(map(u => !!u));
@@ -60,6 +69,22 @@ export class AuthorizeService {
     return from(this.ensureUserManagerInitialized())
       .pipe(mergeMap(() => from(this.userManager.getUser())),
         map(user => user && user.access_token));
+  }
+
+  public checkRoles() {
+    console.log("Checking roles");
+    this.http.get<string[]>(`${this.baseUrl}api/user/auth/roles`).subscribe(result => {
+      this.roles = result;
+      this.isAdmin = this.roles.some(r => r == 'Admin');
+      this.isRecruiter = this.roles.some(r => r == 'Recruiter');
+      console.log(this.roles);
+    }, error => {
+      this.roles = [];
+      this.isAdmin = false;
+      this.isRecruiter = false;
+      console.error(error);
+    });
+
   }
 
   // We try to authenticate the user in three different ways:

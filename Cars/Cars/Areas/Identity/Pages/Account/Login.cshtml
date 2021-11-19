@@ -13,17 +13,17 @@
                 <h4>Użyj konta lokalnego, aby się zalogować.</h4>
                 <hr/>
                 <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label asp-for="Input.Email"></label>
                     <input asp-for="Input.Email" class="form-control"/>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label asp-for="Input.Password"></label>
                     <input asp-for="Input.Password" class="form-control"/>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <div class="checkbox">
                         <label asp-for="Input.RememberMe">
                             <input asp-for="Input.RememberMe"/>
@@ -31,7 +31,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-4">
                     <button type="submit" class="btn btn-primary">Zaloguj się</button>
                 </div>
                 <div class="form-group">
@@ -48,9 +48,10 @@
             </form>
         </section>
     </div>
+    <p class="col-md-1"/>
     <div class="col-md-6 col-md-offset-2">
         <section>
-            <h4>Użyj innej usługi, aby się zalogować.</h4>
+            <h3>Użyj innej usługi, aby się zalogować.</h3>
             <hr/>
 
             @* <div> *@
@@ -62,7 +63,7 @@
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
-                    <img src="../../Resources/Images/Defaults/Google.PNG" alt="afasdf"/>
+                   <h4>Chwilowo inne metody logowania nie są dostępne</h4>
                 }
                 else
                 {

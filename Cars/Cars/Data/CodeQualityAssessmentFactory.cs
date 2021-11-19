@@ -13,6 +13,7 @@ namespace Cars.Data
             {
                 CompletedTime = dateTimeProvider.GetTimeNow(),
                 Success = true,
+                
                 //Complexity
                 Complexity = analysis.GetValue("complexity"),
                 CognitiveComplexity = analysis.GetValue("cognitive_complexity"),

@@ -61,7 +61,9 @@ namespace Cars.Data
                         ReliabilityRating = p.Average(x => x.ReliabilityRating),
                         Complexity = p.Average(x => x.Complexity),
                         SecurityHotspots = p.Sum(x => x.SecurityHotspots),
-                        OverallRating = p.Average(x => x.OverallRating)
+                        Tests = p.Sum(x => x.Tests),
+                        OverallRating = p.Average(x => x.OverallRating),
+                        
                     };
                 }
             }

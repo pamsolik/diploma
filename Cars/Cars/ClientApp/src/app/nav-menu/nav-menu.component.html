@@ -19,7 +19,7 @@
         [ngClass]="{ show: isExpanded }"
         class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
       >
-        <ul *ngIf="authorizeService.isAuthenticated()" class="navbar-nav flex-grow">
+        <ul *ngIf="isAuthenticated" class="navbar-nav flex-grow">
           <li
             [routerLinkActiveOptions]="{ exact: true }"
             [routerLinkActive]="['link-active']"
@@ -32,12 +32,12 @@
             >Oferty</a
             >
           </li>
-          <li [routerLinkActive]="['link-active']" class="nav-item">
+          <li *ngIf="authorizeService.isRecruiter" [routerLinkActive]="['link-active']" class="nav-item">
             <a [routerLink]="['/recruiter']" class="nav-link text-dark"
             >Rekruter</a
             >
           </li>
-          <li [routerLinkActive]="['link-active']" class="nav-item">
+          <li *ngIf="authorizeService.isAdmin" [routerLinkActive]="['link-active']" class="nav-item">
             <a [routerLink]="['/admin']" class="nav-link text-dark"
             >Administrator</a
             >
