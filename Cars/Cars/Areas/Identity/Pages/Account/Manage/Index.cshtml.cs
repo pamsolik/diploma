@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
+using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Cars.Services.Interfaces;
 using IdentityServer4.Extensions;
@@ -23,18 +24,18 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
         private readonly ILogger<IndexModel> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserService _userService;
+        private readonly IAppUserManager _appUserManager;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager, IFileUploadService fileUploadService,
-            ILogger<IndexModel> logger, IUserService userService)
+            ILogger<IndexModel> logger, IAppUserManager appUserManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _fileUploadService = fileUploadService;
             _logger = logger;
-            _userService = userService;
+            _appUserManager = appUserManager;
         }
 
         [Display(Name = "Nazwa użytkownika")] public string Username { get; set; }
@@ -124,7 +125,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             var userId = _userManager.GetUserId(User);
             var newPicture = CopyAndSaveProfilePicture(Filename, userId);
             if (Filename != user.ProfilePicture)
-                await _userService.SetProfilePictureAsync(userId, newPicture);
+                await _appUserManager.SetProfilePictureAsync(userId, newPicture);
 
             Filename = newPicture;
             return RedirectToPage();

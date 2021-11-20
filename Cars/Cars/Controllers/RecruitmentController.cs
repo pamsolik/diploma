@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Cars.Managers.Interfaces;
 using Cars.Models.Dto;
 using Cars.Models.Enums;
 using Cars.Models.Exceptions;
@@ -19,12 +20,12 @@ namespace Cars.Controllers
         private readonly ILogger<RecruitmentController> _logger;
 
         private readonly IRecruitmentService _recruitmentService;
-        private readonly IUserService _userService;
+        private readonly IAppUserManager _appUserManager;
 
-        public RecruitmentController(ILogger<RecruitmentController> logger, IRecruitmentService recruitmentService, IUserService userService)
+        public RecruitmentController(ILogger<RecruitmentController> logger, IRecruitmentService recruitmentService, IAppUserManager appUserManager)
         {
             _recruitmentService = recruitmentService;
-            _userService = userService;
+            _appUserManager = appUserManager;
             _logger = logger;
         }
         
@@ -32,7 +33,7 @@ namespace Cars.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRecruitment([FromBody] AddRecruitmentDto addRecruitmentDto)
         {
-            var usr = _userService.GetUserId(User);
+            var usr = _appUserManager.GetUserId(User);
             var res = await _recruitmentService.AddRecruitment(addRecruitmentDto, usr);
 
             return Ok(new ApiAnswer("Added", res));
@@ -42,7 +43,7 @@ namespace Cars.Controllers
         [HttpPut]
         public async Task<IActionResult> EditRecruitment([FromBody] EditRecruitmentDto editRecruitment)
         {
-            if (_userService.GetUserId(User) != editRecruitment.RecruiterId)
+            if (_appUserManager.GetUserId(User) != editRecruitment.RecruiterId)
                 throw new AppBaseException(HttpStatusCode.Forbidden,
                     "User is not authorised to edit this recruitment.");
             var res = await _recruitmentService.EditRecruitment(editRecruitment);
@@ -86,7 +87,7 @@ namespace Cars.Controllers
         public async Task<IActionResult> GetRecruitmentsRecruiter([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
             var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Recruiter,
-                _userService.GetUserId(User));
+                _appUserManager.GetUserId(User));
             return Ok(res);
         }
 
@@ -101,7 +102,7 @@ namespace Cars.Controllers
         [HttpPost("apply")]
         public async Task<IActionResult> Apply([FromBody] AddApplicationDto addApplicationDto)
         {
-            var applicantId = _userService.GetUserId(User);
+            var applicantId = _appUserManager.GetUserId(User);
             var res = await _recruitmentService.AddApplication(addApplicationDto, applicantId);
             return Ok(res);
         }

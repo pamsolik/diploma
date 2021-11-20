@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Cars.Models.DataModels;
 
-namespace Cars.Services.Interfaces
+namespace Cars.Managers.Interfaces
 {
-    public interface IAnalysisDataService
+    public interface IAnalysisManager
     {
         public Task<Project> SaveCodeQualityAnalysis(Project project, CodeQualityAssessment ass);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace Cars.Models.Exceptions
 {
@@ -11,5 +12,10 @@ namespace Cars.Models.Exceptions
         }
 
         public HttpStatusCode Status { get; }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

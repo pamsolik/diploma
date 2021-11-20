@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cars.Data;
+using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Cars.Models.Enums;
 using Cars.Models.SonarQubeDataModels;
@@ -58,10 +59,10 @@ namespace Cars.Services.Implementations
         private async Task PerformFullAnalysis()
         {
             using var scope = _scopeFactory.CreateScope();
-            var service = scope.ServiceProvider.GetRequiredService<IAnalysisDataService>();
-            if (service == null) return;
+            var manager = scope.ServiceProvider.GetRequiredService<IAnalysisManager>();
+            if (manager == null) return;
 
-            var notExamined = service.GetNotExaminedApplications();
+            var notExamined = manager.GetNotExaminedApplications();
 
             if (!notExamined.Any()) return;
 
@@ -71,29 +72,29 @@ namespace Cars.Services.Implementations
             if (projects is not null)
                 foreach (var application in notExamined)
                 {
-                    var projectsToExamine = service.GetNotExaminedProjects(application);
+                    var projectsToExamine = manager.GetNotExaminedProjects(application);
 
                     foreach (var project in projectsToExamine)
-                        await ExamineSingleProject(application, project, service, projects);
+                        await ExamineSingleProject(application, project, manager, projects);
 
-                    projectsToExamine = service.GetNotExaminedProjects(application);
+                    projectsToExamine = manager.GetNotExaminedProjects(application);
                     if (!projectsToExamine.Any() && application.CodeOverallQualityId is null)
-                        await CalculateAndSaveCodeOverallQuality(service, application);
+                        await CalculateAndSaveCodeOverallQuality(manager, application);
                 }
             else
                 _logger.LogWarning($"Cannot reach SonarQube on {BasePath}");
         }
 
-        private async Task CalculateAndSaveCodeOverallQuality(IAnalysisDataService service,
+        private async Task CalculateAndSaveCodeOverallQuality(IAnalysisManager manager,
             RecruitmentApplication application)
         {
             try
             {
-                var projects = service.GetAllProjects(application);
+                var projects = manager.GetAllProjects(application);
                 var coq = GetCodeOverallQuality(projects, _dateTimeProvider);
                 if (coq is null) return;
                 coq.OverallRating = CalculateOverallRating(coq);
-                await service.SaveCodeOverallQuality(application, coq);
+                await manager.SaveCodeOverallQuality(application, coq);
             }
             catch (Exception e)
             {
@@ -102,7 +103,7 @@ namespace Cars.Services.Implementations
         }
 
         private async Task ExamineSingleProject(RecruitmentApplication application, Project project,
-            IAnalysisDataService dataService, Projects projects)
+            IAnalysisManager manager, Projects projects)
         {
             try
             {
@@ -120,7 +121,7 @@ namespace Cars.Services.Implementations
                 }
                 else
                 {
-                    saved = await TryToReadAnalysis(project, dataService, projectKey);
+                    saved = await TryToReadAnalysis(project, manager, projectKey);
                 }
 
                 if (projectCreated && !saved)
@@ -131,7 +132,7 @@ namespace Cars.Services.Implementations
 
                     await PerformScan(projectDir, projectKey, project.Technology);
 
-                    await TryToReadAnalysis(project, dataService, projectKey);
+                    await TryToReadAnalysis(project, manager, projectKey);
                     DeleteWithoutPermissions(dirInfo);
                 }
                 else
@@ -146,8 +147,7 @@ namespace Cars.Services.Implementations
             }
         }
 
-        private async Task<bool> TryToReadAnalysis(Project project, IAnalysisDataService dataService,
-            string projectKey)
+        private async Task<bool> TryToReadAnalysis(Project project, IAnalysisManager manager, string projectKey)
         {
             var retry = project.CodeQualityAssessmentId is not null;
             var analysis = GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
@@ -161,7 +161,7 @@ namespace Cars.Services.Implementations
             if (!loaded) return false;
 
             if (retry) ass.Success = true;
-            await dataService.SaveCodeQualityAnalysis(project, ass);
+            await manager.SaveCodeQualityAnalysis(project, ass);
             //GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST);
             return true;
         }

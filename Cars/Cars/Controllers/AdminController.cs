@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Cars.Models.Dto;
 using Cars.Models.Exceptions;
@@ -21,13 +22,13 @@ namespace Cars.Controllers
         private readonly IAdminService _adminService;
         private readonly ILogger<AdminController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserService _userService;
-        public AdminController(ILogger<AdminController> logger, IAdminService adminService, UserManager<ApplicationUser> userManager, IUserService userService)
+        private readonly IAppUserManager _appUserManager;
+        public AdminController(ILogger<AdminController> logger, IAdminService adminService, UserManager<ApplicationUser> userManager, IAppUserManager appUserManager)
         {
             _logger = logger;
             _adminService = adminService;
             _userManager = userManager;
-            _userService = userService;
+            _appUserManager = appUserManager;
         }
 
         [HttpGet("users")]
@@ -59,6 +60,7 @@ namespace Cars.Controllers
         {
             UserCannotEditHisRolesCheck(editRolesDto.UserId);
             var res = await _adminService.AddRoleToUser(editRolesDto.UserId, editRolesDto.Role);
+            _logger.LogInformation($"Role {editRolesDto.Role} added to user: {editRolesDto.UserId}");
             return Ok(res);
         }
 
@@ -67,6 +69,7 @@ namespace Cars.Controllers
         {
             UserCannotEditHisRolesCheck(editRolesDto.UserId);
             var res = await _adminService.DeleteRoleFromUser(editRolesDto.UserId, editRolesDto.Role);
+            _logger.LogInformation($"Role {editRolesDto.Role} removed from user: {editRolesDto.UserId}");
             return Ok(res);
         }
         
@@ -75,14 +78,14 @@ namespace Cars.Controllers
         {
             var uId = await _userManager.FindByIdAsync(userId);
             if (uId is null) return NotFound($"User with ID {userId} not found.");
-            var res = await _userService.GetUserRoles(userId);
+            var res = await _appUserManager.GetUserRoles(userId);
             return Ok(res);
         }
         
         private void UserCannotEditHisRolesCheck(string userId)
         {
-            if (_userService.GetUserId(User) == userId)
-                throw new AppBaseException(HttpStatusCode.Forbidden, "Nie można edytować własnych ról");
+            if (_appUserManager.GetUserId(User) == userId)
+                throw new AppBaseException(HttpStatusCode.Forbidden, "User cannot edit his own roles.");
         }
     }
 }

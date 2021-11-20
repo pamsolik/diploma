@@ -1,4 +1,6 @@
 ﻿using System;
+using Cars.Managers.Implementations;
+using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Cars.Services.EmailSender;
 using Cars.Services.Implementations;
@@ -20,12 +22,12 @@ namespace Cars.Services.Extensions
             
             services.AddScoped<IRecruitmentService, RecruitmentService>();
             services.AddScoped<IAdminService, AdminService>();
-
-            services.AddScoped<IAnalysisDataService, AnalysisDataService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
 
-            services.AddScoped<IUserService, UserService>();
-
+            services.AddScoped<IAppUserManager, AppAppUserManager>();
+            services.AddScoped<IAnalysisManager, AnalysisManager>();
+            services.AddScoped<IRecruitmentManager, RecruitmentManager>();
+            
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
             services.AddCronJob<AnalysisHostedService>(c =>

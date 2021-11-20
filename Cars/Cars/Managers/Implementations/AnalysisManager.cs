@@ -2,16 +2,17 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Cars.Data;
+using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Cars.Services.Interfaces;
 
-namespace Cars.Services.Implementations
+namespace Cars.Managers.Implementations
 {
-    public class AnalysisDataService : IAnalysisDataService
+    public class AnalysisManager : IAnalysisManager
     {
         private readonly ApplicationDbContext _context;
 
-        public AnalysisDataService(ApplicationDbContext context)
+        public AnalysisManager(ApplicationDbContext context)
         {
             _context = context;
         }

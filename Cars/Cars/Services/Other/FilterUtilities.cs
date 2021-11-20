@@ -11,12 +11,12 @@ namespace Cars.Services.Other
 {
     public static class FilterUtilities
     {
-        public static Expression<Func<City, bool>> CompareCities(AddRecruitmentDto addRecruitmentDto)
+        public static Expression<Func<City, bool>> CompareCities(CityDto city)
         {
             //TODO: Refactor
-            return c => c.Name == addRecruitmentDto.City.Name &&
-                        c.Latitude == addRecruitmentDto.City.Latitude &&
-                        c.Longitude == addRecruitmentDto.City.Longitude;
+            return c => c.Name == city.Name &&
+                        c.Latitude == city.Latitude &&
+                        c.Longitude == city.Longitude;
         }
 
         public static List<Recruitment> FilterOutAndSortRecruitments(

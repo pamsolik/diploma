@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Cars.Data;
+using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
-using Cars.Services.Interfaces;
+using Cars.Models.Exceptions;
 using Microsoft.AspNetCore.Identity;
 
-namespace Cars.Services.Implementations
+namespace Cars.Managers.Implementations
 {
-    public class UserService : IUserService
+    public class AppAppUserManager : IAppUserManager
     {
         private readonly ApplicationDbContext _context;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AppAppUserManager(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -58,6 +59,32 @@ namespace Cars.Services.Implementations
         public string GetUserName(ClaimsPrincipal user)
         {
             return user.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+        
+        public async Task<ApplicationUser> FindUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null) throw new AppBaseException(HttpStatusCode.NotFound, $"User {userId} not found");
+            return user;
+        }
+
+        public async Task<List<ApplicationUser>> GetFilteredUsers(string roleName, string searchTerm)
+        {
+            var res = (await _userManager.GetUsersInRoleAsync(roleName)).ToList();
+            
+            if (!string.IsNullOrEmpty(searchTerm))
+                res = res.FindAll(r =>
+                    r.Name.Contains(searchTerm) ||
+                    r.Surname.Contains(searchTerm) ||
+                    r.Email.Contains(searchTerm) ||
+                    r.UserName.Contains(searchTerm));
+            return res;
+        }
+
+        public void CheckIfRoleExists(string roleName)
+        {
+            if (!_context.Roles.Any(r => r.Name.Equals(roleName)))
+                throw new AppBaseException(HttpStatusCode.NotFound, $"Role {roleName} not found");
         }
     }
 }
