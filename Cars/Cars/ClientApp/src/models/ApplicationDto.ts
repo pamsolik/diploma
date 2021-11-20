@@ -11,13 +11,15 @@ export interface ApplicationDto {
   clauseOpt2Accepted
 }
 
-export const ApplicationDtoDefault: ApplicationDto = {
-  recruitmentId: 0,
-  description: "",
-  cvFile: "",
-  clFile: "",
-  projects: [],
-  clauseRequiredAccepted: false,
-  clauseOpt2Accepted: false,
-  clauseOptAccepted: false
+export function ApplicationDtoDefault(): ApplicationDto {
+  return {
+    recruitmentId: 0,
+    description: "",
+    cvFile: "",
+    clFile: "",
+    projects: [],
+    clauseRequiredAccepted: false,
+    clauseOpt2Accepted: false,
+    clauseOptAccepted: false
+  }
 }

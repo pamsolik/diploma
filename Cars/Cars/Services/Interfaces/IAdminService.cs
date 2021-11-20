@@ -11,5 +11,6 @@ namespace Cars.Services.Interfaces
         public Task<bool> AddRoleToUser(string userId, string roleName);
 
         public Task<bool> DeleteRoleFromUser(string userId, string roleName);
+        
     }
 }

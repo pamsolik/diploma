@@ -1,7 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
+using Cars.Models.DataModels;
 using Cars.Models.Dto;
+using Cars.Models.Exceptions;
 using Cars.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -14,11 +20,14 @@ namespace Cars.Controllers
     {
         private readonly IAdminService _adminService;
         private readonly ILogger<AdminController> _logger;
-
-        public AdminController(ILogger<AdminController> logger, IAdminService adminService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserService _userService;
+        public AdminController(ILogger<AdminController> logger, IAdminService adminService, UserManager<ApplicationUser> userManager, IUserService userService)
         {
             _logger = logger;
             _adminService = adminService;
+            _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpGet("users")]
@@ -48,6 +57,7 @@ namespace Cars.Controllers
         [HttpPut("roles/add")]
         public async Task<IActionResult> AddRoleToUser([FromBody] EditRolesDto editRolesDto)
         {
+            UserCannotEditHisRolesCheck(editRolesDto.UserId);
             var res = await _adminService.AddRoleToUser(editRolesDto.UserId, editRolesDto.Role);
             return Ok(res);
         }
@@ -55,8 +65,24 @@ namespace Cars.Controllers
         [HttpPut("roles/remove")]
         public async Task<IActionResult> RemoveRoleFromUser([FromBody] EditRolesDto editRolesDto)
         {
+            UserCannotEditHisRolesCheck(editRolesDto.UserId);
             var res = await _adminService.DeleteRoleFromUser(editRolesDto.UserId, editRolesDto.Role);
             return Ok(res);
+        }
+        
+        [HttpGet("roles/{userId}")]
+        public async Task<IActionResult> GetClientRoles(string userId)
+        {
+            var uId = await _userManager.FindByIdAsync(userId);
+            if (uId is null) return NotFound($"User with ID {userId} not found.");
+            var res = await _userService.GetUserRoles(userId);
+            return Ok(res);
+        }
+        
+        private void UserCannotEditHisRolesCheck(string userId)
+        {
+            if (_userService.GetUserId(User) == userId)
+                throw new AppBaseException(HttpStatusCode.Forbidden, "Nie można edytować własnych ról");
         }
     }
 }

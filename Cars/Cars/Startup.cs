@@ -4,6 +4,7 @@ using Cars.Data;
 using Cars.Models.DataModels;
 using Cars.Models.Enums;
 using Cars.Services.EmailSender;
+using Cars.Services.Extensions;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
 using Cars.Services.Other;
@@ -52,24 +53,7 @@ namespace Cars
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, 
-                UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
-            
-            services.AddScoped<IRecruitmentService, RecruitmentService>();
-            services.AddScoped<IAdminService, AdminService>();
-
-            services.AddScoped<IAnalysisDataService, AnalysisDataService>();
-            services.AddScoped<IFileUploadService, FileUploadService>();
-
-            services.AddScoped<IUserService, UserService>();
-
-            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-
-            services.AddCronJob<AnalysisHostedService>(c =>
-            {
-                c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"*/1 * * * *";
-            });
+            services.AddRequiredServices(Configuration);
 
             services.AddAuthentication().AddIdentityServerJwt();
 
@@ -84,17 +68,6 @@ namespace Cars
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 );
-
-            //Email Sender
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.Configure<AuthMessageSenderOptions>(Configuration);
-            
-            services.Configure<FormOptions>(o =>
-            {
-                o.ValueLengthLimit = int.MaxValue;
-                o.MultipartBodyLengthLimit = int.MaxValue;
-                o.MemoryBufferThreshold = int.MaxValue;
-            });
 
             services.ConfigureApplicationCookie(options =>
             {

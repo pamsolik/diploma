@@ -3,7 +3,7 @@
     <h4 class="card-header">{{userAdminView.email}} | {{userAdminView.name}} {{userAdminView.surname}}</h4>
     <div class="mt-2 card-body row">
       <div class="row ">
-        <div class="col-auto">
+        <div class="col-2">
           <img [src]="createImgPath()"
                alt="Thumbnail image"
                class="img-thumbnail rounded mb-2">
@@ -12,9 +12,9 @@
           <p class="mb-2">{{userAdminView.phoneNumber}}</p>
         </div>
 
-        <div class="col">
-          <p>Opis</p>
-          <p class="border-bottom">{{userAdminView.description}}</p>
+        <div class="col-8 border-end">
+          <h5>Opis</h5>
+          <p class="mb-2">{{userAdminView.description}}</p>
 
           <div *ngIf="userAdminView.github" class="mb-2 mt-5">
             <h5>Profil GitHub</h5>
@@ -26,7 +26,30 @@
             <a [href]="userAdminView.linkedIn" target="_blank">{{userAdminView.linkedIn}}</a>
           </div>
         </div>
+        <div class="col-2">
+          <h6>Role użytkownika:</h6>
+          <p *ngIf="!userRoles else loaded">Wczytywanie</p>
+          <ng-template #loaded>
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let role of userRoles">
+                <div class="row">
+                  <p class="col mb-0 mt-2">{{role}}</p>
+                  <button (click)="removeUserRole(role)" class="btn btn-danger col-auto m-0">×</button>
+                </div>
 
+              </li>
+            </ul>
+
+            <div class="form-group mb-3">
+              <label>Dodawanie roli:</label>
+              <select [(ngModel)]="newRole" class="form-control">
+                <option *ngFor="let role of userRolesEnum">{{role}}</option>
+              </select>
+              <button (click)="addUserRole(newRole)" class="btn btn-warning col-auto mt-2">Dodaj rolę</button>
+            </div>
+
+          </ng-template>
+        </div>
       </div>
 
       <!--      <div class="col">-->

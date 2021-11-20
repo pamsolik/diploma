@@ -50,34 +50,31 @@ namespace Cars.Services.Implementations
 
         public async Task<bool> AddRoleToUser(string userId, string roleName)
         {
-            CheckIfUserExists(userId);
             CheckIfRoleExists(roleName);
-
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await FindUser(userId);
             var res = await _userManager.AddToRoleAsync(user, roleName);
             return res.Succeeded;
         }
 
         public async Task<bool> DeleteRoleFromUser(string userId, string roleName)
         {
-            CheckIfUserExists(userId);
             CheckIfRoleExists(roleName);
-
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await FindUser(userId);
             var res = await _userManager.RemoveFromRoleAsync(user, roleName);
             return res.Succeeded;
         }
-
-        private void CheckIfUserExists(string roleName)
-        {
-            if (!_context.Users.Any(r => r.Id.Equals(roleName)))
-                throw new AppBaseException(HttpStatusCode.NotFound, $"User {roleName} not found");
-        }
-
+        
         private void CheckIfRoleExists(string roleName)
         {
             if (!_context.Roles.Any(r => r.Name.Equals(roleName)))
                 throw new AppBaseException(HttpStatusCode.NotFound, $"Role {roleName} not found");
+        }
+        
+        private async Task<ApplicationUser> FindUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null) throw new AppBaseException(HttpStatusCode.NotFound, $"User {userId} not found");
+            return user;
         }
     }
 }

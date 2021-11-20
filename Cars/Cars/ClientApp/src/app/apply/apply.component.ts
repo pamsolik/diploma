@@ -29,8 +29,7 @@ export class ApplyComponent implements OnInit {
               private alertService: AlertService) { }
 
   ngOnInit() {
-    this.application = ApplicationDtoDefault;
-
+    this.application = ApplicationDtoDefault();
     this.addProject()
   }
 

@@ -1,5 +1,5 @@
 ﻿import {Injectable} from "@angular/core";
-import Swal from 'sweetalert2';
+import Swal, {SweetAlertResult} from 'sweetalert2';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -47,5 +47,14 @@ export class AlertService {
       () => {
       }
     );
+  }
+
+  showYesNo(question: string): Promise<SweetAlertResult> {
+    return Swal.fire({
+      showDenyButton: true,
+      title: question,
+      confirmButtonText: `Tak`,
+      denyButtonText: `Nie`,
+    });
   }
 }

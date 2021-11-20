@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Cars.Models.Exceptions;
 using Microsoft.AspNetCore.Http;
 
-namespace Cars.Services.Other
+namespace Cars.Services.Extensions
 {
     public class ExceptionMiddleware
     {

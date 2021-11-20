@@ -7,6 +7,7 @@ import {getEnumKeyByEnumValue} from "../../components/EnumTool";
 
 import {Options} from "@angular-slider/ngx-slider";
 import {UserFilters, UserFiltersDefault, UserList} from "../../models/UserList";
+import {UserRoles} from "../../models/enums/UserRoles";
 
 @Component({
   selector: 'app-user-list-component',
@@ -21,6 +22,7 @@ export class UserListComponent implements OnInit {
   users: UserList;
   filters: UserFilters;
 
+
   @Input()
   apiUrl: string;
 
@@ -33,7 +35,7 @@ export class UserListComponent implements OnInit {
 
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    this.filters = UserFiltersDefault;
+    this.filters = UserFiltersDefault();
   }
 
   ngOnInit() {
@@ -58,7 +60,7 @@ export class UserListComponent implements OnInit {
   }
 
   clearFilters() {
-    this.filters = UserFiltersDefault;
+    this.filters = UserFiltersDefault();
   }
 
   createImgPath = (path: string) => {

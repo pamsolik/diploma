@@ -1,4 +1,5 @@
 ﻿import {City} from "./City";
+import {ApplicationDto} from "./ApplicationDto";
 
 export interface Filters {
   pageSize: number,
@@ -15,18 +16,20 @@ export interface Filters {
   city: City
 }
 
-export const FiltersDefault: Filters = {
-  pageSize: 5,
-  pageIndex: 0,
-  searchString: "",
-  category: "",
-  levels: [],
-  sortOrder: 1,
+export function FiltersDefault(): Filters {
+  return {
+    pageSize: 5,
+    pageIndex: 0,
+    searchString: "",
+    category: "",
+    levels: [],
+    sortOrder: 1,
 
-  jobLevels: [],
-  jobTypes: [],
-  teamSizes: [],
+    jobLevels: [],
+    jobTypes: [],
+    teamSizes: [],
 
-  distance: 0,
-  city: new City(),
+    distance: 0,
+    city: new City(),
+  }
 }

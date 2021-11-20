@@ -1,11 +1,9 @@
 ﻿using System;
 using Cars.Models.Enums;
 using Microsoft.AspNetCore.Identity;
-
 using Microsoft.Extensions.DependencyInjection;
 
-
-namespace Cars.Services.Other
+namespace Cars.Services.Extensions
 {
     public static class RolesExtensions
     {

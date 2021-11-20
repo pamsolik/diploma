@@ -3,7 +3,7 @@ using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Cars.Services.Other
+namespace Cars.Services.Extensions
 {
     public static class ScheduledServiceExtensions
     {

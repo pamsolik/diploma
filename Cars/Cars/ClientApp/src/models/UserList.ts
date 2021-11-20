@@ -18,8 +18,10 @@ export interface UserFilters{
   pageSize: number
 }
 
-export const UserFiltersDefault: UserFilters = {
-  searchTerm: "",
-  pageSize: 10,
-  pageIndex: 0,
+export function UserFiltersDefault(): UserFilters  {
+  return {
+    searchTerm: "",
+    pageSize: 10,
+    pageIndex: 0,
+  }
 }

@@ -77,7 +77,6 @@ namespace Cars.Controllers
         [HttpPost("public")]
         public async Task<IActionResult> GetRecruitmentsPublic([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
-            if (!User.IsInRole("User")) throw new AppBaseException(HttpStatusCode.Forbidden, "Not in role");
             var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Public);
             return Ok(res);
         }

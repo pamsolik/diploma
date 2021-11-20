@@ -39,7 +39,7 @@ export class RecruitmentListComponent implements OnInit {
   // private places: any;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    this.filters = FiltersDefault;
+    this.filters = FiltersDefault();
   }
 
   ngOnInit() {
@@ -80,7 +80,7 @@ export class RecruitmentListComponent implements OnInit {
   }
 
   clearFilters() {
-    this.filters = FiltersDefault;
+    this.filters = FiltersDefault();
   }
 
   createImgPath = (path: string) => {

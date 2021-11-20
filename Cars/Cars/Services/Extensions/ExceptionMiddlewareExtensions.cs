@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 
-namespace Cars.Services.Other
+namespace Cars.Services.Extensions
 {
     public static class ExceptionMiddlewareExtensions
     {
