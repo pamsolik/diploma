@@ -12,13 +12,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Cars.Managers.Implementations
 {
-    public class AppAppUserManager : IAppUserManager
+    public class AppUserManager : IAppUserManager
     {
         private readonly ApplicationDbContext _context;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AppAppUserManager(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AppUserManager(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;

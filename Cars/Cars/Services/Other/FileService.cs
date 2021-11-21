@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 
 namespace Cars.Services.Other
 {
@@ -35,5 +36,8 @@ namespace Cars.Services.Other
                 Path.Combine(basePath, fileLocation), true);
             return fileLocation;
         }
+
+        public static string FindAllFiles(string sDir, string searchPattern) => 
+            Directory.GetFiles(sDir, searchPattern, SearchOption.AllDirectories).First();
     }
 }

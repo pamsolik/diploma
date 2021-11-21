@@ -133,7 +133,7 @@ namespace Cars.Services.Implementations
                     await PerformScan(projectDir, projectKey, project.Technology);
 
                     await TryToReadAnalysis(project, manager, projectKey);
-                    DeleteWithoutPermissions(dirInfo);
+                    //DeleteWithoutPermissions(dirInfo);
                 }
                 else
                 {
@@ -177,8 +177,25 @@ namespace Cars.Services.Implementations
                 _ => throw new ArgumentException("This technology isn't supported")
             };
             
+            var projectDirectory = technology switch
+            {
+                Technology.Other => projectDir,
+                Technology.DotNet => FindAllFiles(projectDir, "*.sln"),
+                Technology.Gradle => FindAllFiles(projectDir, "build.gradle"),
+                Technology.Maven => FindAllFiles(projectDir, "pom.xml"),
+                _ => throw new ArgumentException("This technology isn't supported")
+            };
+            
+            await WriteCommand(Path.Combine(projectDirectory, "sonarcmd.txt"), cmd);
             //TODO: Select project dir when project is in the nested directory
-            await CommandExecutor.ExecuteCommandAsync(cmd, projectDir, _logger);
+            await CommandExecutor.ExecuteCommandAsync(cmd, projectDirectory, _logger);
         }
+        
+        private static async Task WriteCommand(string loc,string txt)
+        {
+            await File.WriteAllTextAsync(loc, txt);
+        }
+        
+        
     }
 }

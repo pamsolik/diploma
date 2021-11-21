@@ -24,7 +24,7 @@ namespace Cars.Services.Extensions
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
 
-            services.AddScoped<IAppUserManager, AppAppUserManager>();
+            services.AddScoped<IAppUserManager, AppUserManager>();
             services.AddScoped<IAnalysisManager, AnalysisManager>();
             services.AddScoped<IRecruitmentManager, RecruitmentManager>();
             
