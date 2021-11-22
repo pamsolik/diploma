@@ -37,7 +37,15 @@ namespace Cars.Services.Other
             return fileLocation;
         }
 
-        public static string FindAllFiles(string sDir, string searchPattern) => 
-            Directory.GetFiles(sDir, searchPattern, SearchOption.AllDirectories).First();
+        public static (string dir, int projects) FindAllFiles(string sDir, string searchPattern, int retry = 0)
+        {
+            retry -= 3;
+            if (retry < 0) retry = 0;
+            var dirs = Directory.GetFiles(sDir, searchPattern, SearchOption.AllDirectories);
+            var cnt = dirs.Length;
+            var dir = cnt > 0 ? Path.GetDirectoryName(dirs.ElementAt(retry)) : sDir;
+            return (dir ?? sDir, cnt);
+        }
+            
     }
 }

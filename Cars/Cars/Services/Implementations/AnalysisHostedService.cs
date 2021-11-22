@@ -65,8 +65,7 @@ namespace Cars.Services.Implementations
             var notExamined = manager.GetNotExaminedApplications();
 
             if (!notExamined.Any()) return;
-
-            var http = new HttpRequestHandler();
+            
             var projects = GetResponse<Projects>(GetProjectsUri());
 
             if (projects is not null)
@@ -90,9 +89,14 @@ namespace Cars.Services.Implementations
         {
             try
             {
+                _logger.LogInformation($"CalculateAndSaveCodeOverallQuality: {application.Id}");
                 var projects = manager.GetAllProjects(application);
                 var coq = GetCodeOverallQuality(projects, _dateTimeProvider);
-                if (coq is null) return;
+                if (coq is null)
+                {
+                    _logger.LogWarning($"GetCodeOverallQuality for application: {application.Id} is null");
+                    return;
+                }
                 coq.OverallRating = CalculateOverallRating(coq);
                 await manager.SaveCodeOverallQuality(application, coq);
             }
@@ -116,22 +120,26 @@ namespace Cars.Services.Implementations
 
                 if (!projectCreated)
                 {
+                    _logger.LogInformation($"Creating project: {project.Id}");
                     var sonarProject = GetResponse<ProjectCreate>(GetCreateProjectUri(projectKey), Method.POST);
                     projectCreated = sonarProject is not null;
                 }
                 else
                 {
+                    _logger.LogInformation($"TryToReadAnalysis: {project.Id}");
                     saved = await TryToReadAnalysis(project, manager, projectKey);
                 }
 
                 if (projectCreated && !saved)
                 {
+                    _logger.LogInformation($"Project {project.Id} performing scan");
                     EnsureDirectoryIsCreated(dirInfo);
 
                     RepositoryLoader.Clone(project.Url, projectDir);
 
-                    await PerformScan(projectDir, projectKey, project.Technology);
+                    var solutionsCnt = await PerformScan(projectDir, projectKey, project.Technology);
 
+                    project.SolutionsCnt = solutionsCnt;
                     await TryToReadAnalysis(project, manager, projectKey);
                     //DeleteWithoutPermissions(dirInfo);
                 }
@@ -149,25 +157,37 @@ namespace Cars.Services.Implementations
 
         private async Task<bool> TryToReadAnalysis(Project project, IAnalysisManager manager, string projectKey)
         {
-            var retry = project.CodeQualityAssessmentId is not null;
             var analysis = GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
 
             var loaded = analysis is not null && analysis.Component.Measures.Any();
-
-            var ass = loaded ? CreateInstance(analysis, _dateTimeProvider) : CreateInstance(_dateTimeProvider);
-
-            ass.OverallRating = CalculateOverallRating(ass);
             
-            if (!loaded) return false;
-
-            if (retry) ass.Success = true;
+            var ass = project.CodeQualityAssessment ?? CreateInstance(_dateTimeProvider, loaded);
+            ass.LoadMeasures(analysis);
+            
+            _logger.LogInformation($"TryToReadAnalysis: {loaded}");
+            
+            if (!loaded)
+            {
+                if (project.Retries - 3 > project.SolutionsCnt) ass.Success = true;
+                project.Retries++;
+            }
+            
             await manager.SaveCodeQualityAnalysis(project, ass);
-            //GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST);
+            //GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST); //TODO: Uncomment
             return true;
         }
 
-        private async Task PerformScan(string projectDir, string projectKey, Technology technology)
+        private async Task<int> PerformScan(string projectDir, string projectKey, Technology technology)
         {
+            var (dir, projects) = technology switch
+            {
+                Technology.Other => (projectDir, 0),
+                Technology.DotNet => FindAllFiles(projectDir, "*.sln"),
+                Technology.Gradle => FindAllFiles(projectDir, "build.gradle"),
+                Technology.Maven => FindAllFiles(projectDir, "pom.xml"),
+                _ => throw new ArgumentException("This technology isn't supported")
+            };
+            
             var cmd = technology switch
             {
                 Technology.Other => GetNormalScanCommand(projectKey),
@@ -177,25 +197,12 @@ namespace Cars.Services.Implementations
                 _ => throw new ArgumentException("This technology isn't supported")
             };
             
-            var projectDirectory = technology switch
-            {
-                Technology.Other => projectDir,
-                Technology.DotNet => FindAllFiles(projectDir, "*.sln"),
-                Technology.Gradle => FindAllFiles(projectDir, "build.gradle"),
-                Technology.Maven => FindAllFiles(projectDir, "pom.xml"),
-                _ => throw new ArgumentException("This technology isn't supported")
-            };
-            
-            await WriteCommand(Path.Combine(projectDirectory, "sonarcmd.txt"), cmd);
-            //TODO: Select project dir when project is in the nested directory
-            await CommandExecutor.ExecuteCommandAsync(cmd, projectDirectory, _logger);
+            await WriteCommand(Path.Combine(dir, "sonarcmd.txt"), cmd);
+            await CommandExecutor.ExecuteCommandAsync(cmd, dir, _logger);
+            return projects;
         }
         
-        private static async Task WriteCommand(string loc,string txt)
-        {
+        private static async Task WriteCommand(string loc,string txt) => 
             await File.WriteAllTextAsync(loc, txt);
-        }
-        
-        
     }
 }

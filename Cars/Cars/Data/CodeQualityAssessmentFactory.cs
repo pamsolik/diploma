@@ -2,52 +2,48 @@
 using Cars.Models.DataModels;
 using Cars.Models.SonarQubeDataModels;
 using Cars.Services.Interfaces;
+using static Cars.Services.Other.OverallQualityCalculator;
 
 namespace Cars.Data
 {
     public static class CodeQualityAssessmentFactory
     {
-        public static CodeQualityAssessment CreateInstance(CodeAnalysis analysis, IDateTimeProvider dateTimeProvider)
+        public static void LoadMeasures(this CodeQualityAssessment coq, CodeAnalysis analysis)
         {
-            return new()
-            {
-                CompletedTime = dateTimeProvider.GetTimeNow(),
-                Success = true,
-                
-                //Complexity
-                Complexity = analysis.GetValue("complexity"),
-                CognitiveComplexity = analysis.GetValue("cognitive_complexity"),
-                //Duplications
-                DuplicatedLines = analysis.GetValue("duplicated_lines"),
-                DuplicatedLinesDensity = analysis.GetValue("duplicated_lines_density"),
-                //Issues
-                Violations = analysis.GetValue("violations"),
-                //Maintability
-                CodeSmells = analysis.GetValue("code_smells"),
-                MaintainabilityRating = analysis.GetValue("sqale_rating"),
-                TechnicalDebt = analysis.GetValue("sqale_index"),
-                //Reliability
-                Bugs = analysis.GetValue("bugs"),
-                ReliabilityRating = analysis.GetValue("reliability_rating"),
-                //Tests
-                Coverage = analysis.GetValue("coverage"),
-                Tests = analysis.GetValue("tests"),
-                //Security
-                SecurityRating = analysis.GetValue("security_rating"),
-                SecurityHotspots = analysis.GetValue("security_hotspots"),
-                //Size
-                LinesOfCode = analysis.GetValue("lines"),
-                //Overall
-                OverallRating = null
-            };
+            if (!coq.Success) return;
+            //Complexity
+            coq.Complexity = analysis.GetValue("complexity");
+            coq.CognitiveComplexity = analysis.GetValue("cognitive_complexity");
+            //Duplications
+            coq.DuplicatedLines = analysis.GetValue("duplicated_lines");
+            coq.DuplicatedLinesDensity = analysis.GetValue("duplicated_lines_density");
+            //Issues
+            coq.Violations = analysis.GetValue("violations");
+            //Maintability
+            coq.CodeSmells = analysis.GetValue("code_smells");
+            coq.MaintainabilityRating = analysis.GetValue("sqale_rating");
+            coq.TechnicalDebt = analysis.GetValue("sqale_index");
+            //Reliability
+            coq.Bugs = analysis.GetValue("bugs");
+            coq.ReliabilityRating = analysis.GetValue("reliability_rating");
+            //Tests
+            coq.Coverage = analysis.GetValue("coverage");
+            coq.Tests = analysis.GetValue("tests");
+            //Security
+            coq.SecurityRating = analysis.GetValue("security_rating");
+            coq.SecurityHotspots = analysis.GetValue("security_hotspots");
+            //Size
+            coq.LinesOfCode = analysis.GetValue("lines");
+            //Overall
+            coq.OverallRating = CalculateOverallRating(coq);
         }
-
-        public static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider)
+        
+        public static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider, bool success)
         {
-            return new()
+            return new CodeQualityAssessment
             {
                 CompletedTime = dateTimeProvider.GetTimeNow(),
-                Success = false
+                Success = success
             };
         }
     }
