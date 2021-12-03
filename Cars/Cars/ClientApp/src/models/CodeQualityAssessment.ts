@@ -1,23 +1,5 @@
-﻿export interface CodeQualityAssessment {
-  id: number,
-  success: boolean,
+﻿import {CodeOverallQuality} from "./CodeOverallQuality";
+
+export interface CodeQualityAssessment extends CodeOverallQuality{
   ProjectsCount: number,
-  completedTime: Date,
-
-  codeSmells: number,
-  maintainability: number,
-  coverage: number,
-  cognitiveComplexity: number,
-  violations: number,
-  securityRating: number,
-  duplicatedLines: number,
-  lines: number,
-  duplicatedLinesDensity: number,
-  bugs: number,
-  sqaleRating: number,
-  reliabilityRating: number,
-  complexity: number,
-  securityHotspots: number,
-
-  overallRating: number,
 }

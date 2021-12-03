@@ -12,6 +12,9 @@ import {City} from "../../models/City";
 import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 import { Sort } from 'src/util/sort';
 import {Technology} from "../../models/enums/Technology";
+import {AuthorizeService} from "../../api-authorization/authorize.service";
+import {formatNumber} from "../../util/Formatter";
+
 
 @Component({
   selector: 'app-applications',
@@ -29,6 +32,7 @@ export class ApplicationsComponent implements OnInit{
               private http: HttpClient,
               private alertService: AlertService,
               private route: ActivatedRoute,
+              public authorizeService: AuthorizeService
   ) { }
 
   ngOnInit() {
@@ -49,7 +53,7 @@ export class ApplicationsComponent implements OnInit{
   }
 
   getValue(value: number): string {
-    return value === null || value === undefined ? "N/A" : value.toString();
+    return value === null || value === undefined ? "N/A" : formatNumber(value).toString() ;
   }
 
   createDto(): CloseRecruitmentDto {

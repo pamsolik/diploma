@@ -161,8 +161,10 @@ namespace Cars.Services.Implementations
 
             var loaded = analysis is not null && analysis.Component.Measures.Any();
             
-            var ass = project.CodeQualityAssessment ?? CreateInstance(_dateTimeProvider, loaded);
-            ass.LoadMeasures(analysis);
+            
+            var ass = project.CodeQualityAssessmentId is null? 
+                CreateInstance(_dateTimeProvider, loaded) : 
+                CreateInstance(_dateTimeProvider, loaded, analysis);
             
             _logger.LogInformation($"TryToReadAnalysis: {loaded}");
             

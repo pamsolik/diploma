@@ -1,9 +1,16 @@
 .panel {
   position: relative;
-  background-color: #ff6600;
+  background-color: #FFE19C;
   margin-top: -16px;
   padding-bottom: 30px;
   left: 0;
   right: 0;
   width: 100%;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }

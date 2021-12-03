@@ -8,9 +8,9 @@ namespace Cars.Data
 {
     public static class CodeQualityAssessmentFactory
     {
-        public static void LoadMeasures(this CodeQualityAssessment coq, CodeAnalysis analysis)
+        public static CodeQualityAssessment LoadMeasures(this CodeQualityAssessment coq, CodeAnalysis analysis)
         {
-            if (!coq.Success) return;
+            if (!coq.Success) return coq;
             //Complexity
             coq.Complexity = analysis.GetValue("complexity");
             coq.CognitiveComplexity = analysis.GetValue("cognitive_complexity");
@@ -36,6 +36,7 @@ namespace Cars.Data
             coq.LinesOfCode = analysis.GetValue("lines");
             //Overall
             coq.OverallRating = CalculateOverallRating(coq);
+            return coq; 
         }
         
         public static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider, bool success)
@@ -45,6 +46,13 @@ namespace Cars.Data
                 CompletedTime = dateTimeProvider.GetTimeNow(),
                 Success = success
             };
+        }
+        
+        public static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider, bool success, CodeAnalysis analysis)
+        {
+            var res = CreateInstance(dateTimeProvider, success);
+            res.LoadMeasures(analysis);
+            return res;
         }
     }
 }

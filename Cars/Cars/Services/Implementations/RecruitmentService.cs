@@ -106,6 +106,7 @@ namespace Cars.Services.Implementations
         {
             var dest = addApplicationDto.Adapt<RecruitmentApplication>(); //TODO: check if valid and respond accordingly
             dest.ApplicantId = applicantId;
+            dest.Time = _dateTimeProvider.GetTimeNow();
             var res = await _recruitmentManager.AddApplication(dest);
             res = await _recruitmentManager.CopyAndSaveApplicationFiles(addApplicationDto, res);
             return res.Entity;

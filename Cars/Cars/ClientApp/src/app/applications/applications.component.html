@@ -31,7 +31,7 @@
 
         <section class="me-1">
           <div class="row">
-            <h5 class="col-5 border-end border-dark th-sm search" [appSort]="recruitmentApplications"
+            <h5 class="col-4 border-end border-dark th-sm search" [appSort]="recruitmentApplications"
                 data-name="applicant.name">Lista aplikacji</h5>
             <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
                data-name="codeOverallQuality.bugs">Błędy</p>
@@ -44,9 +44,13 @@
             <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
                data-name="codeOverallQuality.reliabilityRating">Niezawodność</p>
             <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="codeOverallQuality.maintainability">Utrzymywalność</p>
-            <p class="col-1 search">Dług techniczny</p>
+               data-name="codeOverallQuality.maintainabilityRating">Utrzymywalność</p>
+            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
+               data-name="codeOverallQuality.technicalDebt">Dług techniczny</p>
+            <p class="col-1 search" [appSort]="recruitmentApplications" data-order="desc"
+               data-name="codeOverallQuality.overallRating">Ogólna ocena</p>
           </div>
+
           <div class="row">
 
             <mat-card *ngFor="let application of recruitmentApplications"
@@ -55,11 +59,11 @@
                 <div class="col-2">
                   <img alt="Thumbnail image"
                        class="img-fluid"
-                       src="https://discountdoorhardware.ca/wp-content/uploads/2018/06/profile-placeholder-3.jpg">
+                       [src]="authorizeService.createImgPath(application.applicant.profilePicture)">
                   <p class="mt-2"> {{application.time | date: 'dd-MM-yyyy HH:mm'}}</p>
                 </div>
 
-                <div class="col-3 border-end border-dark">
+                <div class="col-2 border-end border-dark">
                   <h5 class="card-title">{{application.applicant.name}}</h5>
                   <p>{{application.description}}</p>
 
@@ -75,38 +79,54 @@
                   </div>
                 </div>
 
-
                 <h3 *ngIf="!application.codeOverallQuality else examined"
                     class="col justify-content-center align-self-center">Projekt nie został jeszcze zbadany</h3>
 
                 <ng-template #examined>
-                  <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{getValue(application.codeOverallQuality.bugs)}}</h5>
-                  </div>
+                  <h3
+                    *ngIf="!application.codeOverallQuality.success && application.codeOverallQuality.retries > 3 else success"
+                    class="col justify-content-center align-self-center">Badanie nie powiodło się</h3>
 
-                  <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{getValue(application.codeOverallQuality.securityRating)}}</h5>
-                  </div>
+                  <ng-template #success>
+                    <div class="col-1 border-end border-dark text-center">
+                      <h5 class="card-title">{{getValue(application.codeOverallQuality.bugs)}}</h5>
+                    </div>
 
-                  <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{getValue(application.codeOverallQuality.codeSmells)}}</h5>
-                  </div>
+                    <div class="col-1 border-end border-dark text-center">
+                      <h5
+                        class="card-title">{{getValue(application.codeOverallQuality.securityRating)}}</h5>
+                    </div>
 
-                  <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{getValue(application.codeOverallQuality.duplicatedLinesDensity)}}</h5>
-                  </div>
+                    <div class="col-1 border-end border-dark text-center">
+                      <h5
+                        class="card-title">{{getValue(application.codeOverallQuality.codeSmells)}}</h5>
+                    </div>
 
-                  <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{getValue(application.codeOverallQuality.reliabilityRating)}}</h5>
-                  </div>
+                    <div class="col-1 border-end border-dark text-center">
+                      <h5
+                        class="card-title">{{getValue(application.codeOverallQuality.duplicatedLinesDensity)}}</h5>
+                    </div>
 
-                  <div class="col-1 border-end border-dark text-center">
-                    <h5 class="card-title">{{getValue(application.codeOverallQuality.maintainability)}}</h5>
-                  </div>
+                    <div class="col-1 border-end border-dark text-center">
+                      <h5
+                        class="card-title">{{getValue(application.codeOverallQuality.reliabilityRating)}}</h5>
+                    </div>
 
-                  <div class="col-1 text-center">
-                    <h5 class="card-title">{{getValue(application.codeOverallQuality.sqaleRating)}}</h5>
-                  </div>
+                    <div class="col-1 border-end border-dark text-center">
+                      <h5
+                        class="card-title">{{getValue(application.codeOverallQuality.maintainabilityRating)}}</h5>
+                    </div>
+
+                    <div class="col-1 border-end border-dark text-center">
+                      <h5
+                        class="card-title">{{getValue(application.codeOverallQuality.technicalDebt)}}</h5>
+                    </div>
+
+                    <div class="col-1 text-center">
+                      <h5
+                        class="card-title">{{getValue(application.codeOverallQuality.overallRating)}}</h5>
+                    </div>
+                  </ng-template>
                 </ng-template>
               </div>
             </mat-card>

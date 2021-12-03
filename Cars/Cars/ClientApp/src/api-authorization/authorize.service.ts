@@ -6,6 +6,7 @@ import {ApplicationName, ApplicationPaths} from './api-authorization.constants';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {HttpClient} from "@angular/common/http";
 import {ApiAnswer} from "../models/ApiAnswer";
+import {Applicant} from "../models/Applicant";
 
 export type IAuthenticationResult =
   SuccessAuthenticationResult |
@@ -53,6 +54,7 @@ export class AuthorizeService{
   public roles: string[];
   public isAdmin: boolean;
   public isRecruiter: boolean;
+  public userInfo: Applicant;
 
   public isAuthenticated(): Observable<boolean> {
     return this.getUser().pipe(map(u => !!u));
@@ -72,19 +74,24 @@ export class AuthorizeService{
   }
 
   public checkRoles() {
-    console.log("Checking roles");
     this.http.get<string[]>(`${this.baseUrl}api/user/auth/roles`).subscribe(result => {
       this.roles = result;
       this.isAdmin = this.roles.some(r => r == 'Admin');
       this.isRecruiter = this.roles.some(r => r == 'Recruiter');
-      console.log(this.roles);
     }, error => {
       this.roles = [];
       this.isAdmin = false;
       this.isRecruiter = false;
       console.error(error);
     });
+  }
 
+  public getUserInfo() {
+    this.http.get<Applicant>(`${this.baseUrl}api/user/auth/user-info`).subscribe(result => {
+      this.userInfo = result;
+    }, error => {
+      console.error(error);
+    });
   }
 
   // We try to authenticate the user in three different ways:
@@ -221,5 +228,9 @@ export class AuthorizeService{
       .pipe(
         mergeMap(() => this.userManager.getUser()),
         map(u => u && u.profile));
+  }
+
+  createImgPath = (path: string) => {
+    return `${this.baseUrl}${path}`;
   }
 }

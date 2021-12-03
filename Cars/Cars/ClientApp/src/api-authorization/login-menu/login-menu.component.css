@@ -3,10 +3,6 @@
   margin: 0;
 }
 
-body {
-  background-color: #999;
-}
-
 .l {
   float: left;
 }
@@ -19,7 +15,7 @@ body {
   width: 100%;
   height: 40px;
   line-height: 40px;
-  background-color: black;
+  background-color: #7F534B;
 
 }
 
@@ -45,8 +41,9 @@ body {
 
 .user_c {
   z-index: 99 !important;
-  background-color: #e7e7e7;
+  background-color: #EDE7E3;
   border-radius: 10px;
+  border: 1px solid #7F534B;
   padding: 20px 20px;
   box-sizing: border-box;
   width: auto;
@@ -72,14 +69,14 @@ body {
   width: 0;
   height: 0;
   border: solid 10px transparent;
-  border-bottom: solid 10px black;
+  border-bottom: solid 10px #7F534B;
   position: absolute;
   left: 60px;
   top: -20px;
 }
 
 .user_info img {
-  width: 70px;
+  width: 100px;
 }
 
 .user_info p {
@@ -89,7 +86,7 @@ body {
 }
 
 .user_info a {
-  color: #FF8B00;
+  color: #FF784F;
   transition: 0.3s;
 }
 
@@ -116,6 +113,6 @@ body {
 }
 
 .u_menu ul li a:hover {
-  color: #FF8B00;
+  color: #FF784F;
   transition: 0.2s;
 }

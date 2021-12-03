@@ -6,8 +6,6 @@ namespace Cars.Models.DataModels
 {
     public class ApplicationUser : IdentityUser
     {
-        //TODO: Add user properties to the ui
-
         [StringLength(200, ErrorMessage = "Name cannot be longer than 200 characters.")]
         public string Name { get; set; }
 

@@ -24,3 +24,8 @@ img {
   height: 200px;
   object-fit: contain;
 }
+
+.project:hover{
+  background-color: lightgray;
+  cursor: pointer;
+}

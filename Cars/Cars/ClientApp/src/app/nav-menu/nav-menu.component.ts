@@ -14,7 +14,10 @@ export class NavMenuComponent {
 
   constructor(public authorizeService: AuthorizeService) {
     this.isAuthenticated = authorizeService.isAuthenticated();
-    this.authorizeService.checkRoles();
+    if (this.isAuthenticated){
+      this.authorizeService.checkRoles();
+      this.authorizeService.getUserInfo();
+    }
   }
 
   collapse() {

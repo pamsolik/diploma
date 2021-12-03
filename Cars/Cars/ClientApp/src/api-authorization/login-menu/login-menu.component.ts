@@ -30,6 +30,6 @@ export class LoginMenuComponent implements OnInit {
   }
 
   createImgPath() {
-    return `${this.baseUrl}${this.authorizeService.ProfileUrl}`;
+    return `${this.baseUrl}${this.authorizeService.userInfo.profilePicture}`;
   }
 }

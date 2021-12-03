@@ -5,10 +5,9 @@ a {
   color: #0366d6;
 }
 
-/* TODO: Color pallette */
-/*body {*/
-/*  background-color: #37474f;*/
-/*}*/
+body {
+  background-color: #EDF7F6;
+}
 
 /*.card-body{*/
 /*  background-color: #62727b;*/
@@ -33,7 +32,7 @@ code {
 }
 
 .nav_color {
-  background-color: #6247AA;
+  background-color: #2660A4;
 }
 
 
