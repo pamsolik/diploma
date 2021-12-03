@@ -14,7 +14,7 @@ export class NavMenuComponent {
 
   constructor(public authorizeService: AuthorizeService) {
     this.isAuthenticated = authorizeService.isAuthenticated();
-    if (this.isAuthenticated){
+    if (this.isAuthenticated) {
       this.authorizeService.checkRoles();
       this.authorizeService.getUserInfo();
     }

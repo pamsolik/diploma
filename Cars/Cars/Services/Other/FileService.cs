@@ -46,6 +46,5 @@ namespace Cars.Services.Other
             var dir = cnt > 0 ? Path.GetDirectoryName(dirs.ElementAt(retry)) : sDir;
             return (dir ?? sDir, cnt);
         }
-            
     }
 }

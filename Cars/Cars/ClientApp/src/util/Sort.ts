@@ -1,7 +1,4 @@
-﻿import {C} from "@angular/cdk/keycodes";
-import {colors} from "@angular/cli/utilities/color";
-
-export class Sort {
+﻿export class Sort {
 
   private sortOrder = 1;
   private collator = new Intl.Collator(undefined, {

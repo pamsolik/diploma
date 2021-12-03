@@ -12,7 +12,7 @@ namespace Cars.Managers.Interfaces
         public Task<List<string>> GetUserRoles(string userId);
 
         public string GetUserId(ClaimsPrincipal user);
-        
+
         public string GetUserName(ClaimsPrincipal user);
 
         public Task<ApplicationUser> FindUser(string userId);

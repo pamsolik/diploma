@@ -1,5 +1,4 @@
-﻿using System;
-using Cars.Models.DataModels;
+﻿using Cars.Models.DataModels;
 using Cars.Models.SonarQubeDataModels;
 using Cars.Services.Interfaces;
 using static Cars.Services.Other.OverallQualityCalculator;
@@ -36,9 +35,9 @@ namespace Cars.Data
             coq.LinesOfCode = analysis.GetValue("lines");
             //Overall
             coq.OverallRating = CalculateOverallRating(coq);
-            return coq; 
+            return coq;
         }
-        
+
         public static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider, bool success)
         {
             return new CodeQualityAssessment
@@ -47,8 +46,9 @@ namespace Cars.Data
                 Success = success
             };
         }
-        
-        public static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider, bool success, CodeAnalysis analysis)
+
+        public static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider, bool success,
+            CodeAnalysis analysis)
         {
             var res = CreateInstance(dateTimeProvider, success);
             res.LoadMeasures(analysis);

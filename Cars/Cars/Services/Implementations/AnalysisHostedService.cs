@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Cars.Data;
 using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Cars.Models.Enums;
@@ -25,9 +23,10 @@ namespace Cars.Services.Implementations
 {
     internal class AnalysisHostedService : CronJobService
     {
+        private readonly IDateTimeProvider _dateTimeProvider;
         private readonly ILogger<AnalysisHostedService> _logger;
         private readonly IServiceScopeFactory _scopeFactory;
-        private readonly IDateTimeProvider _dateTimeProvider;
+
         public AnalysisHostedService(IScheduleConfig<AnalysisHostedService> config, IServiceScopeFactory scopeFactory,
             ILogger<AnalysisHostedService> logger, IDateTimeProvider dateTimeProvider)
             : base(config.CronExpression, config.TimeZoneInfo)
@@ -65,7 +64,7 @@ namespace Cars.Services.Implementations
             var notExamined = manager.GetNotExaminedApplications();
 
             if (!notExamined.Any()) return;
-            
+
             var projects = GetResponse<Projects>(GetProjectsUri());
 
             if (projects is not null)
@@ -97,6 +96,7 @@ namespace Cars.Services.Implementations
                     _logger.LogWarning($"GetCodeOverallQuality for application: {application.Id} is null");
                     return;
                 }
+
                 coq.OverallRating = CalculateOverallRating(coq);
                 await manager.SaveCodeOverallQuality(application, coq);
             }
@@ -160,20 +160,20 @@ namespace Cars.Services.Implementations
             var analysis = GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
 
             var loaded = analysis is not null && analysis.Component.Measures.Any();
-            
-            
-            var ass = project.CodeQualityAssessmentId is null? 
-                CreateInstance(_dateTimeProvider, loaded) : 
-                CreateInstance(_dateTimeProvider, loaded, analysis);
-            
+
+
+            var ass = project.CodeQualityAssessmentId is null
+                ? CreateInstance(_dateTimeProvider, loaded)
+                : CreateInstance(_dateTimeProvider, loaded, analysis);
+
             _logger.LogInformation($"TryToReadAnalysis: {loaded}");
-            
+
             if (!loaded)
             {
                 if (project.Retries - 3 > project.SolutionsCnt) ass.Success = true;
                 project.Retries++;
             }
-            
+
             await manager.SaveCodeQualityAnalysis(project, ass);
             //GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST); //TODO: Uncomment
             return true;
@@ -189,7 +189,7 @@ namespace Cars.Services.Implementations
                 Technology.Maven => FindAllFiles(projectDir, "pom.xml"),
                 _ => throw new ArgumentException("This technology isn't supported")
             };
-            
+
             var cmd = technology switch
             {
                 Technology.Other => GetNormalScanCommand(projectKey),
@@ -198,13 +198,15 @@ namespace Cars.Services.Implementations
                 Technology.Maven => GetMvnScanCommand(projectKey),
                 _ => throw new ArgumentException("This technology isn't supported")
             };
-            
+
             await WriteCommand(Path.Combine(dir, "sonarcmd.txt"), cmd);
             await CommandExecutor.ExecuteCommandAsync(cmd, dir, _logger);
             return projects;
         }
-        
-        private static async Task WriteCommand(string loc,string txt) => 
+
+        private static async Task WriteCommand(string loc, string txt)
+        {
             await File.WriteAllTextAsync(loc, txt);
+        }
     }
 }

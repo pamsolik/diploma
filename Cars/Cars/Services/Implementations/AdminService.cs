@@ -7,13 +7,12 @@ using Cars.Services.Interfaces;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 
-
 namespace Cars.Services.Implementations
 {
     public class AdminService : IAdminService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAppUserManager _appUserManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public AdminService(UserManager<ApplicationUser> userManager, IAppUserManager appUserManager)
         {
@@ -21,7 +20,7 @@ namespace Cars.Services.Implementations
             _appUserManager = appUserManager;
         }
 
-        public async Task<PaginatedList<UserView>> GetUsersInRole(string roleName, string searchTerm, 
+        public async Task<PaginatedList<UserView>> GetUsersInRole(string roleName, string searchTerm,
             int pageSize, int pageIndex)
         {
             _appUserManager.CheckIfRoleExists(roleName);
@@ -29,7 +28,7 @@ namespace Cars.Services.Implementations
             var dest = res.Adapt<List<UserView>>();
             var paginated = PaginatedList<UserView>.CreateAsync(dest, pageIndex, pageSize);
 
-            return paginated; 
+            return paginated;
         }
 
         public async Task<bool> AddRoleToUser(string userId, string roleName)
@@ -47,6 +46,5 @@ namespace Cars.Services.Implementations
             var res = await _userManager.RemoveFromRoleAsync(user, roleName);
             return res.Succeeded;
         }
-        
     }
 }

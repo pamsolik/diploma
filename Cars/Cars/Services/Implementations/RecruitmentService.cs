@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Cars.Managers.Interfaces;
@@ -11,20 +9,20 @@ using Cars.Models.Enums;
 using Cars.Models.Exceptions;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
+using Duende.IdentityServer.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using static Cars.Services.Other.FilterUtilities;
 using static Cars.Services.Other.FileService;
-using Duende.IdentityServer.Extensions;
 
 namespace Cars.Services.Implementations
 {
     public class RecruitmentService : IRecruitmentService
     {
-        private readonly IRecruitmentManager _recruitmentManager;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly ILogger<RecruitmentService> _logger;
+        private readonly IRecruitmentManager _recruitmentManager;
 
         public RecruitmentService(ILogger<RecruitmentService> logger,
             IDateTimeProvider dateTimeProvider, IRecruitmentManager recruitmentManager)
@@ -144,7 +142,9 @@ namespace Cars.Services.Implementations
             return res;
         }
 
-        private void GetDaysAgoDescriptions(ref List<RecruitmentView> dest) =>
+        private void GetDaysAgoDescriptions(ref List<RecruitmentView> dest)
+        {
             dest.ForEach(dst => dst.DaysAgo = _dateTimeProvider.GetTimeAgoDescription(dst.StartDate));
+        }
     }
 }

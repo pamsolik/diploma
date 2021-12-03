@@ -1,5 +1,4 @@
 ﻿import {City} from "./City";
-import {ApplicationDto} from "./ApplicationDto";
 
 export interface Filters {
   pageSize: number,

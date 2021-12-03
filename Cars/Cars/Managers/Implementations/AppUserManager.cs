@@ -48,6 +48,7 @@ namespace Cars.Managers.Implementations
                 var userIsInRole = await _userManager.IsInRoleAsync(user, r);
                 if (userIsInRole) roles.Add(r);
             }
+
             return roles;
         }
 
@@ -60,7 +61,7 @@ namespace Cars.Managers.Implementations
         {
             return user.FindFirstValue(ClaimTypes.NameIdentifier);
         }
-        
+
         public async Task<ApplicationUser> FindUser(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -71,7 +72,7 @@ namespace Cars.Managers.Implementations
         public async Task<List<ApplicationUser>> GetFilteredUsers(string roleName, string searchTerm)
         {
             var res = (await _userManager.GetUsersInRoleAsync(roleName)).ToList();
-            
+
             if (!string.IsNullOrEmpty(searchTerm))
                 res = res.FindAll(r =>
                     r.Name.Contains(searchTerm) ||

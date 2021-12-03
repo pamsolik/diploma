@@ -31,7 +31,7 @@
           <p *ngIf="!userRoles else loaded">Wczytywanie</p>
           <ng-template #loaded>
             <ul class="list-group">
-              <li class="list-group-item" *ngFor="let role of userRoles">
+              <li *ngFor="let role of userRoles" class="list-group-item">
                 <div class="row">
                   <p class="col mb-0 mt-2">{{role}}</p>
                   <button (click)="removeUserRole(role)" class="btn btn-danger col-auto m-0">×</button>

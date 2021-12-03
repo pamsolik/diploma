@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Cars.Models.View;
 
 namespace Cars.Services.Interfaces
@@ -11,6 +10,5 @@ namespace Cars.Services.Interfaces
         public Task<bool> AddRoleToUser(string userId, string roleName);
 
         public Task<bool> DeleteRoleFromUser(string userId, string roleName);
-        
     }
 }

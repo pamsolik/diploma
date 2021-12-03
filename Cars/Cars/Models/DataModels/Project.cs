@@ -24,14 +24,13 @@ namespace Cars.Models.DataModels
         [Required]
         [StringLength(1000, ErrorMessage = "Url cannot be longer than 1000 characters.")]
         public string Url { get; set; }
-        
-        [Required]
-        public Technology Technology { get; set; }
+
+        [Required] public Technology Technology { get; set; }
 
         public int Retries { get; set; }
-        
+
         public int SolutionsCnt { get; set; } = 1;
-        
+
         //null if not calculated yet
         public int? CodeQualityAssessmentId { get; set; }
 

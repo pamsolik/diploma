@@ -1,13 +1,10 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Filters, FiltersDefault} from "../../models/Filters";
 import {PageEvent} from "@angular/material/paginator";
 import {SortOrder} from "../../models/enums/SortOrder";
-import {getEnumKeyByEnumValue} from "../../components/EnumTool";
 
 import {Options} from "@angular-slider/ngx-slider";
 import {UserFilters, UserFiltersDefault, UserList} from "../../models/UserList";
-import {UserRoles} from "../../models/enums/UserRoles";
 
 @Component({
   selector: 'app-user-list-component',

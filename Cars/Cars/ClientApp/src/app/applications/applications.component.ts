@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
@@ -8,10 +8,8 @@ import {AlertService} from "../../services/alert.service";
 import {RecruitmentApplication} from "../../models/RecruitmentApplication"
 import {ApiAnswer} from "../../models/ApiAnswer";
 import {CloseRecruitmentDto, RecruitmentToClose} from "../../models/CloseRecruitmentDto";
-import {City} from "../../models/City";
 import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
-import { Sort } from 'src/util/sort';
-import {Technology} from "../../models/enums/Technology";
+import {Sort} from 'src/util/sort';
 import {AuthorizeService} from "../../api-authorization/authorize.service";
 import {formatNumber} from "../../util/Formatter";
 
@@ -21,7 +19,7 @@ import {formatNumber} from "../../util/Formatter";
   templateUrl: './applications.component.html',
   styleUrls: ['./applications.component.scss'],
 })
-export class ApplicationsComponent implements OnInit{
+export class ApplicationsComponent implements OnInit {
   id: string = this.route.snapshot.paramMap.get('id');
   recruitmentApplications: RecruitmentApplication[];
   details: RecruitmentDetailsView;
@@ -33,7 +31,8 @@ export class ApplicationsComponent implements OnInit{
               private alertService: AlertService,
               private route: ActivatedRoute,
               public authorizeService: AuthorizeService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.http.get<RecruitmentApplication[]>(this.baseUrl + 'api/recruitments/applications/' + this.id).subscribe(result => {
@@ -47,13 +46,13 @@ export class ApplicationsComponent implements OnInit{
     }, error => console.error(error));
   }
 
-  baseSort(){
+  baseSort() {
     if (!this.recruitmentApplications || !this.details) return;
     this.recruitmentApplications.sort(this.sort.startSort('selected', 'desc', null));
   }
 
   getValue(value: number): string {
-    return value === null || value === undefined ? "N/A" : formatNumber(value).toString() ;
+    return value === null || value === undefined ? "N/A" : formatNumber(value).toString();
   }
 
   createDto(): CloseRecruitmentDto {

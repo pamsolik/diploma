@@ -6,7 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AlertService} from "../../services/alert.service";
 
 import {BaseValues} from "../../models/enums/BaseValues";
-import {UserAdminView, UserList} from "../../models/UserList";
+import {UserAdminView} from "../../models/UserList";
 import {EditRolesDto} from "../../models/EditRoleDto";
 import {UserRoles} from "../../models/enums/UserRoles";
 

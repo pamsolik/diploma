@@ -56,10 +56,12 @@
         <h5>Projekty:</h5>
         <div class="mx-3 form-group">
           <p *ngIf="application.projects.length == 0" class="alert alert-warning">Brak projektów</p>
-          <div class="card mb-2 card-body" *ngFor="let proj of application.projects; let i = index">
+          <div *ngFor="let proj of application.projects; let i = index" class="card mb-2 card-body">
             <input [(ngModel)]="proj.title" class="form-control col ms-0 mb-1" placeholder="Podaj tytuł" type="text">
-            <input [(ngModel)]="proj.description" class="form-control col ms-0 mb-1" placeholder="Opis projektu" type="text">
-            <input [(ngModel)]="proj.url" class="form-control col ms-0 mb-1" placeholder="Url GitHub projektu" type="text">
+            <input [(ngModel)]="proj.description" class="form-control col ms-0 mb-1" placeholder="Opis projektu"
+                   type="text">
+            <input [(ngModel)]="proj.url" class="form-control col ms-0 mb-1" placeholder="Url GitHub projektu"
+                   type="text">
 
             <div class="form-group mb-2 row">
               <div class="col">
@@ -78,7 +80,7 @@
           </div>
         </div>
 
-<!--        <input [(ngModel)]="newProj" class="form-control m-2" placeholder="Podaj nowy projekt" type="text">-->
+        <!--        <input [(ngModel)]="newProj" class="form-control m-2" placeholder="Podaj nowy projekt" type="text">-->
         <button (click)="addProject()" class="btn btn-success">Dodaj kolejny projekt</button>
       </div>
 

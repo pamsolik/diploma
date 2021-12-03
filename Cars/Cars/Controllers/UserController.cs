@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cars.Managers.Interfaces;
-using Cars.Models.Dto;
 using Cars.Models.View;
-using Cars.Services.Interfaces;
 using Mapster;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,15 +14,13 @@ namespace Cars.Controllers
     [Route("api/user/auth")]
     public class UserController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
         private readonly IAppUserManager _appUserManager;
 
-        public UserController(ILogger<UserController> logger, IAppUserManager appUserManager)
+        public UserController(IAppUserManager appUserManager)
         {
-            _logger = logger;
             _appUserManager = appUserManager;
         }
-        
+
         [HttpGet("roles")]
         public async Task<IActionResult> GetClientRoles()
         {
@@ -34,7 +29,7 @@ namespace Cars.Controllers
             var res = await _appUserManager.GetUserRoles(uId);
             return Ok(res);
         }
-        
+
         [HttpGet("user-info")]
         public async Task<IActionResult> GetUserData()
         {

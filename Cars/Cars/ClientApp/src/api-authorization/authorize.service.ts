@@ -1,11 +1,9 @@
-import {Inject, Injectable, OnInit} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {User, UserManager} from 'oidc-client';
 import {BehaviorSubject, concat, from, Observable} from 'rxjs';
 import {filter, map, mergeMap, take, tap} from 'rxjs/operators';
 import {ApplicationName, ApplicationPaths} from './api-authorization.constants';
-import {JwtHelperService} from '@auth0/angular-jwt';
 import {HttpClient} from "@angular/common/http";
-import {ApiAnswer} from "../models/ApiAnswer";
 import {Applicant} from "../models/Applicant";
 
 export type IAuthenticationResult =
@@ -40,7 +38,7 @@ export interface IUser {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthorizeService{
+export class AuthorizeService {
   // By default pop ups are disabled because they don't work properly on Edge.
   // If you want to enable pop up authentication simply set this flag to false.
 
@@ -49,7 +47,8 @@ export class AuthorizeService{
   private userManager: UserManager;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  }
 
   public roles: string[];
   public isAdmin: boolean;

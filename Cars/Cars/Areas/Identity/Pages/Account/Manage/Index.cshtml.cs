@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Cars.Services.Interfaces;
-using IdentityServer4.Extensions;
+using Duende.IdentityServer.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,18 +13,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using static Cars.Services.Other.FileService;
 using static Cars.Models.Enums.ImgPath;
-using Duende.IdentityServer.Extensions;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
+        private readonly IAppUserManager _appUserManager;
         private readonly IFileUploadService _fileUploadService;
 
         private readonly ILogger<IndexModel> _logger;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IAppUserManager _appUserManager;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,

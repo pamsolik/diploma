@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Cars.Data;
 using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
-using Cars.Services.Interfaces;
 
 namespace Cars.Managers.Implementations
 {

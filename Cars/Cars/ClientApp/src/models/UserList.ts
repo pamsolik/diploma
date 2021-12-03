@@ -1,5 +1,4 @@
 ﻿import {Applicant} from "./Applicant";
-import {Filters} from "./Filters";
 
 export interface UserList {
   items: UserAdminView[],
@@ -8,17 +7,17 @@ export interface UserList {
   pageSize: number
 }
 
-export interface UserAdminView extends Applicant{
+export interface UserAdminView extends Applicant {
 
 }
 
-export interface UserFilters{
+export interface UserFilters {
   searchTerm: string,
   pageIndex: number,
   pageSize: number
 }
 
-export function UserFiltersDefault(): UserFilters  {
+export function UserFiltersDefault(): UserFilters {
   return {
     searchTerm: "",
     pageSize: 10,

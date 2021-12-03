@@ -17,18 +17,19 @@ namespace Cars.Controllers
     [Route("api/recruitments")]
     public class RecruitmentController : ControllerBase
     {
+        private readonly IAppUserManager _appUserManager;
         private readonly ILogger<RecruitmentController> _logger;
 
         private readonly IRecruitmentService _recruitmentService;
-        private readonly IAppUserManager _appUserManager;
 
-        public RecruitmentController(ILogger<RecruitmentController> logger, IRecruitmentService recruitmentService, IAppUserManager appUserManager)
+        public RecruitmentController(ILogger<RecruitmentController> logger, IRecruitmentService recruitmentService,
+            IAppUserManager appUserManager)
         {
             _recruitmentService = recruitmentService;
             _appUserManager = appUserManager;
             _logger = logger;
         }
-        
+
         [Authorize(Roles = "Recruiter,Admin")]
         [HttpPost]
         public async Task<IActionResult> AddRecruitment([FromBody] AddRecruitmentDto addRecruitmentDto)
@@ -74,7 +75,7 @@ namespace Cars.Controllers
             return Ok(new ApiAnswer("UnHidden"));
         }
 
-        
+
         [HttpPost("public")]
         public async Task<IActionResult> GetRecruitmentsPublic([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
@@ -98,7 +99,7 @@ namespace Cars.Controllers
             var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Admin);
             return Ok(res);
         }
-        
+
         [HttpPost("apply")]
         public async Task<IActionResult> Apply([FromBody] AddApplicationDto addApplicationDto)
         {
@@ -114,7 +115,7 @@ namespace Cars.Controllers
             var res = await _recruitmentService.GetApplications(id);
             return Ok(res);
         }
-        
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetRecruitmentDetails([FromRoute] int id)
         {

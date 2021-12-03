@@ -50,7 +50,7 @@
 
       <div class="col">
         <h5>Projekty</h5>
-        <div class="card mb-2 card-body project" *ngFor="let p of details.projects">
+        <div *ngFor="let p of details.projects" class="card mb-2 card-body project">
           <h6>{{p.title}}</h6>
           <p>{{p.description}}</p>
           <p>{{technologies[p.technology]}}</p>

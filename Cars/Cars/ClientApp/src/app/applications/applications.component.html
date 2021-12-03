@@ -11,12 +11,12 @@
 
     <div class="card-body">
       <div class="col-auto">
-        <h5 class="alert alert-warning" *ngIf="details.status==1">Rekrutacja zamknięta</h5>
+        <h5 *ngIf="details.status==1" class="alert alert-warning">Rekrutacja zamknięta</h5>
 
         <button [routerLink]="['/recruitment-settings/' + id]" class="btn btn-warning me-5">Edycja rekrutacji</button>
         <button [routerLink]="['/recruitment-details/' + id]" class="btn btn-primary me-5">Pogląd rekrutacji</button>
 
-        <button *ngIf="details.status!=1" (click)="selectCandidates()" class="btn btn-success">
+        <button (click)="selectCandidates()" *ngIf="details.status!=1" class="btn btn-success">
           Wybierz kandydatów i zakończ rekrutację
         </button>
 
@@ -31,24 +31,24 @@
 
         <section class="me-1">
           <div class="row">
-            <h5 class="col-4 border-end border-dark th-sm search" [appSort]="recruitmentApplications"
+            <h5 [appSort]="recruitmentApplications" class="col-4 border-end border-dark th-sm search"
                 data-name="applicant.name">Lista aplikacji</h5>
-            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="codeOverallQuality.bugs">Błędy</p>
-            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="codeOverallQuality.securityRating">Bezpieczeństwo</p>
-            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="codeOverallQuality.codeSmells">Code Smells</p>
-            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="codeOverallQuality.duplicatedLinesDensity">Powtórzenia (%)</p>
-            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="codeOverallQuality.reliabilityRating">Niezawodność</p>
-            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="codeOverallQuality.maintainabilityRating">Utrzymywalność</p>
-            <p class="col-1 border-end border-dark search" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="codeOverallQuality.technicalDebt">Dług techniczny</p>
-            <p class="col-1 search" [appSort]="recruitmentApplications" data-order="desc"
-               data-name="codeOverallQuality.overallRating">Ogólna ocena</p>
+            <p [appSort]="recruitmentApplications" class="col-1 border-end border-dark search" data-name="codeOverallQuality.bugs"
+               data-order="desc">Błędy</p>
+            <p [appSort]="recruitmentApplications" class="col-1 border-end border-dark search" data-name="codeOverallQuality.securityRating"
+               data-order="desc">Bezpieczeństwo</p>
+            <p [appSort]="recruitmentApplications" class="col-1 border-end border-dark search" data-name="codeOverallQuality.codeSmells"
+               data-order="desc">Code Smells</p>
+            <p [appSort]="recruitmentApplications" class="col-1 border-end border-dark search" data-name="codeOverallQuality.duplicatedLinesDensity"
+               data-order="desc">Powtórzenia (%)</p>
+            <p [appSort]="recruitmentApplications" class="col-1 border-end border-dark search" data-name="codeOverallQuality.reliabilityRating"
+               data-order="desc">Niezawodność</p>
+            <p [appSort]="recruitmentApplications" class="col-1 border-end border-dark search" data-name="codeOverallQuality.maintainabilityRating"
+               data-order="desc">Utrzymywalność</p>
+            <p [appSort]="recruitmentApplications" class="col-1 border-end border-dark search" data-name="codeOverallQuality.technicalDebt"
+               data-order="desc">Dług techniczny</p>
+            <p [appSort]="recruitmentApplications" class="col-1 search" data-name="codeOverallQuality.overallRating"
+               data-order="desc">Ogólna ocena</p>
           </div>
 
           <div class="row">
@@ -57,9 +57,9 @@
                       class="mb-1 {{application.selected ? 'selected' : 'base'}}">
               <div class="row">
                 <div class="col-2">
-                  <img alt="Thumbnail image"
-                       class="img-fluid"
-                       [src]="authorizeService.createImgPath(application.applicant.profilePicture)">
+                  <img [src]="authorizeService.createImgPath(application.applicant.profilePicture)"
+                       alt="Thumbnail image"
+                       class="img-fluid">
                   <p class="mt-2"> {{application.time | date: 'dd-MM-yyyy HH:mm'}}</p>
                 </div>
 
@@ -70,9 +70,9 @@
                   <app-application-details [details]="application"></app-application-details>
 
                   <div class="form-check pt-2">
-                    <input [(ngModel)]="application.selected" class="form-check-input"
-                           id="flexSelected{{application.id}}"
-                           type="checkbox" [disabled]="details.status == 1">
+                    <input [(ngModel)]="application.selected" [disabled]="details.status == 1"
+                           class="form-check-input"
+                           id="flexSelected{{application.id}}" type="checkbox">
                     <label class="form-check-label" for="flexSelected{{application.id}}">
                       Wybrano
                     </label>

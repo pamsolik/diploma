@@ -33,7 +33,7 @@ namespace Cars.Managers.Implementations
             var existingCity = await _context.Cities.FirstOrDefaultAsync(CompareCities(city));
 
             if (existingCity is not null) return existingCity;
-            
+
             existingCity = city.Adapt<City>();
             _context.Cities.Add(existingCity);
 
@@ -47,17 +47,20 @@ namespace Cars.Managers.Implementations
             return res;
         }
 
-        public async Task<Recruitment> FindById(int id) => await _context.Recruitments.FindAsync(id);
+        public async Task<Recruitment> FindById(int id)
+        {
+            return await _context.Recruitments.FindAsync(id);
+        }
 
         public async Task<Recruitment> CloseRecruitment(int recruitmentId, List<RecruitmentToClose> recruitmentsToClose)
         {
             var recruitment = await FindById(recruitmentId);
-            
-            if (recruitment is null) 
+
+            if (recruitment is null)
                 throw new AppBaseException(HttpStatusCode.NotFound, "Recruitment not found");
             if (recruitment.Status == RecruitmentStatus.Closed)
                 throw new AppBaseException(HttpStatusCode.Forbidden, "Recruitment has allready been closed");
-            
+
             recruitment.Status = RecruitmentStatus.Closed;
             foreach (var recruitmentApplication in recruitmentsToClose)
             {
@@ -70,7 +73,7 @@ namespace Cars.Managers.Implementations
             await _context.SaveChangesAsync();
             return recruitment;
         }
-        
+
         public async Task ChangeRecruitmentStatus(int id, RecruitmentStatus status)
         {
             var recruitment = await FindById(id);
@@ -87,12 +90,14 @@ namespace Cars.Managers.Implementations
             return res;
         }
 
-        public async Task<List<RecruitmentApplication>> GetRecruitmentApplications(int recruitmentId) =>
-            await _context.Applications
+        public async Task<List<RecruitmentApplication>> GetRecruitmentApplications(int recruitmentId)
+        {
+            return await _context.Applications
                 .Where(a => a.RecruitmentId == recruitmentId)
                 .ToListAsync();
-        
-        
+        }
+
+
         public IQueryable<Recruitment> GetRecruitments(RecruitmentMode recruitmentMode, string userId = "")
         {
             return recruitmentMode switch

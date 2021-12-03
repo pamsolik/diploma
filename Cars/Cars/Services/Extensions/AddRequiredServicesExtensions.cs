@@ -15,11 +15,11 @@ namespace Cars.Services.Extensions
 {
     public static class AddRequiredServicesExtensions
     {
-        public static void AddRequiredServices(this IServiceCollection services, IConfiguration configuration) 
+        public static void AddRequiredServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, 
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
                 UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
-            
+
             services.AddScoped<IRecruitmentService, RecruitmentService>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
@@ -27,7 +27,7 @@ namespace Cars.Services.Extensions
             services.AddScoped<IAppUserManager, AppUserManager>();
             services.AddScoped<IAnalysisManager, AnalysisManager>();
             services.AddScoped<IRecruitmentManager, RecruitmentManager>();
-            
+
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
             services.AddCronJob<AnalysisHostedService>(c =>
@@ -35,11 +35,11 @@ namespace Cars.Services.Extensions
                 c.TimeZoneInfo = TimeZoneInfo.Local;
                 c.CronExpression = @"*/1 * * * *";
             });
-            
+
             //Email Sender
             services.AddTransient<IEmailSender, EmailSender.EmailSender>();
             services.Configure<AuthMessageSenderOptions>(configuration);
-            
+
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;

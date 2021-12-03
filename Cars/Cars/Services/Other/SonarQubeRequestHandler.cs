@@ -10,14 +10,14 @@
             "complexity,cognitive_complexity,duplicated_lines,duplicated_lines_density,violations,code_smells," +
             "sqale_index,sqale_rating,bugs,reliability_rating,coverage,tests,security_hotspots,security_rating,lines";
 
-        private static readonly string MetricsUriBase =
-            $"{BasePath}/api/measures/component?metricKeys={Metrics}&component=";
-
         public const string SonarLoc = "D:/SonarScan";
 
         private const string MvnLoc = $"{SonarLoc}\\dependencies\\mvn\\bin\\mvn";
 
         private const string GradleLoc = $"{SonarLoc}\\dependencies\\gradle\\bin\\gradle";
+
+        private static readonly string MetricsUriBase =
+            $"{BasePath}/api/measures/component?metricKeys={Metrics}&component=";
 
         private static readonly string CreateProjectUriBase = $"{BasePath}/api/projects/create";
 
@@ -49,7 +49,8 @@
 
         public static string GetMvnScanCommand(string projectKey)
         {
-            return $@"{MvnLoc} compile & {MvnLoc} sonar:sonar -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={Key}";
+            return
+                $@"{MvnLoc} compile & {MvnLoc} sonar:sonar -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={Key}";
         }
 
         //Add plugin automatically
@@ -58,7 +59,8 @@
         // }
         public static string GetGradleScanCommand(string projectKey)
         {
-            return $@"{GradleLoc} sonarqube -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={Key}";
+            return
+                $@"{GradleLoc} sonarqube -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={Key}";
         }
 
         public static string GetDotNetScanCommand(string projectKey)

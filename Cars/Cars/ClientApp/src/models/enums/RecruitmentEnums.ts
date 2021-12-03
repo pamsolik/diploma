@@ -2,7 +2,6 @@
 import {JobType} from "./JobType";
 import {RecruitmentDetailsDto} from "../RecruitmentDetailsDto";
 import {getEnumKeyByEnumValue} from "../../components/EnumTool";
-import {RecruitmentStatus} from "./RecruitmentStatus";
 import {RecruitmentType} from "./RecruitmentType";
 import {TeamSize} from "./TeamSize";
 

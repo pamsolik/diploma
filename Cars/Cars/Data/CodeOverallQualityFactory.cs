@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Cars.Models.DataModels;
 using Cars.Services.Interfaces;
@@ -8,7 +7,8 @@ namespace Cars.Data
 {
     public static class CodeOverallQualityFactory
     {
-        public static CodeOverallQuality GetCodeOverallQuality(List<Project> projects, IDateTimeProvider dateTimeProvider)
+        public static CodeOverallQuality GetCodeOverallQuality(List<Project> projects,
+            IDateTimeProvider dateTimeProvider)
         {
             switch (projects.Count)
             {
@@ -62,8 +62,7 @@ namespace Cars.Data
                         Complexity = p.Average(x => x.Complexity),
                         SecurityHotspots = p.Sum(x => x.SecurityHotspots),
                         Tests = p.Sum(x => x.Tests),
-                        OverallRating = p.Average(x => x.OverallRating),
-                        
+                        OverallRating = p.Average(x => x.OverallRating)
                     };
                 }
             }

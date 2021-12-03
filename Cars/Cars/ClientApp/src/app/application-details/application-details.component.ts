@@ -23,7 +23,8 @@ export class ApplicationDetailsComponent {
   constructor(private modalService: NgbModal,
               @Inject('BASE_URL') private baseUrl: string,
               private http: HttpClient,
-              private alertService: AlertService) { }
+              private alertService: AlertService) {
+  }
 
   open(content: any) {
     let settings = {

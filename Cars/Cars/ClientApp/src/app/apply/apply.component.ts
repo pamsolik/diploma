@@ -26,7 +26,8 @@ export class ApplyComponent implements OnInit {
   constructor(private modalService: NgbModal,
               @Inject('BASE_URL') private baseUrl: string,
               private http: HttpClient,
-              private alertService: AlertService) { }
+              private alertService: AlertService) {
+  }
 
   ngOnInit() {
     this.application = ApplicationDtoDefault();

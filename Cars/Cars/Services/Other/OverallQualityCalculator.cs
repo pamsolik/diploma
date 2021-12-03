@@ -20,23 +20,23 @@ namespace Cars.Services.Other
                 ass.Complexity,
                 ass.CognitiveComplexity
             };
-            
+
             var problems = new List<float?>
             {
                 ass.CodeSmells * 50,
                 ass.Violations * 250,
                 ass.Bugs * 500,
-                ass.SecurityHotspots * 1000   
+                ass.SecurityHotspots * 1000
             };
-            
+
             var ratingsAvg = ratings.Sum().GetValueOrDefault(0) * 3;
-            
+
             var complexityAvg = complexity.Sum().GetValueOrDefault(0) / 50;
-            
+
             var problemsAvg = (problems.Sum() / ass.LinesOfCode).GetValueOrDefault(0);
-            
+
             var debt = (ass.TechnicalDebt / ass.LinesOfCode).GetValueOrDefault(0) * 50;
-            
+
             return ratingsAvg + complexityAvg + problemsAvg + debt;
         }
     }

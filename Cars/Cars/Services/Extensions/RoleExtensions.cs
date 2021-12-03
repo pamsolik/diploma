@@ -11,14 +11,14 @@ namespace Cars.Services.Extensions
         {
             var provider = services.BuildServiceProvider();
             var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
-            
+
             foreach (var roleName in Enum.GetNames(typeof(UserRoles)))
             {
                 var hasAdminRole = roleManager.RoleExistsAsync(roleName);
                 hasAdminRole.Wait();
 
                 if (hasAdminRole.Result) continue;
-                
+
                 var addRole = roleManager.CreateAsync(new IdentityRole(roleName));
                 addRole.Wait();
             }

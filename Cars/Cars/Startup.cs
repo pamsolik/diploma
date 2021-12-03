@@ -24,25 +24,25 @@ namespace Cars
         {
             Configuration = configuration;
         }
-        
+
         private IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().AddRazorRuntimeCompilation();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseLazyLoadingProxies()
-                        .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")));
+                options.UseLazyLoadingProxies()
+                    .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
-            
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => 
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                     options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
-            
+
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
@@ -54,8 +54,7 @@ namespace Cars
             services.AddRazorPages();
 
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration => 
-                { configuration.RootPath = "ClientApp/dist"; });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
@@ -67,12 +66,12 @@ namespace Cars
                 options.LoginPath = "/Identity/Account/Login";
                 options.SlidingExpiration = true;
             });
-            
+
             services.AddSwaggerDocument();
-            
+
             RolesExtensions.InitializeAsync(services);
         }
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -89,7 +88,7 @@ namespace Cars
             }
 
             app.ConfigureCustomExceptionMiddleware();
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment()) app.UseSpaStaticFiles();

@@ -10,15 +10,17 @@ namespace Cars.Data
     {
         public ApplicationDbContext(
             DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions) 
-            : base(options, operationalStoreOptions) { }
-        
+            IOptions<OperationalStoreOptions> operationalStoreOptions)
+            : base(options, operationalStoreOptions)
+        {
+        }
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         public DbSet<RecruitmentApplication> Applications { get; set; }
 
         public DbSet<City> Cities { get; set; }
-        
+
         public DbSet<CodeQualityAssessment> CodeQualityAssessments { get; set; }
 
         public DbSet<CodeOverallQuality> CodeOverallQuality { get; set; }
