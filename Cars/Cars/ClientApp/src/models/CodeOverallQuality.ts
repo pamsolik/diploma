@@ -2,6 +2,7 @@
   id: number,
   success: boolean,
   retries: number,
+  projectsCount: number,
   completedTime: Date,
 
   complexity: number,

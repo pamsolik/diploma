@@ -136,7 +136,7 @@ namespace Cars.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("Cars.Models.DataModels.CodeQualityAssessment", b =>
@@ -207,7 +207,7 @@ namespace Cars.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CodeQualityAssessments");
+                    b.ToTable("CodeQualityAssessments", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("CodeQualityAssessment");
                 });
@@ -255,7 +255,7 @@ namespace Cars.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Experiences");
+                    b.ToTable("Experiences", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Experience");
                 });
@@ -304,7 +304,7 @@ namespace Cars.Migrations
 
                     b.HasIndex("CodeQualityAssessmentId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("Cars.Models.DataModels.Recruitment", b =>
@@ -381,7 +381,7 @@ namespace Cars.Migrations
 
                     b.HasIndex("RecruiterId");
 
-                    b.ToTable("Recruitments");
+                    b.ToTable("Recruitments", (string)null);
                 });
 
             modelBuilder.Entity("Cars.Models.DataModels.RecruitmentApplication", b =>
@@ -432,7 +432,7 @@ namespace Cars.Migrations
 
                     b.HasIndex("RecruitmentId");
 
-                    b.ToTable("Applications");
+                    b.ToTable("Applications", (string)null);
                 });
 
             modelBuilder.Entity("Cars.Models.DataModels.Skill", b =>
@@ -456,7 +456,7 @@ namespace Cars.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skills", (string)null);
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -542,7 +542,7 @@ namespace Cars.Migrations
 
                     b.HasIndex("Use");
 
-                    b.ToTable("Keys");
+                    b.ToTable("Keys", (string)null);
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.PersistedGrant", b =>

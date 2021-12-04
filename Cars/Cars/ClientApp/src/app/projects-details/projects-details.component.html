@@ -1,0 +1,45 @@
+<ng-template #content>
+  <div class="card p-0 m-0 border border-dark">
+    <h4 class="card-header">{{isCoq ? 'Ogólna ocena jakości kodu' : 'Projekt'}}
+      użytkownika {{details.applicant.email}}</h4>
+    <div class="mt-2 card-body">
+      <div class="mb-2 pb-2" *ngIf="!isCoq else coq">
+        <h6 class="mb-2">Tytuł: {{project.title}}</h6>
+        <p class="mb-2">{{project.description}}</p>
+        <p class="mb-2">Technologia: {{technologies[project.technology]}}</p>
+        <a class="mb-2" [href]="project.url" target="_blank">Url: {{project.url}}</a>
+      </div>
+
+      <ng-template #coq>
+        <h5 class="mb-2 pb-2">Ocena dla wszystkich projektów ({{codeQuality.projectsCount}})</h5>
+      </ng-template>
+
+      <div class="border">
+
+        <div class="row border-bottom border-top">
+          <div class="col-8 border-end my-2">Błędy: {{codeQuality.bugs}}</div>
+          <div class="col-4 my-2">Ocena niezawodności: {{codeQuality.reliabilityRating}}</div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</ng-template>
+
+
+<div class="row mb-2">
+  <h5 class="col">Projekty</h5>
+  <button (click)="openCoq(content)" class="btn btn-info col-auto">Zobacz ogólną ocenę</button>
+</div>
+
+<div *ngFor="let p of details.projects; let i = index"
+     class="card mb-2 card-body project"
+     (click)="openProject(content, i)">
+  <h6>{{p.title}}</h6>
+  <p>{{p.description}}</p>
+  <p>{{technologies[p.technology]}}</p>
+  <a [href]="p.url" target="_blank">{{p.url}}</a>
+</div>

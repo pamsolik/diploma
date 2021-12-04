@@ -26,7 +26,7 @@ namespace Cars.Managers.Implementations
         public List<RecruitmentApplication> GetNotExaminedApplications()
         {
             return _context.Applications
-                .Where(a => a.CodeOverallQualityId == null || a.CodeOverallQuality.Success)
+                .Where(a => a.CodeOverallQualityId == null || !a.CodeOverallQuality.Success)
                 .ToList();
         }
 

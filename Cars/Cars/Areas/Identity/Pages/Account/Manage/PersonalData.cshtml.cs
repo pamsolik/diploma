@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Cars.Managers.Implementations;
+using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,22 +12,20 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
     public class PersonalDataModel : PageModel
     {
         private readonly ILogger<PersonalDataModel> _logger;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAppUserManager _appUserManager;
 
-        public PersonalDataModel(
-            UserManager<ApplicationUser> userManager,
-            ILogger<PersonalDataModel> logger)
+        public PersonalDataModel(ILogger<PersonalDataModel> logger, IAppUserManager appUserManager)
         {
-            _userManager = userManager;
             _logger = logger;
+            _appUserManager = appUserManager;
         }
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await _userManager.GetUserAsync(User);
-            _logger.LogInformation("User not found");
-            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-
+            var userId = _appUserManager.GetUserId(User);
+            var user = await _appUserManager.FindUser(userId);
+            if (user == null) return NotFound($"Unable to load user with ID '{userId}'.");
+            _logger.LogInformation("User information downloaded");
             return Page();
         }
     }

@@ -14,26 +14,27 @@ using Microsoft.Extensions.Logging;
 using RestSharp;
 using static Cars.Data.CodeQualityAssessmentFactory;
 using static Cars.Data.CodeOverallQualityFactory;
-using static Cars.Data.HttpRequestHandler;
-using static Cars.Services.Other.SonarQubeRequestHandler;
 using static Cars.Services.Other.FileService;
 using static Cars.Services.Other.OverallQualityCalculator;
 
 namespace Cars.Services.Implementations
 {
-    internal class AnalysisHostedService : CronJobService
+    public class AnalysisHostedService : CronJobService
     {
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly ILogger<AnalysisHostedService> _logger;
         private readonly IServiceScopeFactory _scopeFactory;
+        private readonly SonarQubeRequestHandler _sonarQubeRequestHandler;
 
         public AnalysisHostedService(IScheduleConfig<AnalysisHostedService> config, IServiceScopeFactory scopeFactory,
-            ILogger<AnalysisHostedService> logger, IDateTimeProvider dateTimeProvider)
+            ILogger<AnalysisHostedService> logger, IDateTimeProvider dateTimeProvider,
+            SonarQubeRequestHandler sonarQubeRequestHandler)
             : base(config.CronExpression, config.TimeZoneInfo)
         {
             _scopeFactory = scopeFactory;
             _logger = logger;
             _dateTimeProvider = dateTimeProvider;
+            _sonarQubeRequestHandler = sonarQubeRequestHandler;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -50,6 +51,7 @@ namespace Cars.Services.Implementations
 
         protected override Task DoWork(CancellationToken cancellationToken)
         {
+            
             _logger.LogInformation($"{DateTime.Now:hh:mm:ss} AnalysisHostedService is working");
             var t = Task.Run(async () => { await PerformFullAnalysis(); }, cancellationToken);
             return t;
@@ -59,17 +61,27 @@ namespace Cars.Services.Implementations
         {
             using var scope = _scopeFactory.CreateScope();
             var manager = scope.ServiceProvider.GetRequiredService<IAnalysisManager>();
-            if (manager == null) return;
+            if (manager == null)
+            {
+                _logger.LogWarning("No AnalysisManager found");
+                return;
+            }
 
             var notExamined = manager.GetNotExaminedApplications();
 
-            if (!notExamined.Any()) return;
+            if (!notExamined.Any())
+            {
+                _logger.LogInformation("No projects to scan found");
+                return;
+            }
 
-            var projects = GetResponse<Projects>(GetProjectsUri());
+            var projects = _sonarQubeRequestHandler.GetResponse<Projects>(_sonarQubeRequestHandler.GetProjectsUri());
 
             if (projects is not null)
+            {
                 foreach (var application in notExamined)
                 {
+                    _logger.LogInformation($"Scanning application {application.Id}");
                     var projectsToExamine = manager.GetNotExaminedProjects(application);
 
                     foreach (var project in projectsToExamine)
@@ -79,8 +91,11 @@ namespace Cars.Services.Implementations
                     if (!projectsToExamine.Any() && application.CodeOverallQualityId is null)
                         await CalculateAndSaveCodeOverallQuality(manager, application);
                 }
+            }
             else
-                _logger.LogWarning($"Cannot reach SonarQube on {BasePath}");
+            {
+                _logger.LogWarning($"Cannot reach SonarQube on {_sonarQubeRequestHandler.BasePath}");
+            }
         }
 
         private async Task CalculateAndSaveCodeOverallQuality(IAnalysisManager manager,
@@ -111,7 +126,9 @@ namespace Cars.Services.Implementations
         {
             try
             {
-                var projectDir = Path.Combine(SonarLoc, application.ApplicantId, project.Id.ToString());
+                _logger.LogInformation($"ExamineSingleProject: {project.Id}");
+                var projectDir = Path.Combine(SonarQubeRequestHandler.SonarLoc, application.ApplicantId,
+                    project.Id.ToString());
                 var dirInfo = new DirectoryInfo(projectDir);
                 var saved = false;
                 var projectKey = $"Project_{project.Id}";
@@ -120,13 +137,15 @@ namespace Cars.Services.Implementations
 
                 if (!projectCreated)
                 {
-                    _logger.LogInformation($"Creating project: {project.Id}");
-                    var sonarProject = GetResponse<ProjectCreate>(GetCreateProjectUri(projectKey), Method.POST);
+                    _logger.LogInformation($"Creating project: {projectKey}");
+                    var sonarProject =
+                        _sonarQubeRequestHandler.GetResponse<ProjectCreate>(
+                            _sonarQubeRequestHandler.GetCreateProjectUri(projectKey), Method.POST);
                     projectCreated = sonarProject is not null;
                 }
                 else
                 {
-                    _logger.LogInformation($"TryToReadAnalysis: {project.Id}");
+                    _logger.LogInformation($"TryToReadAnalysis: {projectKey}");
                     saved = await TryToReadAnalysis(project, manager, projectKey);
                 }
 
@@ -157,7 +176,8 @@ namespace Cars.Services.Implementations
 
         private async Task<bool> TryToReadAnalysis(Project project, IAnalysisManager manager, string projectKey)
         {
-            var analysis = GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
+            var analysis =
+                _sonarQubeRequestHandler.GetResponse<CodeAnalysis>(_sonarQubeRequestHandler.GetMetricsUri(projectKey));
 
             var loaded = analysis is not null && analysis.Component.Measures.Any();
 
@@ -192,10 +212,10 @@ namespace Cars.Services.Implementations
 
             var cmd = technology switch
             {
-                Technology.Other => GetNormalScanCommand(projectKey),
-                Technology.DotNet => GetDotNetScanCommand(projectKey),
-                Technology.Gradle => GetGradleScanCommand(projectKey),
-                Technology.Maven => GetMvnScanCommand(projectKey),
+                Technology.Other => _sonarQubeRequestHandler.GetNormalScanCommand(projectKey),
+                Technology.DotNet => _sonarQubeRequestHandler.GetDotNetScanCommand(projectKey),
+                Technology.Gradle => _sonarQubeRequestHandler.GetGradleScanCommand(projectKey),
+                Technology.Maven => _sonarQubeRequestHandler.GetMvnScanCommand(projectKey),
                 _ => throw new ArgumentException("This technology isn't supported")
             };
 

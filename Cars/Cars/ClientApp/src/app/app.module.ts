@@ -38,6 +38,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {SortDirective} from "../directives/sort-directive";
 import {UserListComponent} from "./user-list/user-list.component";
 import {UserDetailsComponent} from "./user-details/user-details.component";
+import {ProjectsDetailsComponent} from "./projects-details/projects-details.component";
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import {UserDetailsComponent} from "./user-details/user-details.component";
     ApplicationDetailsComponent,
     SortDirective,
     UserListComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    ProjectsDetailsComponent
   ],
   imports: [
     BrowserModule, // .withServerTransition({appId: 'ng-cli-universal'}),
