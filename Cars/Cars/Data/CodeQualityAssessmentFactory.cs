@@ -7,9 +7,9 @@ namespace Cars.Data
 {
     public static class CodeQualityAssessmentFactory
     {
-        private static CodeQualityAssessment LoadMeasures(this CodeQualityAssessment coq, CodeAnalysis analysis)
+        public static CodeQualityAssessment LoadMeasures(this CodeQualityAssessment coq, CodeAnalysis analysis, bool success)
         {
-            if (!coq.Success) return coq;
+            coq.Success = success;
             //Complexity
             coq.Complexity = analysis.GetValue("complexity");
             coq.CognitiveComplexity = analysis.GetValue("cognitive_complexity");
@@ -51,7 +51,7 @@ namespace Cars.Data
             CodeAnalysis analysis)
         {
             var res = CreateInstance(dateTimeProvider, success);
-            res = res.LoadMeasures(analysis);
+            res.LoadMeasures(analysis, success);
             return res;
         }
     }

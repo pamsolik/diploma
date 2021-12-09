@@ -34,22 +34,22 @@
     if (Model.IsMachineRemembered)
     {
         <form method="post" style="display: inline-block">
-            <button type="submit" class="btn btn-default">Zapomnij tą przeglądarkę</button>
+            <button type="submit" class="btn btn-warning">Zapomnij tą przeglądarkę</button>
         </form>
     }
-    <a asp-page="./Disable2fa" class="btn btn-default">Wyłącz dwustopniową autoryzację</a>
-    <a asp-page="./GenerateRecoveryCodes" class="btn btn-default">Zresetuj kody odzyskiwania</a>
+    <a asp-page="./Disable2fa" class="btn btn-danger">Wyłącz dwustopniową autoryzację</a>
+    <a asp-page="./GenerateRecoveryCodes" class="btn btn-primary">Zresetuj kody odzyskiwania</a>
 }
 
 <h5>Aplikacja uwierzytelniająca</h5>
 @if (!Model.HasAuthenticator)
 {
-    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-default">Dodaj aplikację uwierzytelniającą</a>
+    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-success">Dodaj aplikację uwierzytelniającą</a>
 }
 else
 {
-    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-default">Skonfiguruj aplikację uwierzytelniającą</a>
-    <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-default">Zresetuj aplikację uwierzytelniającą</a>
+    <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-success">Skonfiguruj aplikację uwierzytelniającą</a>
+    <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-secondary">Zresetuj aplikację uwierzytelniającą</a>
 }
 
 @section Scripts {

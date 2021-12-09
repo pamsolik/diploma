@@ -3,13 +3,13 @@
     <h4 class="card-header">{{userAdminView.email}} | {{userAdminView.name}} {{userAdminView.surname}}</h4>
     <div class="mt-2 card-body row">
       <div class="row ">
-        <div class="col-2">
+        <div class="col-2 border-end">
           <img [src]="createImgPath()"
                alt="Thumbnail image"
                class="img-thumbnail rounded mb-2">
 
           <p *ngIf="userAdminView.city" class="mb-2">{{userAdminView.city.name}}</p>
-          <p class="mb-2">{{userAdminView.phoneNumber}}</p>
+          <p class="mb-2">Kontakt: {{userAdminView.phoneNumber}}</p>
         </div>
 
         <div class="col-8 border-end">

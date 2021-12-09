@@ -1,6 +1,6 @@
 ﻿import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
 
-import {Sort} from '../util/sort';
+import {CustomSort} from '../util/CustomSort';
 
 
 @Directive({
@@ -17,7 +17,7 @@ export class SortDirective {
   @HostListener("click")
 
   sortData() {
-    const sort = new Sort();
+    const sort = new CustomSort();
 
     const elem = this.targetElement.nativeElement;
 

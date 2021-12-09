@@ -12,10 +12,42 @@ img {
   background: white;
 }
 
+tr:nth-child(even) {
+  background-color: #e3f8ff;
+}
+
+tr:nth-child(odd) {
+  background-color: white;
+}
+
+th {
+  background-color: #f3f3f3;
+}
+
 .selected {
-  background: lightgreen;
+  background: lightgreen!important;
 }
 
 .search {
   cursor: pointer;
+}
+
+td {
+  text-align: center;
+}
+
+.vert-center{
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+#no-center{
+  text-align: left;
 }

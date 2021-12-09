@@ -1,4 +1,4 @@
-﻿export class Sort {
+﻿export class CustomSort {
 
   private sortOrder = 1;
   private collator = new Intl.Collator(undefined, {
