@@ -87,7 +87,7 @@ namespace Cars.Services.Implementations
                         await ExamineSingleProject(application, project, manager, projects);
 
                     projectsToExamine = manager.GetNotExaminedProjects(application);
-                    if (!projectsToExamine.Any() && application.CodeOverallQualityId is null)
+                    if (!projectsToExamine.Any())
                         await CalculateAndSaveCodeOverallQuality(manager, application);
                 }
             }
