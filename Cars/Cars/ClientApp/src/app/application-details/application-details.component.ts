@@ -52,7 +52,7 @@ export class ApplicationDetailsComponent {
     return `${this.baseUrl}${pp}`;
   }
 
-  downloadFile(href: string, name: string){
+  downloadFile(href: string, name: string) {
     let link = document.createElement("a");
     link.download = name;
     link.href = href;

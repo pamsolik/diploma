@@ -86,7 +86,8 @@
                   <h5>{{application.applicant.name}}</h5>
                   <p>{{application.description}}</p>
 
-                  <app-application-details [recruitment]="recruitment" [details]="application"></app-application-details>
+                  <app-application-details [details]="application"
+                                           [recruitment]="recruitment"></app-application-details>
 
                   <div class="form-check pt-2">
                     <input [(ngModel)]="application.selected" [disabled]="recruitment.status == 1"
@@ -100,14 +101,14 @@
               </div>
             </td>
 
-            <td *ngIf="!application.codeOverallQuality else examined" colspan="8"
-                class="pt-5"><h4>Projekt nie został jeszcze zbadany</h4>
+            <td *ngIf="!application.codeOverallQuality else examined" class="pt-5"
+                colspan="8"><h4>Projekt nie został jeszcze zbadany</h4>
             </td>
 
             <ng-template #examined>
-              <td colspan="8"
-                  *ngIf="!application.codeOverallQuality.success && application.codeOverallQuality.retries > 3 else success"
-                  class="pt-5"><h4>Badanie nie powiodło się</h4>
+              <td *ngIf="!application.codeOverallQuality.success && application.codeOverallQuality.retries > 3 else success"
+                  class="pt-5"
+                  colspan="8"><h4>Badanie nie powiodło się</h4>
               </td>
               <ng-template #success>
                 <td> {{getValue(application.codeOverallQuality.bugs)}}</td>

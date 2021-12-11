@@ -40,8 +40,8 @@
             <h5>CV:</h5>
             <p *ngIf="!details.cvFile else cv">Brak</p>
             <ng-template #cv>
-              <button class="btn btn-success"
-                      (click)="downloadFile(details.cvFile, details.applicant.name + '_' + details.applicant.surname + '_' + 'CV')">
+              <button (click)="downloadFile(details.cvFile, details.applicant.name + '_' + details.applicant.surname + '_' + 'CV')"
+                      class="btn btn-success">
                 Pobierz
               </button>
             </ng-template>
@@ -51,8 +51,8 @@
 
             <p *ngIf="!details.clFile else cl">Brak</p>
             <ng-template #cl>
-              <button class="btn btn-success"
-                      (click)="downloadFile(details.clFile, details.applicant.name + '_' + details.applicant.surname + '_' + 'CL')">
+              <button (click)="downloadFile(details.clFile, details.applicant.name + '_' + details.applicant.surname + '_' + 'CL')"
+                      class="btn btn-success">
                 Pobierz
               </button>
             </ng-template>
@@ -63,19 +63,19 @@
 
         <h5>Zaakceptowane klauzule:</h5>
         <div class="form-check">
-          <input checked class="form-check-input" id="clauseReq" required type="checkbox" value="" disabled>
+          <input checked class="form-check-input" disabled id="clauseReq" required type="checkbox" value="">
           <label class="form-check-label" for="clauseReq">{{recruitment.clauseRequired}}</label>
         </div>
 
         <div [hidden]="!recruitment.clauseOpt1" class="form-check">
-          <input [ngModel]="details.clauseOptAccepted" class="form-check-input" id="clauseCheck1" type="checkbox"
-                 value="" disabled>
+          <input [ngModel]="details.clauseOptAccepted" class="form-check-input" disabled id="clauseCheck1"
+                 type="checkbox" value="">
           <label class="form-check-label" for="clauseCheck1">{{recruitment.clauseOpt1}}</label>
         </div>
 
         <div [hidden]="!recruitment.clauseOpt2" class="form-check">
-          <input [ngModel]="details.clauseOpt2Accepted" class="form-check-input" id="clauseCheck2" type="checkbox"
-                 value="" disabled>
+          <input [ngModel]="details.clauseOpt2Accepted" class="form-check-input" disabled id="clauseCheck2"
+                 type="checkbox" value="">
           <label class="form-check-label" for="clauseCheck2">{{recruitment.clauseOpt2}}</label>
         </div>
 
@@ -83,7 +83,7 @@
 
       <div class="col">
 
-        <app-projects-details-details class="col-auto" [details]="details"></app-projects-details-details>
+        <app-projects-details-details [details]="details" class="col-auto"></app-projects-details-details>
 
 
       </div>
