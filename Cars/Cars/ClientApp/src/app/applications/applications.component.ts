@@ -9,7 +9,7 @@ import {RecruitmentApplication} from "../../models/RecruitmentApplication"
 import {ApiAnswer} from "../../models/ApiAnswer";
 import {CloseRecruitmentDto, RecruitmentToClose} from "../../models/CloseRecruitmentDto";
 import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
-import {Sort} from 'src/util/sort';
+import {CustomSort} from 'src/util/CustomSort';
 import {AuthorizeService} from "../../api-authorization/authorize.service";
 import {formatNumber} from "../../util/Formatter";
 
@@ -22,8 +22,8 @@ import {formatNumber} from "../../util/Formatter";
 export class ApplicationsComponent implements OnInit {
   id: string = this.route.snapshot.paramMap.get('id');
   recruitmentApplications: RecruitmentApplication[];
-  details: RecruitmentDetailsView;
-  sort: Sort = new Sort();
+  recruitment: RecruitmentDetailsView;
+  sort: CustomSort = new CustomSort();
 
   constructor(private modalService: NgbModal,
               @Inject('BASE_URL') private baseUrl: string,
@@ -41,14 +41,14 @@ export class ApplicationsComponent implements OnInit {
     }, error => console.error(error));
 
     this.http.get<RecruitmentDetailsView>(this.baseUrl + 'api/recruitments/' + this.id).subscribe(result => {
-      this.details = result;
+      this.recruitment = result;
       this.baseSort();
     }, error => console.error(error));
   }
 
   baseSort() {
-    if (!this.recruitmentApplications || !this.details) return;
-    this.recruitmentApplications.sort(this.sort.startSort('selected', 'desc', null));
+    if (!this.recruitmentApplications || !this.recruitment) return;
+    this.recruitmentApplications.sort(this.sort.startSort('codeOverallQuality.overallRating', 'asc', null));
   }
 
   getValue(value: number): string {
@@ -64,14 +64,18 @@ export class ApplicationsComponent implements OnInit {
   }
 
   selectCandidates() {
-    this.alertService.showLoading("Zamykanie rekrutacji");
-    this.http.put<ApiAnswer>(`${this.baseUrl}api/recruitments/close`, this.createDto()).subscribe(result => {
-      this.alertService.showResultAndRedirect("Gratulacje", "Zamknięto rekrutację", '/recruiter')
-      console.log(result);
-    }, error => {
-      this.alertService.showResult("Błąd", error.message)
-      console.error(error);
-    })
+    this.alertService.showYesNo("Czy napewno chcesz zakończyć tą rekrutacje wybierając zaznaczonych kandydatów?").then(result => {
+      if (result.isConfirmed) {
+        this.alertService.showLoading("Zamykanie rekrutacji");
+        this.http.put<ApiAnswer>(`${this.baseUrl}api/recruitments/close`, this.createDto()).subscribe(result => {
+          this.alertService.showResultAndRedirect("Gratulacje", "Zamknięto rekrutację", '/recruiter')
+          console.log(result);
+        }, error => {
+          this.alertService.showResult("Błąd", error.message)
+          console.error(error);
+        })
+      }
+    });
   }
 }
 

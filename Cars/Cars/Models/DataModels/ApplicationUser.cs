@@ -21,8 +21,7 @@ namespace Cars.Models.DataModels
         [StringLength(200, ErrorMessage = "ProfilePicture path cannot be longer than 200 characters.")]
         public string ProfilePicture { get; set; }
 
-        [PersonalData]
-        public virtual City City { get; set; }
+        [PersonalData] public virtual City City { get; set; }
 
         [PersonalData]
         [StringLength(200, ErrorMessage = "Github link cannot be longer than 200 characters.")]
@@ -31,11 +30,11 @@ namespace Cars.Models.DataModels
         [PersonalData]
         [StringLength(200, ErrorMessage = "LinkedIn link cannot be longer than 200 characters.")]
         public string LinkedIn { get; set; }
-        
+
         public virtual ICollection<Skill> Skills { get; set; }
-        
+
         public virtual ICollection<Education> Education { get; set; }
-        
+
         public virtual ICollection<Experience> Experience { get; set; }
     }
 }

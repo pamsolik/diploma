@@ -1,12 +1,6 @@
-﻿using System;
-using System.Text;
-using Newtonsoft.Json;
-using RestSharp;
-
-namespace Cars.Data
+﻿namespace Cars.Data
 {
     public class HttpRequestHandler
     {
-        
     }
 }

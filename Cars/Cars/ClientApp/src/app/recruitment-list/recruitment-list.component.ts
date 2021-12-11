@@ -34,7 +34,6 @@ export class RecruitmentListComponent implements OnInit {
     showTicks: false
   };
 
-  // @Input() q: string;
   // @ViewChild('address-input') qElementRef: ElementRef;
   // private places: any;
 

@@ -2,11 +2,11 @@
 
 /* Provide sufficient contrast against white background */
 a {
-    color: #0366d6;
+  color: #0366d6;
 }
 
 body {
-    background-color: #EDF7F6;
+  background-color: #EDF7F6;
 }
 
 /*.card-body{*/
@@ -18,63 +18,63 @@ body {
 /*}*/
 
 .modal-xl {
-    max-width: 80%;
+  max-width: 80%;
 }
 
 code {
-    color: #e01a76;
+  color: #e01a76;
 }
 
 .btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
 }
 
 .nav_color {
-    background-color: #2660A4;
+  background-color: #2660A4;
 }
 
 
 main {
-    display: flex;
-    flex-direction: column;
-    min-height: 76vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 76vh;
 }
 
 
 [footer] {
-    height: 150px;
-    margin-top: -150px;
+  height: 150px;
+  margin-top: -150px;
 }
 
 
 .mat-tab-label {
-    min-width: 25px !important;
-    padding: 5px;
-    background-color: transparent;
-    color: gray;
-    font-weight: 700;
+  min-width: 25px !important;
+  padding: 5px;
+  background-color: transparent;
+  color: gray;
+  font-weight: 700;
 }
 
 
 /* Styles for the active tab label */
 .mat-tab-label.mat-tab-label-active {
-    min-width: 25px !important;
-    padding: 5px;
-    background-color: transparent;
-    color: black;
-    font-weight: 700;
+  min-width: 25px !important;
+  padding: 5px;
+  background-color: transparent;
+  color: black;
+  font-weight: 700;
 }
 
 .page-content {
-    min-height: 75vh;
+  min-height: 75vh;
 }
 
 .center-flex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 

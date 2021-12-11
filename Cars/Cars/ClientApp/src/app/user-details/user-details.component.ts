@@ -35,12 +35,6 @@ export class UserDetailsComponent implements OnInit {
     this.loadUserRoles();
   }
 
-  private loadUserRoles() {
-    this.http.get<string[]>(this.baseUrl + 'api/admin/roles/' + this.userAdminView.id).subscribe(result => {
-      this.userRoles = result;
-    }, error => console.error(error));
-  }
-
   open(content: any) {
     let settings = {
       ariaLabelledBy: 'modal-basic-title',
@@ -87,6 +81,12 @@ export class UserDetailsComponent implements OnInit {
         }
       }
     )
+  }
+
+  private loadUserRoles() {
+    this.http.get<string[]>(this.baseUrl + 'api/admin/roles/' + this.userAdminView.id).subscribe(result => {
+      this.userRoles = result;
+    }, error => console.error(error));
   }
 
 }

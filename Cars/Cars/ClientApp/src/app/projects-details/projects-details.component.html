@@ -1,45 +1,100 @@
 <ng-template #content>
   <div class="card p-0 m-0 border border-dark">
-    <h4 class="card-header">{{isCoq ? 'Ogólna ocena jakości kodu' : 'Projekt'}}
-      użytkownika {{details.applicant.email}}</h4>
-    <div class="mt-2 card-body">
-      <div class="mb-2 pb-2" *ngIf="!isCoq else coq">
+
+    <div class="card-header">
+      <div class="row">
+        <h4 class="col">{{isCoq ? 'Ogólna ocena jakości kodu' : 'Projekt'}}
+          użytkownika {{details.applicant.email}}</h4>
+        <button (click)="close()" class="btn btn-danger col-auto m-0 me-2">×</button>
+      </div>
+    </div>
+
+    <div class="card-body mt-2">
+      <div *ngIf="!isCoq else coq" class="mb-2 pb-2">
         <h6 class="mb-2">Tytuł: {{project.title}}</h6>
         <p class="mb-2">{{project.description}}</p>
         <p class="mb-2">Technologia: {{technologies[project.technology]}}</p>
-        <a class="mb-2" [href]="project.url" target="_blank">Url: {{project.url}}</a>
+        <a [href]="project.url" class="mb-2" target="_blank">Url: {{project.url}}</a>
       </div>
 
       <ng-template #coq>
         <h5 class="mb-2 pb-2">Ocena dla wszystkich projektów ({{codeQuality.projectsCount}})</h5>
       </ng-template>
 
-      <div class="border">
-
-        <div class="row border-bottom border-top">
-          <div class="col-8 border-end my-2">Błędy: {{codeQuality.bugs}}</div>
-          <div class="col-4 my-2">Ocena niezawodności: {{codeQuality.reliabilityRating}}</div>
-        </div>
-
-
+      <div class="row border">
+        <p class="col-4 border-end py-4 m-0">Błędy: {{getValue(codeQuality.bugs)}}</p>
+        <p class="col-4 border-end py-4 m-0">Ilość problemów z kodem źródłowym: {{getValue(codeQuality.violations)}}</p>
+        <p class="col-4 py-4 m-0">Ocena niezawodności: {{getValue(codeQuality.reliabilityRating)}}</p>
       </div>
 
+      <div class="row border">
+        <p class="col-7 border-end py-4 m-0">Ilość luk w bezpieczeństwie: {{getValue(codeQuality.securityHotspots)}}</p>
+        <p class="col-5 py-4 m-0">Ocena bezpieczeństwa: {{getValue(codeQuality.securityRating)}}</p>
+      </div>
+
+      <div class="row border">
+        <p class="col-4 border-end py-4 m-0">Dług techniczny: {{secondsToHms(codeQuality.technicalDebt)}}</p>
+        <p class="col-4 border-end py-4 m-0">Ilość Code Smells: {{getValue(codeQuality.codeSmells)}}</p>
+        <p class="col-4 py-4 m-0">Ocena utrzymywalności: {{getValue(codeQuality.maintainabilityRating)}}</p>
+      </div>
+
+      <div class="row border">
+        <div class="col-3">
+          <circle-progress
+            [animationDuration]="300"
+            [animation]="true"
+            [innerStrokeColor]="'#F08080'"
+            [innerStrokeWidth]="4"
+            [outerStrokeColor]="'#FF0000'"
+            [outerStrokeWidth]="8"
+            [radius]="60"
+            [title]="getValue(codeQuality.coverage)"
+            subtitle="Pokrycie testami"
+          ></circle-progress>
+        </div>
+        <div class="col-3 py-5 border-end">Ilość testów: {{getValue(codeQuality.tests)}}</div>
+
+        <div class="col-3">
+          <circle-progress
+            [animationDuration]="300"
+            [animation]="true"
+            [innerStrokeColor]="'#C7E596'"
+            [innerStrokeWidth]="4"
+            [outerStrokeColor]="'#78C000'"
+            [outerStrokeWidth]="8"
+            [percent]="getMultiplied(codeQuality.duplicatedLinesDensity, 4)"
+            [radius]="60"
+            [title]="getValue(codeQuality.duplicatedLinesDensity)"
+            subtitle="Gęstość duplikacji"
+          ></circle-progress>
+        </div>
+        <div class="col-3 py-5 border-end">Ilość zduplikowanych linii
+          kodu: {{getValue(codeQuality.duplicatedLines)}}</div>
+      </div>
+
+      <div class="row border">
+        <p class="col-4 border-end py-4 m-0">Złożoność kodu źródłowego: {{getValue(codeQuality.complexity)}}</p>
+        <p class="col-4 border-end py-4 m-0">Trudność w zrozumieniu kodu
+          źródłowego: {{getValue(codeQuality.cognitiveComplexity)}}</p>
+        <p class="col-4 py-4 m-0">Ilość linii kodu: {{getValue(codeQuality.linesOfCode)}}</p>
+      </div>
 
     </div>
   </div>
 </ng-template>
 
+<div>
+  <div class="row mb-2">
+    <h5 class="col">Projekty</h5>
+    <button (click)="openCoq(content)" class="btn btn-info col-auto">Zobacz ogólną ocenę</button>
+  </div>
 
-<div class="row mb-2">
-  <h5 class="col">Projekty</h5>
-  <button (click)="openCoq(content)" class="btn btn-info col-auto">Zobacz ogólną ocenę</button>
-</div>
-
-<div *ngFor="let p of details.projects; let i = index"
-     class="card mb-2 card-body project"
-     (click)="openProject(content, i)">
-  <h6>{{p.title}}</h6>
-  <p>{{p.description}}</p>
-  <p>{{technologies[p.technology]}}</p>
-  <a [href]="p.url" target="_blank">{{p.url}}</a>
+  <div (click)="openProject(content, i)"
+       *ngFor="let p of details.projects; let i = index"
+       class="card mb-2 card-body project">
+    <h6>{{p.title}}</h6>
+    <p>{{p.description}}</p>
+    <p>{{technologies[p.technology]}}</p>
+    <a [href]="p.url" target="_blank">{{p.url}}</a>
+  </div>
 </div>

@@ -7,6 +7,7 @@ import {AlertService} from "../../services/alert.service";
 import {RecruitmentApplication} from "../../models/RecruitmentApplication";
 import {BaseValues} from "../../models/enums/BaseValues";
 import {Technology} from "../../models/enums/Technology";
+import {RecruitmentDetailsView} from "../../models/RecruitmentDetailsView";
 
 
 @Component({
@@ -18,6 +19,11 @@ export class ApplicationDetailsComponent {
 
   @Input()
   details: RecruitmentApplication;
+
+  @Input()
+  recruitment: RecruitmentDetailsView;
+
+
   technologies: string[] = Object.values(Technology);
 
   constructor(private modalService: NgbModal,
@@ -44,5 +50,12 @@ export class ApplicationDetailsComponent {
     let pp = this.details.applicant.profilePicture
     if (!pp) pp = BaseValues.BaseProfileUrl
     return `${this.baseUrl}${pp}`;
+  }
+
+  downloadFile(href: string, name: string) {
+    let link = document.createElement("a");
+    link.download = name;
+    link.href = href;
+    link.click();
   }
 }

@@ -1,8 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Cars.Managers.Implementations;
 using Cars.Managers.Interfaces;
-using Cars.Models.DataModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -11,8 +8,8 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
-        private readonly ILogger<PersonalDataModel> _logger;
         private readonly IAppUserManager _appUserManager;
+        private readonly ILogger<PersonalDataModel> _logger;
 
         public PersonalDataModel(ILogger<PersonalDataModel> logger, IAppUserManager appUserManager)
         {

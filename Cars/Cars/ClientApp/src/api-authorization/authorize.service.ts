@@ -43,17 +43,16 @@ export class AuthorizeService {
   // If you want to enable pop up authentication simply set this flag to false.
 
   public ProfileUrl: string;
+  public roles: string[];
+  public isAdmin: boolean;
+  public isRecruiter: boolean;
+  public userInfo: Applicant;
   private popUpDisabled = true;
   private userManager: UserManager;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
   }
-
-  public roles: string[];
-  public isAdmin: boolean;
-  public isRecruiter: boolean;
-  public userInfo: Applicant;
 
   public isAuthenticated(): Observable<boolean> {
     return this.getUser().pipe(map(u => !!u));
@@ -185,6 +184,10 @@ export class AuthorizeService {
     }
   }
 
+  createImgPath = (path: string) => {
+    return `${this.baseUrl}${path}`;
+  }
+
   private createArguments(state?: any): any {
     return {useReplaceToNavigate: true, data: state};
   }
@@ -227,9 +230,5 @@ export class AuthorizeService {
       .pipe(
         mergeMap(() => this.userManager.getUser()),
         map(u => u && u.profile));
-  }
-
-  createImgPath = (path: string) => {
-    return `${this.baseUrl}${path}`;
   }
 }
