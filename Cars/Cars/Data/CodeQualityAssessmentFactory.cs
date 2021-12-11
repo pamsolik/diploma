@@ -7,7 +7,8 @@ namespace Cars.Data
 {
     public static class CodeQualityAssessmentFactory
     {
-        public static CodeQualityAssessment LoadMeasures(this CodeQualityAssessment coq, CodeAnalysis analysis, bool success)
+        public static CodeQualityAssessment LoadMeasures(this CodeQualityAssessment coq, CodeAnalysis analysis,
+            bool success)
         {
             coq.Success = success;
             //Complexity

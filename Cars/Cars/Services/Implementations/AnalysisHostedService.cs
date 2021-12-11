@@ -77,7 +77,6 @@ namespace Cars.Services.Implementations
             var projects = _sonarQubeRequestHandler.GetResponse<Projects>(_sonarQubeRequestHandler.GetProjectsUri());
 
             if (projects is not null)
-            {
                 foreach (var application in notExamined)
                 {
                     _logger.LogInformation($"Scanning application {application.Id}");
@@ -90,11 +89,8 @@ namespace Cars.Services.Implementations
                     if (!projectsToExamine.Any())
                         await CalculateAndSaveCodeOverallQuality(manager, application);
                 }
-            }
             else
-            {
                 _logger.LogWarning($"Cannot reach SonarQube on {_sonarQubeRequestHandler.BasePath}");
-            }
         }
 
         private async Task CalculateAndSaveCodeOverallQuality(IAnalysisManager manager,

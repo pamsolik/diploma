@@ -13,8 +13,8 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {
-        private readonly ILogger<DownloadPersonalDataModel> _logger;
         private readonly IAppUserManager _appUserManager;
+        private readonly ILogger<DownloadPersonalDataModel> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public DownloadPersonalDataModel(IAppUserManager appUserManager, ILogger<DownloadPersonalDataModel> logger,
@@ -45,7 +45,7 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             personalData.Add("Education", JsonSerializer.Serialize(user.Education));
             personalData.Add("Experience", JsonSerializer.Serialize(user.Experience));
             personalData.Add("Skills", JsonSerializer.Serialize(user.Skills));
-            
+
             Response.Headers.Add("Content-Disposition", "attachment; filename=PersonalData.json");
             return new FileContentResult(JsonSerializer.SerializeToUtf8Bytes(personalData), "application/json");
         }

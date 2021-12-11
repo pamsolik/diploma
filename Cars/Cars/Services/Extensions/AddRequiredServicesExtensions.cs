@@ -2,11 +2,9 @@
 using Cars.Managers.Implementations;
 using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
-using Cars.Models.Exceptions;
 using Cars.Services.EmailSender;
 using Cars.Services.Implementations;
 using Cars.Services.Interfaces;
-using Cars.Services.Other;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;

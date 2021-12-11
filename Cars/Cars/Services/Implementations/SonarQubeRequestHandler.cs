@@ -7,6 +7,23 @@ namespace Cars.Services.Implementations
 {
     public class SonarQubeRequestHandler
     {
+        private const string Metrics =
+            "complexity,cognitive_complexity,duplicated_lines,duplicated_lines_density,violations,code_smells," +
+            "sqale_index,sqale_rating,bugs,reliability_rating,coverage,tests,security_hotspots,security_rating,lines";
+
+        public const string SonarLoc = "D:/SonarScan";
+
+        private const string MvnLoc = $"{SonarLoc}\\dependencies\\mvn\\bin\\mvn";
+
+        private const string GradleLoc = $"{SonarLoc}\\dependencies\\gradle\\bin\\gradle";
+
+        private readonly string _key;
+        private readonly string _password;
+
+        private readonly string _userName;
+
+        public readonly string BasePath;
+
         public SonarQubeRequestHandler(string basePath, string key, string user, string pwd)
         {
             _key = key;
@@ -15,8 +32,9 @@ namespace Cars.Services.Implementations
             _password = pwd;
         }
 
-        private readonly string _userName;
-        private readonly string _password;
+        private string MetricsUriBase => $"{BasePath}/api/measures/component?metricKeys={Metrics}&component=";
+
+        private string CreateProjectUriBase => $"{BasePath}/api/projects/create";
 
         public T GetResponse<T>(string url, Method method = Method.GET)
         {
@@ -35,24 +53,6 @@ namespace Cars.Services.Implementations
                 return default;
             }
         }
-        
-        private readonly string _key;
-
-        public readonly string BasePath;
-
-        private const string Metrics =
-            "complexity,cognitive_complexity,duplicated_lines,duplicated_lines_density,violations,code_smells," +
-            "sqale_index,sqale_rating,bugs,reliability_rating,coverage,tests,security_hotspots,security_rating,lines";
-
-        public const string SonarLoc = "D:/SonarScan";
-
-        private const string MvnLoc = $"{SonarLoc}\\dependencies\\mvn\\bin\\mvn";
-
-        private const string GradleLoc = $"{SonarLoc}\\dependencies\\gradle\\bin\\gradle";
-
-        private string MetricsUriBase => $"{BasePath}/api/measures/component?metricKeys={Metrics}&component=";
-
-        private string CreateProjectUriBase => $"{BasePath}/api/projects/create";
 
         public string GetMetricsUri(string project)
         {

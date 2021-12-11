@@ -5,7 +5,6 @@ using Cars.Models.View;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Cars.Controllers
 {

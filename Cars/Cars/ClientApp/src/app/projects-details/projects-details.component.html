@@ -10,11 +10,11 @@
     </div>
 
     <div class="card-body mt-2">
-      <div class="mb-2 pb-2" *ngIf="!isCoq else coq">
+      <div *ngIf="!isCoq else coq" class="mb-2 pb-2">
         <h6 class="mb-2">Tytuł: {{project.title}}</h6>
         <p class="mb-2">{{project.description}}</p>
         <p class="mb-2">Technologia: {{technologies[project.technology]}}</p>
-        <a class="mb-2" [href]="project.url" target="_blank">Url: {{project.url}}</a>
+        <a [href]="project.url" class="mb-2" target="_blank">Url: {{project.url}}</a>
       </div>
 
       <ng-template #coq>
@@ -41,13 +41,13 @@
       <div class="row border">
         <div class="col-3">
           <circle-progress
-            [radius]="60"
-            [outerStrokeWidth]="8"
+            [animationDuration]="300"
+            [animation]="true"
+            [innerStrokeColor]="'#F08080'"
             [innerStrokeWidth]="4"
             [outerStrokeColor]="'#FF0000'"
-            [innerStrokeColor]="'#F08080'"
-            [animation]="true"
-            [animationDuration]="300"
+            [outerStrokeWidth]="8"
+            [radius]="60"
             [title]="getValue(codeQuality.coverage)"
             subtitle="Pokrycie testami"
           ></circle-progress>
@@ -56,24 +56,26 @@
 
         <div class="col-3">
           <circle-progress
-            [percent]="getMultiplied(codeQuality.duplicatedLinesDensity, 4)"
-            [radius]="60"
-            [outerStrokeWidth]="8"
+            [animationDuration]="300"
+            [animation]="true"
+            [innerStrokeColor]="'#C7E596'"
             [innerStrokeWidth]="4"
             [outerStrokeColor]="'#78C000'"
-            [innerStrokeColor]="'#C7E596'"
-            [animation]="true"
-            [animationDuration]="300"
+            [outerStrokeWidth]="8"
+            [percent]="getMultiplied(codeQuality.duplicatedLinesDensity, 4)"
+            [radius]="60"
             [title]="getValue(codeQuality.duplicatedLinesDensity)"
             subtitle="Gęstość duplikacji"
           ></circle-progress>
         </div>
-        <div class="col-3 py-5 border-end">Ilość zduplikowanych linii kodu: {{getValue(codeQuality.duplicatedLines)}}</div>
+        <div class="col-3 py-5 border-end">Ilość zduplikowanych linii
+          kodu: {{getValue(codeQuality.duplicatedLines)}}</div>
       </div>
 
       <div class="row border">
         <p class="col-4 border-end py-4 m-0">Złożoność kodu źródłowego: {{getValue(codeQuality.complexity)}}</p>
-        <p class="col-4 border-end py-4 m-0">Trudność w zrozumieniu kodu źródłowego: {{getValue(codeQuality.cognitiveComplexity)}}</p>
+        <p class="col-4 border-end py-4 m-0">Trudność w zrozumieniu kodu
+          źródłowego: {{getValue(codeQuality.cognitiveComplexity)}}</p>
         <p class="col-4 py-4 m-0">Ilość linii kodu: {{getValue(codeQuality.linesOfCode)}}</p>
       </div>
 
@@ -81,17 +83,18 @@
   </div>
 </ng-template>
 
+<div>
+  <div class="row mb-2">
+    <h5 class="col">Projekty</h5>
+    <button (click)="openCoq(content)" class="btn btn-info col-auto">Zobacz ogólną ocenę</button>
+  </div>
 
-<div class="row mb-2">
-  <h5 class="col">Projekty</h5>
-  <button (click)="openCoq(content)" class="btn btn-info col-auto">Zobacz ogólną ocenę</button>
-</div>
-
-<div *ngFor="let p of details.projects; let i = index"
-     class="card mb-2 card-body project"
-     (click)="openProject(content, i)">
-  <h6>{{p.title}}</h6>
-  <p>{{p.description}}</p>
-  <p>{{technologies[p.technology]}}</p>
-  <a [href]="p.url" target="_blank">{{p.url}}</a>
+  <div (click)="openProject(content, i)"
+       *ngFor="let p of details.projects; let i = index"
+       class="card mb-2 card-body project">
+    <h6>{{p.title}}</h6>
+    <p>{{p.description}}</p>
+    <p>{{technologies[p.technology]}}</p>
+    <a [href]="p.url" target="_blank">{{p.url}}</a>
+  </div>
 </div>

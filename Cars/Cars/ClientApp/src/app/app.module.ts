@@ -39,7 +39,7 @@ import {SortDirective} from "../directives/sort-directive";
 import {UserListComponent} from "./user-list/user-list.component";
 import {UserDetailsComponent} from "./user-details/user-details.component";
 import {ProjectsDetailsComponent} from "./projects-details/projects-details.component";
-import { NgCircleProgressModule } from 'ng-circle-progress';
+import {NgCircleProgressModule} from 'ng-circle-progress';
 
 @NgModule({
   declarations: [
