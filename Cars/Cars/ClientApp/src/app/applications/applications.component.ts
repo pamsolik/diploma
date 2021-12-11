@@ -48,7 +48,7 @@ export class ApplicationsComponent implements OnInit {
 
   baseSort() {
     if (!this.recruitmentApplications || !this.recruitment) return;
-    this.recruitmentApplications.sort(this.sort.startSort('selected', 'desc', null));
+    this.recruitmentApplications.sort(this.sort.startSort('codeOverallQuality.overallRating', 'asc', null));
   }
 
   getValue(value: number): string {

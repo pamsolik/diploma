@@ -27,6 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "algoliasearch": "^3.35.1",
     "bootstrap": "^5.0.0-beta3",
+    "ng-circle-progress": "^1.6.0",
     "oidc-client": "^1.11.5",
     "places.js": "^1.19.0",
     "process": "^0.11.10",

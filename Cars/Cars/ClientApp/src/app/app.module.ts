@@ -39,7 +39,7 @@ import {SortDirective} from "../directives/sort-directive";
 import {UserListComponent} from "./user-list/user-list.component";
 import {UserDetailsComponent} from "./user-details/user-details.component";
 import {ProjectsDetailsComponent} from "./projects-details/projects-details.component";
-
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @NgModule({
   declarations: [
@@ -70,6 +70,16 @@ import {ProjectsDetailsComponent} from "./projects-details/projects-details.comp
     FormsModule,
     ApiAuthorizationModule,
     BrowserAnimationsModule,
+    NgCircleProgressModule,
+    NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    }),
+
     RouterModule.forRoot([
       {path: '', component: HomeComponent, pathMatch: 'full'},
       {path: 'recruitments', component: RecruitmentComponent, canActivate: [AuthorizeGuard]},

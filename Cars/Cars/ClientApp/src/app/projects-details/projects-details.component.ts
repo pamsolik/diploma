@@ -2,13 +2,14 @@ import {Component, Inject, Input} from '@angular/core';
 
 import {HttpClient} from '@angular/common/http';
 
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {AlertService} from "../../services/alert.service";
 import {RecruitmentApplication} from "../../models/RecruitmentApplication";
 import {BaseValues} from "../../models/enums/BaseValues";
 import {Technology} from "../../models/enums/Technology";
 import {ProjectDto} from "../../models/ProjectDto";
 import {CodeOverallQuality} from "../../models/CodeOverallQuality";
+import {formatNumber} from "../../util/Formatter";
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ProjectsDetailsComponent {
   isCoq: boolean = false;
   codeQuality: CodeOverallQuality;
   project: ProjectDto;
+  modalRef: NgbModalRef;
 
   constructor(private modalService: NgbModal,
               @Inject('BASE_URL') private baseUrl: string) {
@@ -42,17 +44,37 @@ export class ProjectsDetailsComponent {
     this.codeQuality = this.details.codeOverallQuality;
   }
 
+  getValue(value: number): string {
+    return value === null || value === undefined ? "N/A" : formatNumber(value).toString();
+  }
+
+  getMultiplied(value: number, multiplier: number): number {
+    return value * multiplier;
+  }
+
   openModal(content: any){
     let settings = {
       ariaLabelledBy: 'modal-basic-title',
       centered: true,
-      size: 'xl',
+      size: 'lg',
     }
-    this.modalService.open(content, settings);
+    this.modalRef = this.modalService.open(content, settings);
     console.log(this.details);
   }
 
-  close() {
-    this.modalService.dismissAll();
+  secondsToHms(min: number): string {
+    if (!min) return "N/A"
+    let h = Math.floor(min / 60);
+    let m = Math.floor(min - h * 60);
+    let hDisplay = h > 0 ? h + "h, " : "";
+    let mDisplay = m > 0 ? m + "min" : "";
+    return hDisplay + mDisplay ;
   }
+
+  close() {
+    this.modalRef.close();
+  }
+
+
+
 }
