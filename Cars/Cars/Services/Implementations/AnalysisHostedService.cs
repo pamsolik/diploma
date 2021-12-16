@@ -11,7 +11,6 @@ using Cars.Services.Interfaces;
 using Cars.Services.Other;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using RestSharp;
 using static Cars.Data.CodeQualityAssessmentFactory;
 using static Cars.Data.CodeOverallQualityFactory;
 using static Cars.Services.Other.FileService;
@@ -51,7 +50,8 @@ namespace Cars.Services.Implementations
 
         protected override Task DoWork(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"{DateTime.Now:hh:mm:ss} AnalysisHostedService is working");
+            
+            _logger.LogInformation("{Dt:hh:mm:ss} AnalysisHostedService is working", DateTime.Now);
             var t = Task.Run(async () => { await PerformFullAnalysis(); }, cancellationToken);
             return t;
         }
@@ -74,12 +74,12 @@ namespace Cars.Services.Implementations
                 return;
             }
 
-            var projects = _sonarQubeRequestHandler.GetResponse<Projects>(_sonarQubeRequestHandler.GetProjectsUri());
+            var projects = _sonarQubeRequestHandler.GetExistingProjects();
 
             if (projects is not null)
                 foreach (var application in notExamined)
                 {
-                    _logger.LogInformation($"Scanning application {application.Id}");
+                    _logger.LogInformation("Scanning application {Id}", application.Id);
                     var projectsToExamine = manager.GetNotExaminedProjects(application);
 
                     foreach (var project in projectsToExamine)
@@ -90,7 +90,7 @@ namespace Cars.Services.Implementations
                         await CalculateAndSaveCodeOverallQuality(manager, application);
                 }
             else
-                _logger.LogWarning($"Cannot reach SonarQube on {_sonarQubeRequestHandler.BasePath}");
+                _logger.LogWarning("Cannot reach SonarQube on {BasePath}", _sonarQubeRequestHandler.BasePath);
         }
 
         private async Task CalculateAndSaveCodeOverallQuality(IAnalysisManager manager,
@@ -98,12 +98,12 @@ namespace Cars.Services.Implementations
         {
             try
             {
-                _logger.LogInformation($"CalculateAndSaveCodeOverallQuality: {application.Id}");
+                _logger.LogInformation("CalculateAndSaveCodeOverallQuality: {Id}", application.Id);
                 var projects = manager.GetAllProjects(application);
                 var coq = GetCodeOverallQuality(projects, _dateTimeProvider);
                 if (coq is null)
                 {
-                    _logger.LogWarning($"GetCodeOverallQuality for application: {application.Id} is null");
+                    _logger.LogWarning("GetCodeOverallQuality for application: {Id} is null", application.Id);
                     return;
                 }
 
@@ -121,32 +121,27 @@ namespace Cars.Services.Implementations
         {
             try
             {
-                _logger.LogInformation($"ExamineSingleProject: {project.Id}");
-                var projectDir = Path.Combine(SonarQubeRequestHandler.SonarLoc, "scans", application.ApplicantId,
-                    project.Id.ToString());
-                var dirInfo = new DirectoryInfo(projectDir);
-                var saved = false;
-                var projectKey = $"Project_{project.Id}";
-
+                _logger.LogInformation("ExamineSingleProject: {Id}", project.Id);
+                var (projectDir, dirInfo, projectKey) = GetProjectConstants(application, project);
+                var saved = false; 
+                
                 var projectCreated = projects.Components.Any(c => c.Key == projectKey);
 
                 if (!projectCreated)
                 {
-                    _logger.LogInformation($"Creating project: {projectKey}");
-                    var sonarProject =
-                        _sonarQubeRequestHandler.GetResponse<ProjectCreate>(
-                            _sonarQubeRequestHandler.GetCreateProjectUri(projectKey), Method.POST);
+                    _logger.LogInformation("Creating project: {ProjectKey}", projectKey);
+                    var sonarProject = _sonarQubeRequestHandler.CreateProject(projectKey);
                     projectCreated = sonarProject is not null;
                 }
                 else
                 {
-                    _logger.LogInformation($"TryToReadAnalysis: {projectKey}");
+                    _logger.LogInformation("TryToReadAnalysis: {ProjectKey}", projectKey);
                     saved = await TryToReadAnalysis(project, manager, projectKey);
                 }
 
                 if (projectCreated && !saved)
                 {
-                    _logger.LogInformation($"Project {project.Id} performing scan");
+                    _logger.LogInformation("Project {Id} performing scan", project.Id);
                     EnsureDirectoryIsCreated(dirInfo);
 
                     RepositoryLoader.Clone(project.Url, projectDir);
@@ -159,8 +154,8 @@ namespace Cars.Services.Implementations
                 }
                 else
                 {
-                    if (!projectCreated) _logger.LogWarning($"Project {project.Id} failed to create");
-                    if (!saved) _logger.LogWarning($"Project {project.Id} not saved");
+                    if (!projectCreated) _logger.LogWarning("Project {Id} failed to create", project.Id);
+                    if (!saved) _logger.LogWarning("Project {Id} not saved", project.Id);
                 }
             }
             catch (Exception e)
@@ -169,10 +164,17 @@ namespace Cars.Services.Implementations
             }
         }
 
+        private static (string , DirectoryInfo, string) GetProjectConstants(RecruitmentApplication application, Project project)
+        {
+            var projectDir = Path.Combine(SonarQubeRequestHandler.SonarLoc, "scans", application.ApplicantId, project.Id.ToString());
+            var directoryInfo = new DirectoryInfo(projectDir);
+            var projectKey = $"Project_{project.Id}";
+            return (projectDir, directoryInfo, projectKey); 
+        }
+        
         private async Task<bool> TryToReadAnalysis(Project project, IAnalysisManager manager, string projectKey)
         {
-            var analysis =
-                _sonarQubeRequestHandler.GetResponse<CodeAnalysis>(_sonarQubeRequestHandler.GetMetricsUri(projectKey));
+            var analysis = _sonarQubeRequestHandler.GetCodeAnalysis(projectKey);
 
             var loaded = analysis is not null && analysis.Component.Measures.Any();
 
@@ -180,7 +182,7 @@ namespace Cars.Services.Implementations
                 ? CreateInstance(_dateTimeProvider, loaded, analysis)
                 : project.CodeQualityAssessment.LoadMeasures(analysis, loaded);
 
-            _logger.LogInformation($"TryToReadAnalysis: {loaded}");
+            _logger.LogInformation("TryToReadAnalysis: {Loaded}", loaded);
 
             if (!loaded)
             {
@@ -189,8 +191,7 @@ namespace Cars.Services.Implementations
             }
 
             await manager.SaveCodeQualityAnalysis(project, ass);
-            _sonarQubeRequestHandler.GetResponse<string>(_sonarQubeRequestHandler.GetDeleteProjectUri(projectKey),
-                Method.POST);
+            _sonarQubeRequestHandler.DeleteProject(projectKey);
             return true;
         }
 

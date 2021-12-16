@@ -59,7 +59,7 @@ namespace Cars.Controllers
         {
             UserCannotEditHisRolesCheck(editRolesDto.UserId);
             var res = await _adminService.AddRoleToUser(editRolesDto.UserId, editRolesDto.Role);
-            _logger.LogInformation($"Role {editRolesDto.Role} added to user: {editRolesDto.UserId}");
+            _logger.LogInformation("Role {Role} added to user: {UserId}", editRolesDto.Role, editRolesDto.UserId);
             return Ok(res);
         }
 
@@ -68,7 +68,7 @@ namespace Cars.Controllers
         {
             UserCannotEditHisRolesCheck(editRolesDto.UserId);
             var res = await _adminService.DeleteRoleFromUser(editRolesDto.UserId, editRolesDto.Role);
-            _logger.LogInformation($"Role {editRolesDto.Role} removed from user: {editRolesDto.UserId}");
+            _logger.LogInformation("Role {Role} removed from user: {UserId}", editRolesDto.Role, editRolesDto.UserId);
             return Ok(res);
         }
 

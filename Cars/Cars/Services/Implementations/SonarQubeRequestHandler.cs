@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Cars.Models.SonarQubeDataModels;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -53,7 +54,19 @@ namespace Cars.Services.Implementations
                 return default;
             }
         }
+        
+        public Projects GetExistingProjects() => 
+            GetResponse<Projects>(GetProjectsUri());
+        
+        public CodeAnalysis GetCodeAnalysis(string projectKey) => 
+            GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
 
+        public string DeleteProject(string projectKey) => 
+            GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST);
+        
+        public object CreateProject(string projectKey) => GetResponse<ProjectCreate>(
+            GetCreateProjectUri(projectKey), Method.POST);
+        
         public string GetMetricsUri(string project)
         {
             return MetricsUriBase + project;
@@ -102,5 +115,6 @@ namespace Cars.Services.Implementations
                 $"dotnet sonarscanner begin /k:\"{projectKey}\" /d:sonar.host.url=\"{BasePath}\"  /d:sonar.login=\"{_key}\" & " +
                 $"dotnet build & dotnet sonarscanner end /d:sonar.login=\"{_key}\"";
         }
+        
     }
 }
