@@ -3,14 +3,17 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Cars.Managers.Implementations;
 using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Cars.Models.Enums;
+using Cars.Models.Exceptions;
 using Cars.Models.SonarQubeDataModels;
 using Cars.Services.Interfaces;
 using Cars.Services.Other;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SendGrid.Helpers.Errors.Model;
 using static Cars.Data.CodeQualityAssessmentFactory;
 using static Cars.Data.CodeOverallQualityFactory;
 using static Cars.Services.Other.FileService;
@@ -52,22 +55,34 @@ namespace Cars.Services.Implementations
         {
             
             _logger.LogInformation("{Dt:hh:mm:ss} AnalysisHostedService is working", DateTime.Now);
-            var t = Task.Run(async () => { await PerformFullAnalysis(); }, cancellationToken);
+            var t = Task.Run(async () =>
+            {
+                try
+                {
+                    await PerformFullAnalysis();
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "PerformFullAnalysis error");
+                }
+            }, cancellationToken);
             return t;
         }
 
+        private IAnalysisManager GetAnalysisManager(IServiceScope scope)
+        {
+            var manager = scope.ServiceProvider.GetRequiredService<IAnalysisManager>();
+            if (manager != null) return manager;
+            _logger.LogWarning("No AnalysisManager found");
+            throw new ServiceNotAvailableException("No AnalysisManager found");
+        }
+        
         private async Task PerformFullAnalysis()
         {
             using var scope = _scopeFactory.CreateScope();
-            var manager = scope.ServiceProvider.GetRequiredService<IAnalysisManager>();
-            if (manager == null)
-            {
-                _logger.LogWarning("No AnalysisManager found");
-                return;
-            }
+            var manager = GetAnalysisManager(scope);
 
             var notExamined = manager.GetNotExaminedApplications();
-
             if (!notExamined.Any())
             {
                 _logger.LogInformation("No projects to scan found");

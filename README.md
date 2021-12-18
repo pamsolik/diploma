@@ -11,7 +11,10 @@ Patryk Amsolik
 ## Promotor
 
 dr inż. Łukasz Chomątek
- 
+
+## Informacje
+
+
 |              |              |
 | ------------ | ------------ |
 | Semestr: | VII |
@@ -21,4 +24,12 @@ dr inż. Łukasz Chomątek
 
 ## Technologie
 
-TODO
+
+* [ASP.NET 6](https://dotnet.microsoft.com/en-us/apps/aspnet)
+* [Angular 11](https://angular.io/)
+* [PostgreSQL](https://www.postgresql.org/)
+* [Entity Framework 6](https://docs.microsoft.com/en-us/ef/ef6/)
+* [Identity Server](https://duendesoftware.com/)
+* [SonarQube](https://www.sonarqube.org/)
+
+
