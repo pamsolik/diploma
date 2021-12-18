@@ -6,6 +6,7 @@ using Cars.Models.Enums;
 using Cars.Models.Exceptions;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -41,13 +42,13 @@ namespace Cars.Controllers
         }
 
         [Authorize(Roles = "Recruiter,Admin")]
-        [HttpPut]
-        public async Task<IActionResult> EditRecruitment([FromBody] EditRecruitmentDto editRecruitment)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> EditRecruitment([FromBody] AddRecruitmentDto editRecruitment,[FromRoute] int id)
         {
-            if (_appUserManager.GetUserId(User) != editRecruitment.RecruiterId)
-                throw new AppBaseException(HttpStatusCode.Forbidden,
-                    "User is not authorised to edit this recruitment.");
-            var res = await _recruitmentService.EditRecruitment(editRecruitment);
+            var recruitment = editRecruitment.Adapt<EditRecruitmentDto>();
+            recruitment.Id = id;
+            recruitment.RecruiterId = _appUserManager.GetUserId(User);
+            var res = await _recruitmentService.EditRecruitment(recruitment);
             return Ok(new ApiAnswer("Edited", res));
         }
 

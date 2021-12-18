@@ -8,7 +8,6 @@
       <h4 class="my-0 font-weight-normal">Aplikacje do rekrutacji: {{recruitment.title}}</h4>
     </div>
 
-
     <div class="card-body">
       <div class="col-auto">
         <h5 *ngIf="recruitment.status==1" class="alert alert-warning">Rekrutacja zamknięta</h5>
@@ -30,42 +29,42 @@
           <h6 class="col-auto">Dla wszystkich parametrów im mniejsza wartość, tym lepiej.</h6>
         </section>
 
-        <table class="table table-hover table-bordered ">
+        <table class="table table-hover table-bordered " aria-label="Applications">
           <thead>
           <tr>
-            <th [appSort]="recruitmentApplications" class="col-4 th-sm search"
+            <th [appSort]="recruitmentApplications" class="col-4 th-sm search" id="th-name"
                 data-name="applicant.name">Lista aplikacji
             </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
+            <th [appSort]="recruitmentApplications" class="col-1 search" id="th-bugs"
                 data-name="codeOverallQuality.bugs"
                 data-order="desc">Ilość błędów
             </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
+            <th [appSort]="recruitmentApplications" class="col-1 search" id="th-securityRating"
                 data-name="codeOverallQuality.securityRating"
                 data-order="desc">Ocena bezpieczeństwa
             </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
+            <th [appSort]="recruitmentApplications" class="col-1 search" id="th-codeSmells"
                 data-name="codeOverallQuality.codeSmells"
                 data-order="desc">Ilość Code Smells
             </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
+            <th [appSort]="recruitmentApplications" class="col-1 search" id="th-duplicatedLinesDensity"
                 data-name="codeOverallQuality.duplicatedLinesDensity"
                 data-order="desc">Powtórzenia (%)
             </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
+            <th [appSort]="recruitmentApplications" class="col-1 search" id="th-reliabilityRating"
                 data-name="codeOverallQuality.reliabilityRating"
                 data-order="desc">Ocena niezawodności
             </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
+            <th [appSort]="recruitmentApplications" class="col-1 search" id="th-maintainabilityRating"
                 data-name="codeOverallQuality.maintainabilityRating"
                 data-order="desc">Ocena utrzymywalności
             </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
+            <th [appSort]="recruitmentApplications" class="col-1 search" id="th-technicalDebt"
                 data-name="codeOverallQuality.technicalDebt"
                 data-order="desc">Dług techniczny (min)
             </th>
             <th [appSort]="recruitmentApplications" class="col-1 search" data-name="codeOverallQuality.overallRating"
-                data-order="desc">Ogólna ocena
+                data-order="desc" id="th-overallRating">Ogólna ocena
             </th>
           </tr>
           </thead>

@@ -71,8 +71,7 @@ export class ApplicationsComponent implements OnInit {
           this.alertService.showResultAndRedirect("Gratulacje", "Zamknięto rekrutację", '/recruiter')
           console.log(result);
         }, error => {
-          this.alertService.showResult("Błąd", error.message)
-          console.error(error);
+          this.alertService.showError(error);
         })
       }
     });

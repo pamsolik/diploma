@@ -13,7 +13,6 @@ namespace Cars.Services.Other
     {
         public static Expression<Func<City, bool>> CompareCities(CityDto city)
         {
-            //TODO: Refactor
             return c => c.Name == city.Name &&
                         c.Latitude == city.Latitude &&
                         c.Longitude == city.Longitude;

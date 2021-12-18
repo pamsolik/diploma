@@ -11,8 +11,9 @@ namespace Cars.Managers.Interfaces
     public interface IRecruitmentManager
     {
         public Task<City> FindOrCreateCity(CityDto city);
-
+        
         public Task<EntityEntry<Recruitment>> UpdateRecruitment(Recruitment recruitment);
+        public Task<EntityEntry<Recruitment>> SaveRecruitment(Recruitment recruitment);
 
 
         public Task<Recruitment> FindById(int id);

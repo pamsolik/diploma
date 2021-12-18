@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 
 import {Filters, FiltersDefault} from "../../models/Filters";
@@ -8,6 +8,8 @@ import {getEnumKeyByEnumValue} from "../../components/EnumTool";
 import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 import {Options} from "@angular-slider/ngx-slider";
 import {RecruitmentList} from "../../models/RecruitmentList";
+import {GooglePlaceDirective} from "ngx-google-places-autocomplete";
+import {Address} from "ngx-google-places-autocomplete/objects/address";
 
 @Component({
   selector: 'app-recruitment-list-component',
@@ -63,6 +65,11 @@ export class RecruitmentListComponent implements OnInit {
     // this.places.on('change', function resultSelected(e) {
     //   //...
     // });
+  }
+
+  @ViewChild("ngx-places") placesRef : GooglePlaceDirective;
+  public handleAddressChange(address: Address) {
+    // Do some stuff
   }
 
   applyFilter(pageEvent: PageEvent) {

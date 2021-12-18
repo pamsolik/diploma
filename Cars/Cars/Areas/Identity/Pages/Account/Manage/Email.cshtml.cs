@@ -73,12 +73,11 @@ namespace Cars.Areas.Identity.Pages.Account.Manage
             {
                 var exists = await _userManager.FindByEmailAsync(Input.NewEmail);
 
-                if (exists != null)
-                    if (exists.Id != user.Id)
-                    {
-                        StatusMessage = $"Użytkownik o adresie e-mail {Input.NewEmail} już istnieje.";
-                        return RedirectToPage();
-                    }
+                if (exists != null && exists.Id != user.Id)
+                {
+                    StatusMessage = $"Użytkownik o adresie e-mail {Input.NewEmail} już istnieje.";
+                    return RedirectToPage();
+                }
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);

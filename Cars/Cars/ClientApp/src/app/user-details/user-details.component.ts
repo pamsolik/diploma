@@ -63,7 +63,7 @@ export class UserDetailsComponent implements OnInit {
           this.http.put<boolean>(this.baseUrl + 'api/admin/roles/remove', arg).subscribe(result => {
             console.log('Result: ' + result);
             this.loadUserRoles();
-          }, error => this.alertService.showResult("Błąd", error.error.Message));
+          }, error => this.alertService.showError(error));
         }
       }
     )
@@ -77,7 +77,7 @@ export class UserDetailsComponent implements OnInit {
           this.http.put<boolean>(this.baseUrl + 'api/admin/roles/add', arg).subscribe(result => {
             console.log('Result: ' + result);
             this.loadUserRoles();
-          }, error => this.alertService.showResult("Błąd", error.error.Message));
+          }, error => this.alertService.showError(error));
         }
       }
     )

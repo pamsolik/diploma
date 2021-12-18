@@ -5,7 +5,7 @@ namespace Cars.Models.Dto
 {
     public class EditRecruitmentDto
     {
-        [Required] public int Id { get; set; }
+        public int Id { get; set; }
 
         [Required] public string RecruiterId { get; set; }
 

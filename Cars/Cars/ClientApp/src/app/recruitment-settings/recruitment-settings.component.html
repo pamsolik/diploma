@@ -16,42 +16,35 @@
 
         <div class="form-group mb-3">
           <label>Poziom</label>
-          <select [(ngModel)]="enums.jobLevel" class="form-control">
+          <select [ngModelOptions]="{ standalone: true }" [(ngModel)]="enums.jobLevel" class="form-control">
             <option *ngFor="let level of enums.jobLevels">{{level}}</option>
           </select>
         </div>
 
         <div class="form-group mb-3">
           <label>Typ pracy</label>
-          <select [(ngModel)]="enums.jobType" class="form-control">
+          <select [ngModelOptions]="{ standalone: true }" [(ngModel)]="enums.jobType" class="form-control">
             <option *ngFor="let level of enums.jobTypes">{{level}}</option>
           </select>
         </div>
 
         <div class="form-group mb-3">
           <label>Typ rekrutacji</label>
-          <select [(ngModel)]="enums.recruitmentType" class="form-control">
+          <select [ngModelOptions]="{ standalone: true }" [(ngModel)]="enums.recruitmentType" class="form-control">
             <option *ngFor="let level of enums.recruitmentTypes">{{level}}</option>
           </select>
         </div>
 
         <div class="form-group mb-3">
           <label>Rozmiar zespołu</label>
-          <select [(ngModel)]="enums.teamSize" class="form-control">
+          <select [ngModelOptions]="{ standalone: true }" [(ngModel)]="enums.teamSize" class="form-control">
             <option *ngFor="let level of enums.teamSizes">{{level}}</option>
           </select>
         </div>
 
-        <!--        <div class="form-group mb-3">-->
-        <!--          <label>Status</label>-->
-        <!--          <select [(ngModel)]="enums.recruitmentStatus" class="form-control">-->
-        <!--            <option *ngFor="let level of enums.recruitmentStatuses">{{level}}</option>-->
-        <!--          </select>-->
-        <!--        </div>-->
-
         <div class="form-group mb-3">
           <label>Dział pracy</label>
-          <input [(ngModel)]="settings.field" class="form-control" placeholder="Podaj dział" type="text">
+          <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="settings.field" class="form-control" placeholder="Podaj dział" type="text">
           <small class="form-text text-muted">Maksymalnie 200 znaków.</small>
         </div>
 
@@ -60,13 +53,13 @@
 
         <div class="form-group mb-3">
           <label>Tytuł ogłoszenia</label>
-          <input [(ngModel)]="settings.title" class="form-control" placeholder="Podaj tytuł" type="text">
+          <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="settings.title" class="form-control" placeholder="Podaj tytuł" type="text">
           <small class="form-text text-muted">Maksymalnie 200 znaków.</small>
         </div>
 
         <div class="form-group mb-3">
           <label>Krótki opis</label>
-          <textarea [(ngModel)]="settings.shortDescription"
+          <textarea [ngModelOptions]="{ standalone: true }" [(ngModel)]="settings.shortDescription"
                     class="form-control" placeholder="Krótki opis widoczny na karcie przy wyszukiwaniu"
                     rows="5"></textarea>
           <small class="form-text text-muted">Maksymalnie 500 znaków.</small>
@@ -74,7 +67,7 @@
 
         <div class="form-group mb-3">
           <label>Opis oferty</label>
-          <textarea [(ngModel)]="settings.description" class="form-control" placeholder="Opis" rows="20"></textarea>
+          <textarea [ngModelOptions]="{ standalone: true }" [(ngModel)]="settings.description" class="form-control" placeholder="Opis" rows="20"></textarea>
           <small class="form-text text-muted">Maksymalnie 10000 znaków.</small>
         </div>
 
@@ -88,12 +81,12 @@
 
         <div class="form-group mb-3">
           <label>Klauzula obowiązkowa</label>
-          <textarea [(ngModel)]="settings.clauseRequired" class="form-control" placeholder="Opis" rows="5"></textarea>
+          <textarea [ngModelOptions]="{ standalone: true }" [(ngModel)]="settings.clauseRequired" class="form-control" placeholder="Opis" rows="5"></textarea>
           <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
         </div>
 
         <div class="form-check">
-          <input [(ngModel)]="clauseOpt1" class="form-check-input" id="clauseCheck1" type="checkbox" value="">
+          <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="clauseOpt1" class="form-check-input" id="clauseCheck1" type="checkbox" value="">
           <label class="form-check-label" for="clauseCheck1">
             Klauzula dodatkowa
           </label>
@@ -101,12 +94,12 @@
 
         <div [hidden]="!clauseOpt1" class="form-group mb-3">
           <label>Klauzula dodatkowa</label>
-          <textarea [(ngModel)]="settings.clauseOpt1" class="form-control" placeholder="Opis" rows="5"></textarea>
+          <textarea [ngModelOptions]="{ standalone: true }" [(ngModel)]="settings.clauseOpt1" class="form-control" placeholder="Opis" rows="5"></textarea>
           <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
         </div>
 
         <div class="form-check">
-          <input [(ngModel)]="clauseOpt2" class="form-check-input" id="clauseCheck2" type="checkbox" value="">
+          <input [ngModelOptions]="{ standalone: true }" [(ngModel)]="clauseOpt2" class="form-check-input" id="clauseCheck2" type="checkbox" value="">
           <label class="form-check-label" for="clauseCheck2">
             Klauzula dodatkowa nr 2
           </label>
@@ -114,7 +107,7 @@
 
         <div [hidden]="!clauseOpt2" class="form-group mb-3">
           <label>Klauzula dodatkowa nr 2</label>
-          <textarea [(ngModel)]="settings.clauseOpt2" class="form-control" placeholder="Opis" rows="5"></textarea>
+          <textarea [ngModelOptions]="{ standalone: true }" [(ngModel)]="settings.clauseOpt2" class="form-control" placeholder="Opis" rows="5"></textarea>
           <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
         </div>
       </form>

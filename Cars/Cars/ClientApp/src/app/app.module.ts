@@ -40,6 +40,7 @@ import {UserListComponent} from "./user-list/user-list.component";
 import {UserDetailsComponent} from "./user-details/user-details.component";
 import {ProjectsDetailsComponent} from "./projects-details/projects-details.component";
 import {NgCircleProgressModule} from 'ng-circle-progress';
+import { GooglePlaceModule } from "ngx-google-places-autocomplete";
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import {NgCircleProgressModule} from 'ng-circle-progress';
     ApiAuthorizationModule,
     BrowserAnimationsModule,
     NgCircleProgressModule,
+    GooglePlaceModule,
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,

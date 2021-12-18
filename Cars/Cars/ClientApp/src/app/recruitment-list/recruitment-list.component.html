@@ -24,7 +24,9 @@
 
               <div class="form-group">
                 <label>Lokalizacja</label>
-                <!--                  <input type="search" id="address-input" placeholder="Wybierz lokalizację" />-->
+
+<!--                <input class="form-control" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)" />-->
+
                 <input class="form-control" placeholder="Wprowadź lokalizację" type="text">
               </div>
 
@@ -100,7 +102,7 @@
             <h5 class="card-title">{{offer.title}}</h5>
             <p>{{offer.shortDescription}}</p>
 
-            <p class="mt-2">{{offer.daysAgo}}</p>
+            <p class="mt-1">{{offer.daysAgo}}</p>
           </div>
         </div>
       </mat-card>

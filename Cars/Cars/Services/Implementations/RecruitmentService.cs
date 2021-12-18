@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Cars.Managers.Interfaces;
@@ -9,6 +10,7 @@ using Cars.Models.Enums;
 using Cars.Models.Exceptions;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
+using Cars.Services.Validators;
 using Duende.IdentityServer.Extensions;
 using Mapster;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -34,7 +36,7 @@ namespace Cars.Services.Implementations
 
         public async Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId)
         {
-            //TODO: check if valid and respond accordingly
+            addRecruitmentDto.Validate();
             var existingCity = await _recruitmentManager.FindOrCreateCity(addRecruitmentDto.City);
 
             var dest = addRecruitmentDto.Adapt<Recruitment>();
@@ -43,21 +45,43 @@ namespace Cars.Services.Implementations
             dest.RecruiterId = recruiterId;
             dest.StartDate = _dateTimeProvider.GetTimeNow();
 
-            var res = await _recruitmentManager.UpdateRecruitment(dest);
+            var res = await _recruitmentManager.SaveRecruitment(dest);
 
             res = await CopyAndSaveThumbnail(addRecruitmentDto, res);
             return res.Entity.Id;
         }
 
-        public async Task<int> EditRecruitment(EditRecruitmentDto addRecruitmentDto)
+        public async Task<int> EditRecruitment(EditRecruitmentDto editRecruitmentDto)
         {
-            var recruitment = await _recruitmentManager.FindById(addRecruitmentDto.Id);
-            if (recruitment is null)
-                throw new AppBaseException(HttpStatusCode.NotFound, $"Recruitment {addRecruitmentDto.Id} not found.");
+            var recruitment = await _recruitmentManager.FindById(editRecruitmentDto.Id);
 
-            var dest = addRecruitmentDto.Adapt<Recruitment>(); //TODO: check if valid and respond accordingly
-            var res = await _recruitmentManager.UpdateRecruitment(dest);
+            editRecruitmentDto.Validate(recruitment);
+            
+            var existingCity = await _recruitmentManager.FindOrCreateCity(editRecruitmentDto.City);
+            UpdateRecruitmentFromDto(editRecruitmentDto, existingCity, recruitment);
+
+            var res = await _recruitmentManager.UpdateRecruitment(recruitment);
             return res.Entity.Id;
+        }
+
+        private static void UpdateRecruitmentFromDto(EditRecruitmentDto editRecruitmentDto,
+            City existingCity, Recruitment recruitment)
+        {
+            recruitment.City = existingCity;
+            recruitment.CityId = existingCity.Id;
+            recruitment.Description = editRecruitmentDto.Description;
+            recruitment.Field = editRecruitmentDto.Field;
+            recruitment.Status = editRecruitmentDto.Status;
+            recruitment.Title = editRecruitmentDto.Title;
+            recruitment.Type = editRecruitmentDto.Type;
+            recruitment.ClauseOpt1 = editRecruitmentDto.ClauseOpt1;
+            recruitment.ClauseOpt2 = editRecruitmentDto.ClauseOpt2;
+            recruitment.ClauseRequired = editRecruitmentDto.ClauseRequired;
+            recruitment.ImgUrl = editRecruitmentDto.ImgUrl;
+            recruitment.JobLevel = editRecruitmentDto.JobLevel;
+            recruitment.JobType = editRecruitmentDto.JobType;
+            recruitment.ShortDescription = editRecruitmentDto.ShortDescription;
+            recruitment.TeamSize = editRecruitmentDto.TeamSize;
         }
 
         public async Task<bool> CloseRecruitment(CloseRecruitmentDto closeRecruitmentDto)
@@ -102,7 +126,15 @@ namespace Cars.Services.Implementations
         public async Task<RecruitmentApplication> AddApplication(AddApplicationDto addApplicationDto,
             string applicantId)
         {
-            var dest = addApplicationDto.Adapt<RecruitmentApplication>(); //TODO: check if valid and respond accordingly
+            addApplicationDto.Validate();
+            
+            var recruitment = await _recruitmentManager.FindById(addApplicationDto.RecruitmentId);
+            if (recruitment is null) throw new AppBaseException(HttpStatusCode.NotFound, "Recruitment not found");
+            if (recruitment.Applications.Any(x => x.ApplicantId == applicantId))
+                throw new AppBaseException(HttpStatusCode.Conflict,
+                    "Applicant has allready applied to this recruitment");
+
+            var dest = addApplicationDto.Adapt<RecruitmentApplication>();
             dest.ApplicantId = applicantId;
             dest.Time = _dateTimeProvider.GetTimeNow();
             var res = await _recruitmentManager.AddApplication(dest);

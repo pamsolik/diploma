@@ -39,14 +39,21 @@ namespace Cars.Managers.Implementations
 
             return existingCity;
         }
-
+        
         public async Task<EntityEntry<Recruitment>> UpdateRecruitment(Recruitment recruitment)
+        {
+            var res = _context.Recruitments.Update(recruitment);
+            await _context.SaveChangesAsync();
+            return res;
+        }
+        
+        public async Task<EntityEntry<Recruitment>> SaveRecruitment(Recruitment recruitment)
         {
             var res = _context.Recruitments.Add(recruitment);
             await _context.SaveChangesAsync();
             return res;
         }
-
+        
         public async Task<Recruitment> FindById(int id)
         {
             return await _context.Recruitments.FindAsync(id);

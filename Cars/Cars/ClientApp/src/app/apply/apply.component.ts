@@ -54,8 +54,7 @@ export class ApplyComponent implements OnInit {
       console.log(result);
       this.alertService.showResultAndRedirect("Gratulacje", "Zapisano aplikację", '/recruitments');
     }, error => {
-      this.alertService.showResult("Błąd", error.message)
-      console.error(error);
+      this.alertService.showError(error);
     });
   }
 

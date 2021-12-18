@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace Cars.Models.Exceptions
