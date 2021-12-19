@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Device.Location;
+
 using System.Linq;
 using System.Linq.Expressions;
 using Cars.Models.DataModels;
 using Cars.Models.Dto;
 using Cars.Models.Enums;
+using Geolocation;
 
 namespace Cars.Services.Other
 {
@@ -13,9 +14,7 @@ namespace Cars.Services.Other
     {
         public static Expression<Func<City, bool>> CompareCities(CityDto city)
         {
-            return c => c.Name == city.Name &&
-                        c.Latitude == city.Latitude &&
-                        c.Longitude == city.Longitude;
+            return c => c.Name == city.Name;
         }
 
         public static List<Recruitment> FilterOutAndSortRecruitments(
@@ -47,9 +46,9 @@ namespace Cars.Services.Other
 
         private static double CalculateDistance(Recruitment recruitment, double latitude, double longitude)
         {
-            var sCoord = new GeoCoordinate(recruitment.City.Latitude, recruitment.City.Longitude);
-            var eCoord = new GeoCoordinate(latitude, longitude);
-            return sCoord.GetDistanceTo(eCoord);
+            var sCoord = new Coordinate(recruitment.City.Latitude, recruitment.City.Longitude);
+            var eCoord = new Coordinate(latitude, longitude);
+            return GeoCalculator.GetDistance(sCoord,eCoord);
         }
 
         private static void FilterPickedValues(ref IEnumerable<Recruitment> list,

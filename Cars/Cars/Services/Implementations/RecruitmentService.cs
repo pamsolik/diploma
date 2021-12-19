@@ -110,7 +110,7 @@ namespace Cars.Services.Implementations
             return dest;
         }
 
-        public async Task<PaginatedList<RecruitmentView>>
+        public PaginatedList<RecruitmentView>
             GetRecruitmentsFiltered(RecruitmentFilterDto filter, RecruitmentMode recruitmentMode, string userId = "")
         {
             var recruitments = _recruitmentManager.GetRecruitments(recruitmentMode, userId);

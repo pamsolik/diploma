@@ -1,9 +1,7 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Cars.Managers.Interfaces;
 using Cars.Models.Dto;
 using Cars.Models.Enums;
-using Cars.Models.Exceptions;
 using Cars.Models.View;
 using Cars.Services.Interfaces;
 using Mapster;
@@ -78,26 +76,26 @@ namespace Cars.Controllers
 
 
         [HttpPost("public")]
-        public async Task<IActionResult> GetRecruitmentsPublic([FromBody] RecruitmentFilterDto recruitmentFilterDto)
+        public IActionResult GetRecruitmentsPublic([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
-            var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Public);
+            var res = _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Public);
             return Ok(res);
         }
 
         [Authorize(Roles = "Recruiter,Admin")]
         [HttpPost("recruiter")]
-        public async Task<IActionResult> GetRecruitmentsRecruiter([FromBody] RecruitmentFilterDto recruitmentFilterDto)
+        public IActionResult GetRecruitmentsRecruiter([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
-            var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Recruiter,
+            var res = _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Recruiter,
                 _appUserManager.GetUserId(User));
             return Ok(res);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost("admin")]
-        public async Task<IActionResult> GetRecruitmentsAdmin([FromBody] RecruitmentFilterDto recruitmentFilterDto)
+        public IActionResult GetRecruitmentsAdmin([FromBody] RecruitmentFilterDto recruitmentFilterDto)
         {
-            var res = await _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Admin);
+            var res = _recruitmentService.GetRecruitmentsFiltered(recruitmentFilterDto, RecruitmentMode.Admin);
             return Ok(res);
         }
 

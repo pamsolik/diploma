@@ -20,7 +20,7 @@ namespace Cars.Services.Interfaces
 
         Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId);
 
-        Task<PaginatedList<RecruitmentView>> GetRecruitmentsFiltered(RecruitmentFilterDto filter,
+        PaginatedList<RecruitmentView> GetRecruitmentsFiltered(RecruitmentFilterDto filter,
             RecruitmentMode recruitmentMode, string userId = "");
 
         Task<RecruitmentApplication> AddApplication(AddApplicationDto addApplicationDto, string applicantId);
