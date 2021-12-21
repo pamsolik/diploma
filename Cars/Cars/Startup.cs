@@ -108,11 +108,11 @@ namespace Cars
             });
 
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("/Resources")
-            });
+            // app.UseStaticFiles(new StaticFileOptions
+            // {
+            //     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+            //     RequestPath = new PathString("/Resources")
+            // });
 
 
             app.UseSpa(spa =>
@@ -121,7 +121,7 @@ namespace Cars
                 spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
                 if (env.IsDevelopment())
                     spa.UseAngularCliServer("start --disableHostCheck true");
-                //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
             });
         }
     }
