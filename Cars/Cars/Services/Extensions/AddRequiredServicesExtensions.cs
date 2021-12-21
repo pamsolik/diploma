@@ -39,7 +39,7 @@ namespace Cars.Services.Extensions
             services.AddCronJob<AnalysisHostedService>(c =>
             {
                 c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"*/1 * * * *";
+                c.CronExpression = @"*/5 * * * *";
             });
 
             //Email Sender
