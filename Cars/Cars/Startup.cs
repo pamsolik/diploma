@@ -35,7 +35,7 @@ namespace Cars
                 options.UseLazyLoadingProxies()
                     .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")));
 
-            //services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                     options.SignIn.RequireConfirmedAccount = true)
@@ -43,12 +43,12 @@ namespace Cars
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 
-            // services.AddIdentityServer()
-            //     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            services.AddIdentityServer()
+                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddRequiredServices(Configuration);
 
-            //services.AddAuthentication().AddIdentityServerJwt();
+            services.AddAuthentication().AddIdentityServerJwt();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -69,7 +69,7 @@ namespace Cars
 
             services.AddSwaggerDocument();
 
-            //RolesExtensions.InitializeAsync(services);
+            RolesExtensions.InitializeAsync(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -97,22 +97,22 @@ namespace Cars
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseIdentityServer();
+            app.UseIdentityServer();
 
-            // app.UseEndpoints(endpoints =>
-            // {
-            //     endpoints.MapControllerRoute(
-            //         "default",
-            //         "{controller}/{action=Index}/{id?}");
-            //     endpoints.MapRazorPages();
-            // });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    "default",
+                    "{controller}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            });
 
-            // app.UseStaticFiles();
-            // app.UseStaticFiles(new StaticFileOptions
-            // {
-            //     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-            //     RequestPath = new PathString("/Resources")
-            // });
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
 
             app.UseSpa(spa =>
