@@ -21,6 +21,11 @@ namespace Cars.Services.Other
             dirInfo.Create();
         }
 
+        public static void Create(string dir)
+        {
+            if (!File.Exists(dir) && dir is not null) Directory.CreateDirectory(dir);
+        }
+        
         public static void DeleteWithoutPermissions(DirectoryInfo dirInfo)
         {
             UpdateFileAttributes(dirInfo);

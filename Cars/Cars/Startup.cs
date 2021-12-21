@@ -3,6 +3,7 @@ using System.IO;
 using Cars.Data;
 using Cars.Models.DataModels;
 using Cars.Services.Extensions;
+using Cars.Services.Other;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +45,7 @@ namespace Cars
                 .AddDefaultUI();
 
             services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddRequiredServices(Configuration);
@@ -98,7 +100,7 @@ namespace Cars
             app.UseAuthorization();
 
             app.UseIdentityServer();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -108,11 +110,13 @@ namespace Cars
             });
 
             app.UseStaticFiles();
-            // app.UseStaticFiles(new StaticFileOptions
-            // {
-            //     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-            //     RequestPath = new PathString("/Resources")
-            // });
+            
+            FileService.Create(Path.Combine(Directory.GetCurrentDirectory(), @"Resources"));
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
 
             app.UseSpa(spa =>
