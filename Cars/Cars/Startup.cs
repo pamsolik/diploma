@@ -98,7 +98,7 @@ namespace Cars
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseIdentityServer();
+            //app.UseIdentityServer();
             
             app.UseEndpoints(endpoints =>
             {
