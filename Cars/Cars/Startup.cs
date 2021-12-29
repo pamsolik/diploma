@@ -44,7 +44,7 @@ namespace Cars
                 .AddDefaultUI();
 
             services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
+                //.AddDeveloperSigningCredential()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddRequiredServices(Configuration);
