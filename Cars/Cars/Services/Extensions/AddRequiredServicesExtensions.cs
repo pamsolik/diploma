@@ -27,20 +27,20 @@ namespace Cars.Services.Extensions
             services.AddScoped<IAppUserManager, AppUserManager>();
             services.AddScoped<IAnalysisManager, AnalysisManager>();
             services.AddScoped<IRecruitmentManager, RecruitmentManager>();
-
-            var sonarConn = configuration.GetConnectionString("SonarConn").Split(';');
-            if (sonarConn.Length < 4)
-                throw new ArgumentException("SonarConn not configured properly 'basePath;sonarKey;user;password'");
-            services.AddSingleton(_ =>
-                new SonarQubeRequestHandler(sonarConn[0], sonarConn[1], sonarConn[2], sonarConn[3]));
-
+            
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
-            services.AddCronJob<AnalysisHostedService>(c =>
-            {
-                c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"*/5 * * * *";
-            });
+            // var sonarConn = configuration.GetConnectionString("SonarConn").Split(';');
+            // if (sonarConn.Length < 4)
+            //     throw new ArgumentException("SonarConn not configured properly 'basePath;sonarKey;user;password'");
+            // services.AddSingleton(_ =>
+            //     new SonarQubeRequestHandler(sonarConn[0], sonarConn[1], sonarConn[2], sonarConn[3]));
+            //
+            // services.AddCronJob<AnalysisHostedService>(c =>
+            // {
+            //     c.TimeZoneInfo = TimeZoneInfo.Local;
+            //     c.CronExpression = @"*/5 * * * *";
+            // });
 
             //Email Sender
             services.AddTransient<IEmailSender, EmailSender.EmailSender>();
