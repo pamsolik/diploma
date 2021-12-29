@@ -11,8 +11,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./Cars
     steps:
       - uses: actions/checkout@v2
 
@@ -20,7 +22,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
-          include-prerelease: true
+          include-prerelease: false
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -28,6 +30,18 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+      - name: Remove artifacts
+        uses: c-hive/gha-remove-artifacts@v1.2.0
+        with:
+          # Artifacts older than this will be deleted (e.g. "2 months", "1 day"). Parsed by moment.
+           age: "1 day"
+          # Access token for the repository, available under the same name in secrets.
+           GITHUB_TOKEN: ${{ github.token }}
+          # true/false. If enabled, tag build artifacts (e.g. release artifacts) will be kept.
+           skip-tags: false
+          # Keep the specified number of artifacts even if they are older than the age.
+           skip-recent: 1
+           
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -35,7 +49,7 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
@@ -53,5 +67,5 @@ jobs:
         with:
           app-name: 'cars-pamsolik'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0A2EC6FBDB294B2C8775794E76824E4C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_94D6C7FA3B29461F9869CCF229EC6203 }}
           package: .
