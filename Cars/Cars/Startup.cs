@@ -44,7 +44,7 @@ namespace Cars
                 .AddDefaultUI();
 
             services.AddIdentityServer()
-                //.AddDeveloperSigningCredential()
+                .AddDeveloperSigningCredential()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddRequiredServices(Configuration);
@@ -79,7 +79,7 @@ namespace Cars
             {
                 app.UseOpenApi();
                 app.UseSwaggerUi3();
-                //app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
             }
             else
@@ -98,7 +98,7 @@ namespace Cars
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseIdentityServer();
+            app.UseIdentityServer();
             
             app.UseEndpoints(endpoints =>
             {
