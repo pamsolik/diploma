@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using Cars.Models.SonarQubeDataModels;
-using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Serialization.Json;
 
 namespace Cars.Services.Implementations
 {
@@ -37,7 +37,7 @@ namespace Cars.Services.Implementations
 
         private string CreateProjectUriBase => $"{BasePath}/api/projects/create";
 
-        public T GetResponse<T>(string url, Method method = Method.GET)
+        private T GetResponse<T>(string url, Method method = Method.GET)
         {
             try
             {
@@ -47,7 +47,8 @@ namespace Cars.Services.Implementations
                 var request = new RestRequest(method);
                 request.AddHeader("Authorization", $"Basic {encoded}");
                 var response = client.Execute(request);
-                return JsonConvert.DeserializeObject<T>(response.Content);
+                var serializer = new JsonSerializer();
+                return serializer.Deserialize<T>(response);
             }
             catch
             {
@@ -66,23 +67,23 @@ namespace Cars.Services.Implementations
         
         public object CreateProject(string projectKey) => GetResponse<ProjectCreate>(
             GetCreateProjectUri(projectKey), Method.POST);
-        
-        public string GetMetricsUri(string project)
+
+        private string GetMetricsUri(string project)
         {
             return MetricsUriBase + project;
         }
 
-        public string GetProjectsUri()
+        private string GetProjectsUri()
         {
             return $"{BasePath}/api/projects/search";
         }
 
-        public string GetCreateProjectUri(string project)
+        private string GetCreateProjectUri(string project)
         {
             return $"{CreateProjectUriBase}?name={project}&project={project}";
         }
 
-        public string GetDeleteProjectUri(string project)
+        private string GetDeleteProjectUri(string project)
         {
             return $"{BasePath}/api/projects/delete?project={project}";
         }
