@@ -30,17 +30,7 @@ var host = Host.CreateDefaultBuilder(args)
             
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         
-        var sonarConn = hostContext.Configuration.GetConnectionString("SonarConn").Split(';');
-        if (sonarConn.Length < 4)
-            throw new ArgumentException("SonarConn not configured properly 'basePath;sonarKey;user;password'");
-        services.AddSingleton(_ =>
-            new SonarQubeRequestHandler(sonarConn[0], sonarConn[1], sonarConn[2], sonarConn[3]));
-        
-        services.AddCronJob<AnalysisHostedService>(c =>
-        {
-            c.TimeZoneInfo = TimeZoneInfo.Local;
-            c.CronExpression = @"*/1 * * * *";
-        });
+        services.AddAnalysisService(hostContext.Configuration);
     })
     .Build();
 

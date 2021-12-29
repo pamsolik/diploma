@@ -49,6 +49,8 @@ namespace Cars
 
             services.AddRequiredServices(Configuration);
 
+            //services.AddAnalysisService(Configuration);
+            
             services.AddAuthentication().AddIdentityServerJwt();
 
             services.AddControllersWithViews();

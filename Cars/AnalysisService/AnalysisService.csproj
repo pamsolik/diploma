@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>dotnet-AnalysisService-3E9AD939-81E5-4D55-B63A-C3397DE72F25</UserSecretsId>
+		<IsPublishable>false</IsPublishable>
+		<IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
