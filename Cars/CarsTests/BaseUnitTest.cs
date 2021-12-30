@@ -4,36 +4,35 @@ using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace CarsTests
+namespace CarsTests;
+
+public class BaseUnitTest
 {
-    public class BaseUnitTest
+    protected static ApplicationDbContext SetupDbContext()
     {
-        protected static ApplicationDbContext SetupDbContext()
+        //TODO: Base settings
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase("InMemoryDb")
+            .Options;
+
+        var storeOptions = new OperationalStoreOptions
         {
-            //TODO: Base settings
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("InMemoryDb")
-                .Options;
+            //populate needed members
+        };
 
-            var storeOptions = new OperationalStoreOptions
-            {
-                //populate needed members
-            };
+        var sOptions = Options.Create(storeOptions);
 
-            var sOptions = Options.Create(storeOptions);
+        var context = new ApplicationDbContext(options, sOptions);
 
-            var context = new ApplicationDbContext(options, sOptions);
-
-            try
-            {
-                context.Database.EnsureDeleted();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            return context;
+        try
+        {
+            context.Database.EnsureDeleted();
         }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return context;
     }
 }

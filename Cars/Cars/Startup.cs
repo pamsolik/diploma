@@ -16,120 +16,119 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
-namespace Cars
+namespace Cars;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        Configuration = configuration;
+    }
 
-        private IConfiguration Configuration { get; }
+    private IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc()
-                //.AddRazorRuntimeCompilation()
-                ;
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddMvc()
+            //.AddRazorRuntimeCompilation()
+            ;
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseLazyLoadingProxies()
-                    .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")));
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseLazyLoadingProxies()
+                .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")));
 
-            //services.AddDatabaseDeveloperPageExceptionFilter();
+        //services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-                    options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders()
-                .AddDefaultUI();
+        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                options.SignIn.RequireConfirmedAccount = true)
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders()
+            .AddDefaultUI();
             
-            services.AddIdentityServer()
+        services.AddIdentityServer()
                 
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-            services.AddRequiredServices(Configuration);
+        services.AddRequiredServices(Configuration);
 
-            //services.AddAnalysisService(Configuration);
+        //services.AddAnalysisService(Configuration);
             
-            services.AddAuthentication().AddIdentityServerJwt();
+        services.AddAuthentication().AddIdentityServerJwt();
 
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+        services.AddControllersWithViews();
+        services.AddRazorPages();
 
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+        // In production, the Angular files will be served from this directory
+        services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            // services.AddControllersWithViews()
-            //     .AddNewtonsoftJson(options =>
-            //         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            //     );
+        // services.AddControllersWithViews()
+        //     .AddNewtonsoftJson(options =>
+        //         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        //     );
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.LoginPath = "/Identity/Account/Login";
-                options.SlidingExpiration = true;
-            });
-
-            services.AddSwaggerDocument();
-
-            RolesExtensions.InitializeAsync(services);
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        services.ConfigureApplicationCookie(options =>
         {
-            if (env.IsDevelopment())
-            {
-                app.UseOpenApi();
-                app.UseSwaggerUi3();
-                app.UseDeveloperExceptionPage();
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-                // // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            options.LoginPath = "/Identity/Account/Login";
+            options.SlidingExpiration = true;
+        });
 
-            app.ConfigureCustomExceptionMiddleware();
+        services.AddSwaggerDocument();
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            if (!env.IsDevelopment()) app.UseSpaStaticFiles();
+        RolesExtensions.InitializeAsync(services);
+    }
 
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseIdentityServer();
-            
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    "default",
-                    "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
-            });
-
-            app.UseStaticFiles();
-            
-            FileService.Create(Path.Combine(Directory.GetCurrentDirectory(), @"Resources"));
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-                RequestPath = new PathString("/Resources")
-            });
-
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-                spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
-                if (env.IsDevelopment())
-                    spa.UseAngularCliServer("start --disableHostCheck true");
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-            });
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+            app.UseDeveloperExceptionPage();
+            app.UseMigrationsEndPoint();
         }
+        else
+        {
+            // // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
+
+        app.ConfigureCustomExceptionMiddleware();
+
+        app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        if (!env.IsDevelopment()) app.UseSpaStaticFiles();
+
+        app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseIdentityServer();
+            
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllerRoute(
+                "default",
+                "{controller}/{action=Index}/{id?}");
+            endpoints.MapRazorPages();
+        });
+
+        app.UseStaticFiles();
+            
+        FileService.Create(Path.Combine(Directory.GetCurrentDirectory(), @"Resources"));
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+            RequestPath = new PathString("/Resources")
+        });
+
+
+        app.UseSpa(spa =>
+        {
+            spa.Options.SourcePath = "ClientApp";
+            spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
+            if (env.IsDevelopment())
+                spa.UseAngularCliServer("start --disableHostCheck true");
+            spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+        });
     }
 }
