@@ -29,22 +29,24 @@ namespace Cars
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddRazorRuntimeCompilation();
+            services.AddMvc()
+                //.AddRazorRuntimeCompilation()
+                ;
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseLazyLoadingProxies()
                     .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")));
 
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            //services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                     options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
-
+            
             services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
+                
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddRequiredServices(Configuration);
