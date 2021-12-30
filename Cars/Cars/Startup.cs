@@ -37,7 +37,7 @@ namespace Cars
                 options.UseLazyLoadingProxies()
                     .UseNpgsql(Configuration.GetConnectionString("PostgreSQLConnection")));
 
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            //services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                     options.SignIn.RequireConfirmedAccount = true)
