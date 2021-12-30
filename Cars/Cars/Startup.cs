@@ -29,7 +29,9 @@ namespace Cars
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().AddRazorRuntimeCompilation();
+            services.AddMvc()
+                //.AddRazorRuntimeCompilation()
+                ;
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseLazyLoadingProxies()
