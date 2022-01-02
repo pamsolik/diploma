@@ -15,6 +15,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Cars;
 
@@ -30,8 +32,8 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddMvc()
-            //.AddRazorRuntimeCompilation()
-            ;
+            .AddRazorRuntimeCompilation()
+            .AddNewtonsoftJson();
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseLazyLoadingProxies()
@@ -46,7 +48,7 @@ public class Startup
             .AddDefaultUI();
             
         services.AddIdentityServer()
-                
+            .AddDeveloperSigningCredential()
             .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
         services.AddRequiredServices(Configuration);
@@ -55,17 +57,25 @@ public class Startup
             
         services.AddAuthentication().AddIdentityServerJwt();
 
-        services.AddControllersWithViews();
-        services.AddRazorPages();
+        //services.AddControllersWithViews();
+        services.AddRazorPages()
+            .AddNewtonsoftJson();
 
         // In production, the Angular files will be served from this directory
         services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-
-        // services.AddControllersWithViews()
-        //     .AddNewtonsoftJson(options =>
-        //         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        //     );
-
+        
+        services.AddControllers()
+            .AddNewtonsoftJson();
+        
+        services
+            .AddControllersWithViews()
+            .AddNewtonsoftJson(x =>
+            {
+                x.SerializerSettings.Converters.Add(new StringEnumConverter());
+                x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            })
+            .AddControllersAsServices();
+        
         services.ConfigureApplicationCookie(options =>
         {
             options.LoginPath = "/Identity/Account/Login";

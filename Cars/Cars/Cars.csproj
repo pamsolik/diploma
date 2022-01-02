@@ -19,6 +19,7 @@
         <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
         <PackageReference Include="Mapster.EF6" Version="2.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
         
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.1" />
@@ -33,8 +34,10 @@
         </PackageReference>
         
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
-
+        
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        
+        <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2" />
         
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.2" />
         <PackageReference Include="NSwag.AspNetCore" Version="13.15.5" />
