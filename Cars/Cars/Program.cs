@@ -96,20 +96,20 @@ app.UseRouting();
 //app.UseIdentityServer();
 //app.UseAuthorization();
         
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        "default",
-        "{controller}/{action=Index}/{id?}");
-    endpoints.MapRazorPages();
-});
-        
-FileService.Create(Path.Combine(Directory.GetCurrentDirectory(), @"Resources"));
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
-    RequestPath = new PathString("/Resources")
-});
+// app.UseEndpoints(endpoints =>
+// {
+//     endpoints.MapControllerRoute(
+//         "default",
+//         "{controller}/{action=Index}/{id?}");
+//     endpoints.MapRazorPages();
+// });
+//         
+// FileService.Create(Path.Combine(Directory.GetCurrentDirectory(), @"Resources"));
+// app.UseStaticFiles(new StaticFileOptions
+// {
+//     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+//     RequestPath = new PathString("/Resources")
+// });
         
 app.UseSpa(spa =>
 {
