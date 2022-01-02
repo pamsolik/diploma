@@ -93,8 +93,8 @@ if (!app.Environment.IsDevelopment()) app.UseSpaStaticFiles();
 
 app.UseRouting();
         
-//app.UseIdentityServer();
-//app.UseAuthorization();
+app.UseIdentityServer();
+app.UseAuthorization();
         
 // app.UseEndpoints(endpoints =>
 // {
