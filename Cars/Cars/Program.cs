@@ -115,8 +115,8 @@ app.UseSpa(spa =>
 {
     spa.Options.SourcePath = "ClientApp";
     spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
-    if (app.Environment.IsDevelopment())
-        spa.UseAngularCliServer("start --disableHostCheck true");
+    //if (app.Environment.IsDevelopment())
+    spa.UseAngularCliServer("start --disableHostCheck true");
     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
 });
 
