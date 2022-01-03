@@ -3,25 +3,24 @@ using Cars.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Cars.Services.Extensions
+namespace Cars.Services.Extensions;
+
+public static class RolesExtensions
 {
-    public static class RolesExtensions
+    public static void InitializeAsync(IServiceCollection services)
     {
-        public static void InitializeAsync(IServiceCollection services)
+        var provider = services.BuildServiceProvider();
+        var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
+
+        foreach (var roleName in Enum.GetNames(typeof(UserRoles)))
         {
-            var provider = services.BuildServiceProvider();
-            var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();
+            var hasAdminRole = roleManager.RoleExistsAsync(roleName);
+            hasAdminRole.Wait();
 
-            foreach (var roleName in Enum.GetNames(typeof(UserRoles)))
-            {
-                var hasAdminRole = roleManager.RoleExistsAsync(roleName);
-                hasAdminRole.Wait();
+            if (hasAdminRole.Result) continue;
 
-                if (hasAdminRole.Result) continue;
-
-                var addRole = roleManager.CreateAsync(new IdentityRole(roleName));
-                addRole.Wait();
-            }
+            var addRole = roleManager.CreateAsync(new IdentityRole(roleName));
+            addRole.Wait();
         }
     }
 }

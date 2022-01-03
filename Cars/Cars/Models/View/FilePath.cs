@@ -1,12 +1,11 @@
-﻿namespace Cars.Models.View
-{
-    public class FilePath
-    {
-        public FilePath(string dbPath)
-        {
-            DbPath = dbPath;
-        }
+﻿namespace Cars.Models.View;
 
-        public string DbPath { get; set; }
+public class FilePath
+{
+    public FilePath(string dbPath)
+    {
+        DbPath = dbPath;
     }
+
+    public string DbPath { get; set; }
 }

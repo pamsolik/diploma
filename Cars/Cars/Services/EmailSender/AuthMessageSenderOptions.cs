@@ -1,7 +1,6 @@
-﻿namespace Cars.Services.EmailSender
+﻿namespace Cars.Services.EmailSender;
+
+public class AuthMessageSenderOptions
 {
-    public class AuthMessageSenderOptions
-    {
-        public string SendGridKey { get; set; }
-    }
+    public string SendGridKey { get; set; }
 }

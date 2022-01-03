@@ -1,7 +1,6 @@
-﻿namespace Cars.Models.SonarQubeDataModels
+﻿namespace Cars.Models.SonarQubeDataModels;
+
+public class ProjectCreate
 {
-    public class ProjectCreate
-    {
-        public Component Project { get; set; }
-    }
+    public Component Project { get; set; }
 }

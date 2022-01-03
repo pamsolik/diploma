@@ -1,6 +1,5 @@
-﻿namespace Cars.Data
+﻿namespace Cars.Data;
+
+public class HttpRequestHandler
 {
-    public class HttpRequestHandler
-    {
-    }
 }

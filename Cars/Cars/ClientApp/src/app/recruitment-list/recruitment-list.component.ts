@@ -38,6 +38,7 @@ export class RecruitmentListComponent implements OnInit {
 
   // @ViewChild('address-input') qElementRef: ElementRef;
   // private places: any;
+  @ViewChild("ngx-places") placesRef: GooglePlaceDirective;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     this.filters = FiltersDefault();
@@ -67,7 +68,6 @@ export class RecruitmentListComponent implements OnInit {
     // });
   }
 
-  @ViewChild("ngx-places") placesRef : GooglePlaceDirective;
   public handleAddressChange(address: Address) {
     // Do some stuff
   }

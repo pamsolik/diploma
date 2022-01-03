@@ -1,24 +1,23 @@
 ﻿using Cars.Models.DataModels;
 using Cars.Models.Enums;
 
-namespace Cars.Models.View
+namespace Cars.Models.View;
+
+public class ProjectView
 {
-    public class ProjectView
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-        public int ApplicationId { get; set; }
+    public int ApplicationId { get; set; }
 
-        public string Title { get; set; }
+    public string Title { get; set; }
 
-        public string Url { get; set; }
+    public string Url { get; set; }
 
-        public Technology Technology { get; set; }
+    public Technology Technology { get; set; }
 
-        public int? CodeQualityAssessmentId { get; set; }
+    public int? CodeQualityAssessmentId { get; set; }
 
-        public virtual CodeQualityAssessment CodeQualityAssessment { get; set; }
-    }
+    public virtual CodeQualityAssessment CodeQualityAssessment { get; set; }
 }

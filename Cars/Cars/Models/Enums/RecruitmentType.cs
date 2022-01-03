@@ -1,9 +1,8 @@
-﻿namespace Cars.Models.Enums
+﻿namespace Cars.Models.Enums;
+
+public enum RecruitmentType
 {
-    public enum RecruitmentType
-    {
-        Open,
-        LinkOnly,
-        InviteOnly
-    }
+    Open,
+    LinkOnly,
+    InviteOnly
 }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Inject, Input, Output} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {RecruitmentDetailsDto} from "../../models/RecruitmentDetailsDto"
 import {HttpClient} from "@angular/common/http";
 import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
@@ -8,8 +8,7 @@ import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-recruitment-settings-component',
-  templateUrl: './recruitment-settings.component.html',
-  styleUrls: ['./recruitment-settings.component.css']
+  templateUrl: './recruitment-settings.component.html'
 })
 export class RecruitmentSettingsComponent {
   enums: RecruitmentEnums = new RecruitmentEnums();
@@ -35,16 +34,6 @@ export class RecruitmentSettingsComponent {
     }
   }
 
-  private updateEnums(){
-    this.enums.jobLevel = this.enums.jobLevels[this.settings.jobLevel];
-    this.enums.jobType = this.enums.jobTypes[this.settings.jobType];
-    this.enums.recruitmentType = this.enums.recruitmentTypes[this.settings.type];
-    this.enums.teamSize = this.enums.teamSizes[this.settings.teamSize];
-
-    this.clauseOpt1 = this.settings.clauseOpt1.length > 0;
-    this.clauseOpt2 = this.settings.clauseOpt2.length > 0;
-  }
-
   public createImgPath = (serverPath: string) => {
     if (serverPath)
       return `${this.baseUrl}${serverPath}`;
@@ -61,6 +50,16 @@ export class RecruitmentSettingsComponent {
     this.settings.city.name = "Warszawa"; //TODO: add places autocomplete
     if (this.editMode) this.saveChanges();
     else this.saveNew();
+  }
+
+  private updateEnums() {
+    this.enums.jobLevel = this.enums.jobLevels[this.settings.jobLevel];
+    this.enums.jobType = this.enums.jobTypes[this.settings.jobType];
+    this.enums.recruitmentType = this.enums.recruitmentTypes[this.settings.type];
+    this.enums.teamSize = this.enums.teamSizes[this.settings.teamSize];
+
+    this.clauseOpt1 = this.settings.clauseOpt1.length > 0;
+    this.clauseOpt2 = this.settings.clauseOpt2.length > 0;
   }
 
   private saveNew() {

@@ -40,8 +40,9 @@
             <h5>CV:</h5>
             <p *ngIf="!details.cvFile else cv">Brak</p>
             <ng-template #cv>
-              <button (click)="downloadFile(details.cvFile, details.applicant.name + '_' + details.applicant.surname + '_' + 'CV')"
-                      class="btn btn-success">
+              <button
+                (click)="downloadFile(details.cvFile, details.applicant.name + '_' + details.applicant.surname + '_' + 'CV')"
+                class="btn btn-success">
                 Pobierz
               </button>
             </ng-template>
@@ -51,8 +52,9 @@
 
             <p *ngIf="!details.clFile else cl">Brak</p>
             <ng-template #cl>
-              <button (click)="downloadFile(details.clFile, details.applicant.name + '_' + details.applicant.surname + '_' + 'CL')"
-                      class="btn btn-success">
+              <button
+                (click)="downloadFile(details.clFile, details.applicant.name + '_' + details.applicant.surname + '_' + 'CL')"
+                class="btn btn-success">
                 Pobierz
               </button>
             </ng-template>

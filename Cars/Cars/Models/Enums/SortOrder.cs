@@ -1,11 +1,10 @@
-﻿namespace Cars.Models.Enums
+﻿namespace Cars.Models.Enums;
+
+public enum SortOrder
 {
-    public enum SortOrder
-    {
-        NameDesc,
-        NameAsc,
-        DateAddedDesc,
-        DateAddedAsc,
-        Closest
-    }
+    NameDesc,
+    NameAsc,
+    DateAddedDesc,
+    DateAddedAsc,
+    Closest
 }

@@ -1,9 +1,8 @@
-﻿namespace Cars.Models.Enums
+﻿namespace Cars.Models.Enums;
+
+public enum RecruitmentStatus
 {
-    public enum RecruitmentStatus
-    {
-        Open,
-        Closed,
-        Hidden
-    }
+    Open,
+    Closed,
+    Hidden
 }

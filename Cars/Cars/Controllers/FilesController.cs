@@ -8,62 +8,61 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Cars.Controllers
+namespace Cars.Controllers;
+
+[Authorize(Roles = "User,Recruiter,Admin")]
+[ApiController]
+[Route("api/files/upload")]
+public class FilesController : ControllerBase
 {
-    [Authorize(Roles = "User,Recruiter,Admin")]
-    [ApiController]
-    [Route("api/files/upload")]
-    public class FilesController : ControllerBase
+    private readonly IFileUploadService _fileUploadService;
+    private readonly ILogger<FilesController> _logger;
+
+    public FilesController(ILogger<FilesController> logger, IFileUploadService fileUploadService)
     {
-        private readonly IFileUploadService _fileUploadService;
-        private readonly ILogger<FilesController> _logger;
+        _logger = logger;
+        _fileUploadService = fileUploadService;
+    }
 
-        public FilesController(ILogger<FilesController> logger, IFileUploadService fileUploadService)
+    //Limit: 25mb
+    [HttpPost]
+    [RequestSizeLimit(26214400L)]
+    public async Task<IActionResult> Upload()
+    {
+        try
         {
-            _logger = logger;
-            _fileUploadService = fileUploadService;
+            var formCollection = await Request.ReadFormAsync();
+            var file = formCollection.Files[0];
+
+            if (ValidateFile(file, out var badRequest)) return badRequest;
+
+            var res = await _fileUploadService.SaveFile(file, User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return Ok(res);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex}");
+        }
+    }
+
+    private bool ValidateFile(IFormFile file, out IActionResult badRequest)
+    {
+        var name = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
+
+        if (file.Length <= 0)
+        {
+            badRequest = BadRequest("File lenght is equal to 0");
+            return true;
         }
 
-        //Limit: 25mb
-        [HttpPost]
-        [RequestSizeLimit(26214400L)]
-        public async Task<IActionResult> Upload()
+        if (name is null)
         {
-            try
-            {
-                var formCollection = await Request.ReadFormAsync();
-                var file = formCollection.Files[0];
-
-                if (ValidateFile(file, out var badRequest)) return badRequest;
-
-                var res = await _fileUploadService.SaveFile(file, User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-                return Ok(res);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex}");
-            }
+            badRequest = BadRequest("File name cannot be empty");
+            return true;
         }
 
-        private bool ValidateFile(IFormFile file, out IActionResult badRequest)
-        {
-            var name = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
-
-            if (file.Length <= 0)
-            {
-                badRequest = BadRequest("File lenght is equal to 0");
-                return true;
-            }
-
-            if (name is null)
-            {
-                badRequest = BadRequest("File name cannot be empty");
-                return true;
-            }
-
-            badRequest = null;
-            return false;
-        }
+        badRequest = null;
+        return false;
     }
 }

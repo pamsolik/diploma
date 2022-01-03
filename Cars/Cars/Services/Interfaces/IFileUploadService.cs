@@ -2,10 +2,9 @@
 using Cars.Models.View;
 using Microsoft.AspNetCore.Http;
 
-namespace Cars.Services.Interfaces
+namespace Cars.Services.Interfaces;
+
+public interface IFileUploadService
 {
-    public interface IFileUploadService
-    {
-        public Task<FilePath> SaveFile(IFormFile file, string userId);
-    }
+    public Task<FilePath> SaveFile(IFormFile file, string userId);
 }

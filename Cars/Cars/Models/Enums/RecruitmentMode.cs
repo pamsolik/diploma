@@ -1,9 +1,8 @@
-﻿namespace Cars.Models.Enums
+﻿namespace Cars.Models.Enums;
+
+public enum RecruitmentMode
 {
-    public enum RecruitmentMode
-    {
-        Public,
-        Recruiter,
-        Admin
-    }
+    Public,
+    Recruiter,
+    Admin
 }

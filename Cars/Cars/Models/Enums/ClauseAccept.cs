@@ -1,9 +1,8 @@
-﻿namespace Cars.Models.Enums
+﻿namespace Cars.Models.Enums;
+
+public enum ClauseAccept
 {
-    public enum ClauseAccept
-    {
-        NotAccepted,
-        Accepted,
-        NotExists
-    }
+    NotAccepted,
+    Accepted,
+    NotExists
 }

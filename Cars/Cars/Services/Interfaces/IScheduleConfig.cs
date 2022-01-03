@@ -1,16 +1,15 @@
 ﻿using System;
 
-namespace Cars.Services.Interfaces
-{
-    public interface IScheduleConfig<T>
-    {
-        string CronExpression { get; set; }
-        TimeZoneInfo TimeZoneInfo { get; set; }
-    }
+namespace Cars.Services.Interfaces;
 
-    public class ScheduleConfig<T> : IScheduleConfig<T>
-    {
-        public string CronExpression { get; set; }
-        public TimeZoneInfo TimeZoneInfo { get; set; }
-    }
+public interface IScheduleConfig<T>
+{
+    string CronExpression { get; set; }
+    TimeZoneInfo TimeZoneInfo { get; set; }
+}
+
+public class ScheduleConfig<T> : IScheduleConfig<T>
+{
+    public string CronExpression { get; set; }
+    public TimeZoneInfo TimeZoneInfo { get; set; }
 }

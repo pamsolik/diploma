@@ -1,11 +1,10 @@
-﻿namespace Cars.Models.Enums
+﻿namespace Cars.Models.Enums;
+
+public enum JobLevel
 {
-    public enum JobLevel
-    {
-        Intern,
-        Junior,
-        Mid,
-        Senior,
-        Other
-    }
+    Intern,
+    Junior,
+    Mid,
+    Senior,
+    Other
 }

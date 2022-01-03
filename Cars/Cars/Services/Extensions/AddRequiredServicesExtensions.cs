@@ -1,5 +1,4 @@
-﻿using System;
-using Cars.Managers.Implementations;
+﻿using Cars.Managers.Implementations;
 using Cars.Managers.Interfaces;
 using Cars.Models.DataModels;
 using Cars.Services.EmailSender;
@@ -11,35 +10,34 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Cars.Services.Extensions
+namespace Cars.Services.Extensions;
+
+public static class AddRequiredServicesExtensions
 {
-    public static class AddRequiredServicesExtensions
+    public static void AddRequiredServices(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void AddRequiredServices(this IServiceCollection services, IConfiguration configuration)
+        services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
+            UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
+
+        services.AddScoped<IRecruitmentService, RecruitmentService>();
+        services.AddScoped<IAdminService, AdminService>();
+        services.AddScoped<IFileUploadService, FileUploadService>();
+
+        services.AddScoped<IAppUserManager, AppUserManager>();
+        services.AddScoped<IAnalysisManager, AnalysisManager>();
+        services.AddScoped<IRecruitmentManager, RecruitmentManager>();
+
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+        //Email Sender
+        services.AddTransient<IEmailSender, EmailSender.EmailSender>();
+        services.Configure<AuthMessageSenderOptions>(configuration);
+
+        services.Configure<FormOptions>(o =>
         {
-            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,
-                UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
-
-            services.AddScoped<IRecruitmentService, RecruitmentService>();
-            services.AddScoped<IAdminService, AdminService>();
-            services.AddScoped<IFileUploadService, FileUploadService>();
-
-            services.AddScoped<IAppUserManager, AppUserManager>();
-            services.AddScoped<IAnalysisManager, AnalysisManager>();
-            services.AddScoped<IRecruitmentManager, RecruitmentManager>();
-            
-            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-            
-            //Email Sender
-            services.AddTransient<IEmailSender, EmailSender.EmailSender>();
-            services.Configure<AuthMessageSenderOptions>(configuration);
-
-            services.Configure<FormOptions>(o =>
-            {
-                o.ValueLengthLimit = int.MaxValue;
-                o.MultipartBodyLengthLimit = int.MaxValue;
-                o.MemoryBufferThreshold = int.MaxValue;
-            });
-        }
+            o.ValueLengthLimit = int.MaxValue;
+            o.MultipartBodyLengthLimit = int.MaxValue;
+            o.MemoryBufferThreshold = int.MaxValue;
+        });
     }
 }

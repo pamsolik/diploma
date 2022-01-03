@@ -4,7 +4,6 @@ import {HttpClient} from '@angular/common/http';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class AdminComponent {

@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Cars.Models.Dto
-{
-    public class EditRolesDto
-    {
-        [Required] public string UserId { get; set; }
+namespace Cars.Models.Dto;
 
-        [Required] public string Role { get; set; }
-    }
+public class EditRolesDto
+{
+    [Required] public string UserId { get; set; }
+
+    [Required] public string Role { get; set; }
 }

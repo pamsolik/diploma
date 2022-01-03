@@ -1,10 +1,9 @@
-﻿namespace Cars.Models.Enums
+﻿namespace Cars.Models.Enums;
+
+public enum JobType
 {
-    public enum JobType
-    {
-        Remote,
-        Hybrid,
-        OnSite,
-        Other
-    }
+    Remote,
+    Hybrid,
+    OnSite,
+    Other
 }

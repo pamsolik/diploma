@@ -1,10 +1,9 @@
-﻿namespace Cars.Models.Enums
+﻿namespace Cars.Models.Enums;
+
+public enum Technology
 {
-    public enum Technology
-    {
-        Other,
-        DotNet,
-        Gradle,
-        Maven
-    }
+    Other,
+    DotNet,
+    Gradle,
+    Maven
 }

@@ -58,7 +58,7 @@ export class AlertService {
     });
   }
 
-  showError(error){
+  showError(error) {
     let err = error.error;
     this.showResult("Błąd", err.Message ?? Object.values(err.errors).join(' '));
     console.error(error);

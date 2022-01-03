@@ -3,40 +3,39 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Cars.Services.Other
+namespace Cars.Services.Other;
+
+public static class CommandExecutor
 {
-    public static class CommandExecutor
+    public static Task ExecuteCommandAsync(object command, string projectDir, ILogger logger)
     {
-        public static Task ExecuteCommandAsync(object command, string projectDir, ILogger logger)
+        return Task.Run(() =>
         {
-            return Task.Run(() =>
+            try
             {
-                try
+                var procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
                 {
-                    var procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
-                    {
-                        RedirectStandardOutput = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        WorkingDirectory = projectDir
-                    };
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WorkingDirectory = projectDir
+                };
 
-                    var proc = new Process();
-                    proc.StartInfo = procStartInfo;
+                var proc = new Process();
+                proc.StartInfo = procStartInfo;
 
-                    proc.Start();
+                proc.Start();
 
-                    var result = proc.StandardOutput.ReadToEnd();
+                var result = proc.StandardOutput.ReadToEnd();
 
-                    proc.WaitForExit();
+                proc.WaitForExit();
 
-                    logger.LogInformation("{Result}" ,result);
-                }
-                catch (Exception e)
-                {
-                    logger.LogError(e, "Command execution error");
-                }
-            });
-        }
+                logger.LogInformation("{Result}", result);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, "Command execution error");
+            }
+        });
     }
 }

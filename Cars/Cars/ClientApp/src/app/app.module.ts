@@ -40,7 +40,7 @@ import {UserListComponent} from "./user-list/user-list.component";
 import {UserDetailsComponent} from "./user-details/user-details.component";
 import {ProjectsDetailsComponent} from "./projects-details/projects-details.component";
 import {NgCircleProgressModule} from 'ng-circle-progress';
-import { GooglePlaceModule } from "ngx-google-places-autocomplete";
+import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 
 @NgModule({
   declarations: [
