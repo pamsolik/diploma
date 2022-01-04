@@ -87,7 +87,7 @@ if (!app.Environment.IsDevelopment()) app.UseSpaStaticFiles();
 
 app.UseRouting();
 
-app.UseIdentityServer();
+//app.UseIdentityServer();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
@@ -111,9 +111,6 @@ app.UseSpa(spa =>
     spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
     if (app.Environment.IsDevelopment())
         spa.UseAngularCliServer("start --disableHostCheck true");
-    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
 });
-
-//app.MapFallbackToFile("index.html"); ;
 
 app.Run();
