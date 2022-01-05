@@ -1,5 +1,5 @@
-using Core.DataModels ;
 using Cars.Services.Implementations;
+using Core.DataModels;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

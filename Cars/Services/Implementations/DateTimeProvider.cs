@@ -1,5 +1,4 @@
-﻿using System;
-using Services.Interfaces;
+﻿using Services.Interfaces;
 
 namespace Cars.Services.Implementations;
 

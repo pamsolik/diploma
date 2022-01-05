@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Core.DataModels ;
+﻿using Core.DataModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

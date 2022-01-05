@@ -1,13 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Services.Managers.Interfaces;
-using Core.DataModels ;
+﻿using System.Text.Json;
+using Core.DataModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using Services.Managers.Interfaces;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage;
 

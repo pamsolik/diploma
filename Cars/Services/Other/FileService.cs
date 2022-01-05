@@ -35,7 +35,7 @@ public static class FileService
         Create(Path.Combine(dir, @"Resources/Images/Thumbnails"));
     }
 
-    
+
     public static void DeleteWithoutPermissions(DirectoryInfo dirInfo)
     {
         UpdateFileAttributes(dirInfo);

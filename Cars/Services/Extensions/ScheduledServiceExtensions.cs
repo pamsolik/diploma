@@ -1,6 +1,4 @@
-﻿using System;
-using Cars.Services.Implementations;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Services.Implementations;
 using Services.Interfaces;
 

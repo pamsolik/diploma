@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Core.DataModels ;
+using Core.DataModels;
 using Duende.IdentityServer.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using Cars.Models;
 using Core.DataModels;
 using Core.Exceptions;
 using Infrastructure;

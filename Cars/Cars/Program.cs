@@ -1,4 +1,3 @@
-using Cars.Services.Extensions;
 using Core.DataModels;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication;
@@ -37,10 +36,7 @@ builder.Services.AddRazorPages();
 
 builder.Services
     .AddControllersWithViews()
-    .AddNewtonsoftJson(x =>
-    {
-        x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-    })
+    .AddNewtonsoftJson(x => { x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; })
     .AddControllersAsServices();
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -48,6 +44,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Identity/Account/Login";
     options.SlidingExpiration = true;
 });
+
 
 builder.Services.AddSwaggerDocument();
 
@@ -94,6 +91,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = new PathString("/Resources")
 });
 
-app.MapFallbackToFile("index.html"); 
+app.MapFallbackToFile("index.html");
 
 app.Run();
