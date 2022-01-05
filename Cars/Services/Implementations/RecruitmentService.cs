@@ -105,7 +105,7 @@ public class RecruitmentService : IRecruitmentService
 
         var recruitment = await _recruitmentManager.FindById(addApplicationDto.RecruitmentId);
         if (recruitment is null) throw new AppBaseException(HttpStatusCode.NotFound, "Recruitment not found");
-        if (recruitment.Applications.Any(x => x.ApplicantId == applicantId))
+        if (recruitment.Applications != null && recruitment.Applications.Any(x => x.ApplicantId == applicantId))
             throw new AppBaseException(HttpStatusCode.Conflict,
                 "Applicant has allready applied to this recruitment");
 
@@ -125,10 +125,10 @@ public class RecruitmentService : IRecruitmentService
     }
 
     private static void UpdateRecruitmentFromDto(EditRecruitmentDto editRecruitmentDto,
-        City existingCity, Recruitment recruitment)
+        City? existingCity, Recruitment recruitment)
     {
         recruitment.City = existingCity;
-        recruitment.CityId = existingCity.Id;
+        recruitment.CityId = existingCity?.Id;
         recruitment.Description = editRecruitmentDto.Description;
         recruitment.Field = editRecruitmentDto.Field;
         recruitment.Status = editRecruitmentDto.Status;

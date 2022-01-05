@@ -26,7 +26,7 @@ public class AppUserManager : IAppUserManager
 
         if (user == null) throw new ArgumentNullException(nameof(user));
 
-        user.ProfilePicture = profilePicture;
+        if (profilePicture != null) user.ProfilePicture = profilePicture;
 
         var res = _context.Users.Update(user);
         await _context.SaveChangesAsync();

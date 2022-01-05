@@ -13,7 +13,7 @@ public class AnalysisManager : IAnalysisManager
         _context = context;
     }
 
-    public async Task<Project> SaveCodeQualityAnalysis(Project project, CodeQualityAssessment ass)
+    public async Task<Project> SaveCodeQualityAnalysis(Project project, CodeQualityAssessment? ass)
     {
         project.CodeQualityAssessment = ass;
         await _context.SaveChangesAsync();
@@ -23,15 +23,14 @@ public class AnalysisManager : IAnalysisManager
     public List<RecruitmentApplication> GetNotExaminedApplications()
     {
         return _context.Applications
-            .Where(a => a.CodeOverallQualityId == null || !a.CodeOverallQuality.Success)
+            .Where(a => a.CodeOverallQuality != null && (a.CodeOverallQualityId == null || !a.CodeOverallQuality.Success))
             .ToList();
     }
 
     public List<Project> GetNotExaminedProjects(RecruitmentApplication notExamined)
     {
         return _context.Projects.Where(p =>
-                p.ApplicationId == notExamined.Id &&
-                (p.CodeQualityAssessmentId == null || !p.CodeQualityAssessment.Success))
+                p.CodeQualityAssessment != null && p.ApplicationId == notExamined.Id && (p.CodeQualityAssessmentId == null || !p.CodeQualityAssessment.Success))
             .ToList();
     }
 

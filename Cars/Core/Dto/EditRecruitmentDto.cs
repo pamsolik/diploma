@@ -11,15 +11,15 @@ public class EditRecruitmentDto
 
     [Required]
     [StringLength(200, ErrorMessage = "Title cannot be longer than 200 characters.")]
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
 
     [Required]
     [StringLength(500, ErrorMessage = "Short description cannot be longer than 500 characters.")]
-    public string ShortDescription { get; set; }
+    public string ShortDescription { get; set; } = string.Empty;
 
     [Required]
     [StringLength(10000, ErrorMessage = "Description cannot be longer than 10000 characters.")]
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     [Required] public RecruitmentStatus Status { get; set; }
 
@@ -33,7 +33,7 @@ public class EditRecruitmentDto
 
     [Required]
     [StringLength(200, ErrorMessage = "Field cannot be longer than 200 characters.")]
-    public string Field { get; set; }
+    public string Field { get; set; } = string.Empty;
 
     [Required] public CityDto? City { get; set; }
 
@@ -41,11 +41,11 @@ public class EditRecruitmentDto
 
     [Required]
     [StringLength(1000, ErrorMessage = "ClauseRequired cannot be longer than 1000 characters.")]
-    public string ClauseRequired { get; set; }
+    public string ClauseRequired { get; set; } = string.Empty;
 
     [StringLength(1000, ErrorMessage = "ClauseOpt1 cannot be longer than 1000 characters.")]
-    public string ClauseOpt1 { get; set; }
+    public string ClauseOpt1 { get; set; } = string.Empty;
 
     [StringLength(1000, ErrorMessage = "ClauseOpt2 cannot be longer than 1000 characters.")]
-    public string ClauseOpt2 { get; set; }
+    public string ClauseOpt2 { get; set; } = string.Empty;
 }

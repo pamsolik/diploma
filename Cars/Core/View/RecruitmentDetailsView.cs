@@ -7,15 +7,15 @@ public class RecruitmentDetailsView
 {
     public int Id { get; set; }
 
-    public string RecruiterId { get; set; }
+    public string RecruiterId { get; set; } = string.Empty;
 
-    public UserView Recruiter { get; set; }
+    public UserView? Recruiter { get; set; }
 
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
 
-    public string ShortDescription { get; set; }
+    public string ShortDescription { get; set; } = string.Empty;
 
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     public DateTime StartDate { get; set; }
 
@@ -29,15 +29,15 @@ public class RecruitmentDetailsView
 
     public TeamSize TeamSize { get; set; }
 
-    public string Field { get; set; }
+    public string Field { get; set; } = string.Empty;
 
-    public City City { get; set; }
+    public City? City { get; set; }
 
     public string? ImgUrl { get; set; } = ImgPath.PlaceHolder;
 
-    public string ClauseRequired { get; set; }
+    public string ClauseRequired { get; set; } = string.Empty;
 
-    public string ClauseOpt1 { get; set; }
+    public string ClauseOpt1 { get; set; } = string.Empty;
 
-    public string ClauseOpt2 { get; set; }
+    public string ClauseOpt2 { get; set; } = string.Empty;
 }

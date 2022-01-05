@@ -57,7 +57,7 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> AddRoleToUser([FromBody] EditRolesDto editRolesDto)
     {
         UserCannotEditHisRolesCheck(editRolesDto.UserId);
-        var res = await _adminService.AddRoleToUser(editRolesDto.UserId, editRolesDto.Role);
+        var res = editRolesDto.Role != null && await _adminService.AddRoleToUser(editRolesDto.UserId, editRolesDto.Role);
         _logger.LogInformation("Role {Role} added to user: {UserId}", editRolesDto.Role, editRolesDto.UserId);
         return Ok(res);
     }
@@ -66,7 +66,7 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> RemoveRoleFromUser([FromBody] EditRolesDto editRolesDto)
     {
         UserCannotEditHisRolesCheck(editRolesDto.UserId);
-        var res = await _adminService.DeleteRoleFromUser(editRolesDto.UserId, editRolesDto.Role);
+        var res = editRolesDto.Role != null && await _adminService.DeleteRoleFromUser(editRolesDto.UserId, editRolesDto.Role);
         _logger.LogInformation("Role {Role} removed from user: {UserId}", editRolesDto.Role, editRolesDto.UserId);
         return Ok(res);
     }

@@ -2,5 +2,5 @@
 
 public class ProjectCreate
 {
-    public Component Project { get; set; }
+    public Component? Project { get; set; }
 }

@@ -4,7 +4,7 @@ namespace Services.Managers.Interfaces;
 
 public interface IAnalysisManager
 {
-    public Task<Project> SaveCodeQualityAnalysis(Project project, CodeQualityAssessment ass);
+    public Task<Project> SaveCodeQualityAnalysis(Project project, CodeQualityAssessment? ass);
 
     public List<RecruitmentApplication> GetNotExaminedApplications();
 

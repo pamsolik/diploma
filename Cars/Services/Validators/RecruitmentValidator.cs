@@ -9,7 +9,7 @@ public static class RecruitmentValidator
 {
     public static void Validate(this AddApplicationDto applicationDto)
     {
-        if (applicationDto.Projects.Count is < 1 or > 5)
+        if (applicationDto.Projects != null && applicationDto.Projects.Count is < 1 or > 5)
             throw new AppBaseException(HttpStatusCode.BadRequest,
                 "There has to be between 1 and 5 projects in application.");
     }

@@ -7,7 +7,7 @@ namespace Services.Managers.Interfaces;
 
 public interface IRecruitmentManager
 {
-    public Task<City> FindOrCreateCity(CityDto? city);
+    public Task<City?> FindOrCreateCity(CityDto? city);
 
     public Task<EntityEntry<Recruitment>> UpdateRecruitment(Recruitment recruitment);
     public Task<EntityEntry<Recruitment>> SaveRecruitment(Recruitment recruitment);
@@ -15,7 +15,7 @@ public interface IRecruitmentManager
 
     public Task<Recruitment> FindById(int id);
 
-    public Task<Recruitment> CloseRecruitment(int recruitmentId, List<RecruitmentToClose> recruitmentsToClose);
+    public Task<Recruitment?> CloseRecruitment(int recruitmentId, List<RecruitmentToClose>? recruitmentsToClose);
 
     public Task ChangeRecruitmentStatus(int id, RecruitmentStatus status);
 

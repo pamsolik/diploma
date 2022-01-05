@@ -1,16 +1,18 @@
 ﻿using System.Linq.Expressions;
+using System.Net;
 using Core.DataModels;
 using Core.Dto;
 using Core.Enums;
+using Core.Exceptions;
 using Geolocation;
 
 namespace Services.Other;
 
 public static class FilterUtilities
 {
-    public static Expression<Func<City, bool>> CompareCities(CityDto? city)
+    public static Expression<Func<City?, bool>> CompareCities(CityDto? city)
     {
-        return c => c.Name == city.Name;
+        return c => c != null && city != null && c.Name == city.Name;
     }
 
     public static List<Recruitment> FilterOutAndSortRecruitments(
@@ -33,7 +35,10 @@ public static class FilterUtilities
             SortOrder.DateAddedAsc => filtered.OrderBy(s => s.StartDate),
             SortOrder.DateAddedDesc => filtered.OrderByDescending(s => s.StartDate),
             SortOrder.Closest => filtered.OrderByDescending(s =>
-                CalculateDistance(s, filter.City.Latitude, filter.City.Longitude)),
+            {
+                if (filter.City != null) return CalculateDistance(s, filter.City.Latitude, filter.City.Longitude);
+                throw new AppBaseException(HttpStatusCode.BadRequest, "City not proviced");
+            }),
             _ => recruitments.OrderBy(s => s.Title)
         };
 
@@ -42,6 +47,7 @@ public static class FilterUtilities
 
     private static double CalculateDistance(Recruitment recruitment, double latitude, double longitude)
     {
+        if (recruitment.City is null) return 0;
         var sCoord = new Coordinate(recruitment.City.Latitude, recruitment.City.Longitude);
         var eCoord = new Coordinate(latitude, longitude);
         return GeoCalculator.GetDistance(sCoord, eCoord);

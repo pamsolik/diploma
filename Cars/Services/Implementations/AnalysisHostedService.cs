@@ -125,7 +125,7 @@ public class AnalysisHostedService : CronJobService
             var (projectDir, dirInfo, projectKey) = GetProjectConstants(application, project);
             var saved = false;
 
-            var projectCreated = projects.Components.Any(c => c.Key == projectKey);
+            var projectCreated = projects.Components != null && projects.Components.Any(c => c.Key == projectKey);
 
             if (!projectCreated)
             {
@@ -167,7 +167,7 @@ public class AnalysisHostedService : CronJobService
     private static (string, DirectoryInfo, string) GetProjectConstants(RecruitmentApplication application,
         Project project)
     {
-        var projectDir = Path.Combine(SonarQubeRequestHandler.SonarLoc, "scans", application.ApplicantId,
+        var projectDir = Path.Combine(SonarQubeRequestHandler.SonarLoc, "scans", application.ApplicantId ?? throw new InvalidOperationException("ApplicantId cannot be null"),
             project.Id.ToString());
         var directoryInfo = new DirectoryInfo(projectDir);
         var projectKey = $"Project_{project.Id}";
@@ -178,7 +178,7 @@ public class AnalysisHostedService : CronJobService
     {
         var analysis = _sonarQubeRequestHandler.GetCodeAnalysis(projectKey);
 
-        var loaded = analysis is not null && analysis.Component.Measures.Any();
+        var loaded = analysis?.Component?.Measures != null && analysis?.Component != null && analysis.Component.Measures.Any();
 
         var ass = project.CodeQualityAssessmentId is null
             ? CreateInstance(_dateTimeProvider, loaded, analysis)
@@ -188,7 +188,9 @@ public class AnalysisHostedService : CronJobService
 
         if (!loaded)
         {
-            if (project.Retries - 3 > project.SolutionsCnt) ass.Success = true;
+            if (project.Retries - 3 > project.SolutionsCnt)
+                if (ass != null)
+                    ass.Success = true;
             project.Retries++;
         }
 

@@ -4,7 +4,7 @@ public class CloseRecruitmentDto
 {
     public int RecruitmentId { get; set; }
 
-    public List<RecruitmentToClose> RecruitmentsToClose { get; set; }
+    public List<RecruitmentToClose>? RecruitmentsToClose { get; set; }
 }
 
 public class RecruitmentToClose

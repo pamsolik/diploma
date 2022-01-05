@@ -23,14 +23,14 @@ public class RecruitmentManager : IRecruitmentManager
         _context = context;
     }
 
-    public async Task<City> FindOrCreateCity(CityDto? city)
+    public async Task<City?> FindOrCreateCity(CityDto? city)
     {
         var existingCity = await _context.Cities.FirstOrDefaultAsync(CompareCities(city));
 
         if (existingCity is not null) return existingCity;
 
-        existingCity = city.Adapt<City>();
-        _context.Cities.Add(existingCity);
+        if (city != null) existingCity = city.Adapt<City>();
+        _context.Cities.Add(existingCity ?? throw new InvalidOperationException("Mapping failure FindOrCreateCity"));
 
         return existingCity;
     }
@@ -55,7 +55,7 @@ public class RecruitmentManager : IRecruitmentManager
                throw new AppBaseException(HttpStatusCode.NotFound, "Recruitment not found");
     }
 
-    public async Task<Recruitment> CloseRecruitment(int recruitmentId, List<RecruitmentToClose> recruitmentsToClose)
+    public async Task<Recruitment?> CloseRecruitment(int recruitmentId, List<RecruitmentToClose>? recruitmentsToClose)
     {
         var recruitment = await FindById(recruitmentId);
 
@@ -65,12 +65,13 @@ public class RecruitmentManager : IRecruitmentManager
             throw new AppBaseException(HttpStatusCode.Forbidden, "Recruitment has allready been closed");
 
         recruitment.Status = RecruitmentStatus.Closed;
-        foreach (var recruitmentApplication in recruitmentsToClose)
-        {
-            var application =
-                recruitment.Applications.FirstOrDefault(a => a.Id == recruitmentApplication.ApplicationId);
-            if (application is not null) application.Selected = recruitmentApplication.Selected;
-        }
+        if (recruitmentsToClose != null)
+            foreach (var recruitmentApplication in recruitmentsToClose)
+            {
+                var application =
+                    recruitment.Applications?.FirstOrDefault(a => a.Id == recruitmentApplication.ApplicationId);
+                if (application is not null) application.Selected = recruitmentApplication.Selected;
+            }
 
         _context.Recruitments.Update(recruitment);
         await _context.SaveChangesAsync();

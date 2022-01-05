@@ -2,7 +2,7 @@
 
 public class Projects
 {
-    public Paging Paging { get; set; }
+    public Paging? Paging { get; set; }
 
-    public List<Component> Components { get; set; }
+    public List<Component>? Components { get; set; }
 }
