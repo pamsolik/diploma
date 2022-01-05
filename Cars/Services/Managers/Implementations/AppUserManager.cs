@@ -66,7 +66,7 @@ public class AppUserManager : IAppUserManager
         return user;
     }
 
-    public async Task<List<ApplicationUser>> GetFilteredUsers(string roleName, string searchTerm)
+    public async Task<List<ApplicationUser>> GetFilteredUsers(string roleName, string? searchTerm)
     {
         var res = (await _userManager.GetUsersInRoleAsync(roleName)).ToList();
 

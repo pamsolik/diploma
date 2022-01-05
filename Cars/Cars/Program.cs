@@ -93,15 +93,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = new PathString("/Resources")
 });
 
-// app.UseSpa(spa =>
-// {
-//     spa.Options.SourcePath = Path.Join(app.Environment.ContentRootPath, "ClientApp");
-//     spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
-//     if (app.Environment.IsDevelopment())
-//         spa.UseAngularCliServer("start --disableHostCheck true");
-//     // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-// });
-
 app.MapFallbackToFile("index.html"); 
 
 app.Run();

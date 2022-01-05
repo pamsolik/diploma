@@ -42,7 +42,7 @@ public class IndexModel : PageModel
     public string ProfileUrl { get; set; }
     [BindProperty] public InputModel Input { get; set; }
 
-    [BindProperty] public IFormFile Upload { get; set; }
+    [BindProperty] public IFormFile? Upload { get; set; }
 
     private async Task LoadAsync(ApplicationUser user)
     {
@@ -55,7 +55,10 @@ public class IndexModel : PageModel
 
         Filename = user.ProfilePicture;
 
-        ProfileUrl = "https://" + HttpContext.Request.Host + "/" + Filename;
+        var host = HttpContext.Request.Host.ToString();
+        if (!host.Contains("azurewebsites"))
+            host = "localhost:7187";
+        ProfileUrl = "https://" + host + "/" + Filename;
 
         Input = new InputModel
         {

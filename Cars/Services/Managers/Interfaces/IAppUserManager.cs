@@ -16,7 +16,7 @@ public interface IAppUserManager
 
     public Task<ApplicationUser> FindUser(string userId);
 
-    public Task<List<ApplicationUser>> GetFilteredUsers(string roleName, string searchTerm);
+    public Task<List<ApplicationUser>> GetFilteredUsers(string roleName, string? searchTerm);
 
     public void CheckIfRoleExists(string roleName);
 }

@@ -18,7 +18,7 @@ public class AdminService : IAdminService
         _appUserManager = appUserManager;
     }
 
-    public async Task<PaginatedList<UserView>> GetUsersInRole(string roleName, string searchTerm,
+    public async Task<PaginatedList<UserView>> GetUsersInRole(string roleName, string? searchTerm,
         int pageSize, int pageIndex)
     {
         _appUserManager.CheckIfRoleExists(roleName);

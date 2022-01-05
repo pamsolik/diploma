@@ -30,6 +30,7 @@ export class LoginMenuComponent implements OnInit {
   }
 
   createImgPath() {
+    if (!this.authorizeService.userInfo) return `${this.baseUrl}Resources\\Images\\Defaults\\profile-pic.jpg`
     return `${this.baseUrl}${this.authorizeService.userInfo.profilePicture}`;
   }
 }

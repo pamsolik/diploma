@@ -2,6 +2,7 @@
 using Core.DataModels;
 using Core.Dto;
 using Core.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
@@ -9,7 +10,7 @@ using Services.Managers.Interfaces;
 
 namespace Cars.Controllers;
 
-//[Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/admin")]
 public class AdminController : ControllerBase
@@ -29,7 +30,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("users")]
-    public async Task<IActionResult> GetUsers([FromQuery] string searchTerm,
+    public async Task<IActionResult> GetUsers([FromQuery] string? searchTerm,
         [FromQuery] int pageSize, [FromQuery] int pageIndex)
     {
         var res = await _adminService.GetUsersInRole("User", searchTerm, pageSize, pageIndex);
