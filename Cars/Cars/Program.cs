@@ -86,7 +86,8 @@ app.UseEndpoints(endpoints =>
     endpoints.MapRazorPages();
 });
 
-FileService.Create(Path.Combine(Directory.GetCurrentDirectory(), @"Resources"));
+FileService.CreateNeededFileStructure(Directory.GetCurrentDirectory());
+
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),

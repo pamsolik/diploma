@@ -18,11 +18,24 @@ public static class FileService
         dirInfo.Create();
     }
 
-    public static void Create(string dir)
+    public static void Create(string? dir)
     {
         if (!File.Exists(dir) && dir is not null) Directory.CreateDirectory(dir);
     }
 
+    public static void CreateNeededFileStructure(string dir)
+    {
+        Create(Path.Combine(dir, @"Resources"));
+        Create(Path.Combine(dir, @"Resources/Temp"));
+        Create(Path.Combine(dir, @"Resources/Files"));
+        Create(Path.Combine(dir, @"Resources/Files/CL"));
+        Create(Path.Combine(dir, @"Resources/Files/CV"));
+        Create(Path.Combine(dir, @"Resources/Images/Defaults"));
+        Create(Path.Combine(dir, @"Resources/Images/Profile"));
+        Create(Path.Combine(dir, @"Resources/Images/Thumbnails"));
+    }
+
+    
     public static void DeleteWithoutPermissions(DirectoryInfo dirInfo)
     {
         UpdateFileAttributes(dirInfo);
