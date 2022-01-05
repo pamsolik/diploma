@@ -42,13 +42,13 @@ export class AuthorizeService {
   // By default pop ups are disabled because they don't work properly on Edge.
   // If you want to enable pop up authentication simply set this flag to false.
 
-  public ProfileUrl: string;
-  public roles: string[];
-  public isAdmin: boolean;
-  public isRecruiter: boolean;
-  public userInfo: Applicant;
+  public ProfileUrl: string = "";
+  public roles: string[] = [];
+  public isAdmin: boolean = false;
+  public isRecruiter: boolean = false;
+  public userInfo: Applicant | undefined;
   private popUpDisabled = true;
-  private userManager: UserManager;
+  private userManager: UserManager | undefined;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
@@ -102,7 +102,7 @@ export class AuthorizeService {
   //    redirect flow.
   public async signIn(state: any): Promise<IAuthenticationResult> {
     await this.ensureUserManagerInitialized();
-    let user: User = null;
+    let user: User | null = null;
     try {
       user = await this.userManager.signinSilent(this.createArguments());
       this.userSubject.next(user.profile);

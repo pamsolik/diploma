@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Cars.Managers.Interfaces;
-using Cars.Models.View;
+﻿using Core.View;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Services.Managers.Interfaces;
 
 namespace Cars.Controllers;
 

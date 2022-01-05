@@ -13,7 +13,7 @@ import {ApplicationPaths, LogoutActions, ReturnUrlType} from '../api-authorizati
   templateUrl: './logout.component.html'
 })
 export class LogoutComponent implements OnInit {
-  public message = new BehaviorSubject<string>(null);
+  public message = new BehaviorSubject<string>("");
 
   constructor(
     private authorizeService: AuthorizeService,

@@ -1,13 +1,11 @@
 ﻿using System.Net;
-using System.Threading.Tasks;
-using Cars.Managers.Interfaces;
-using Cars.Models.DataModels;
-using Cars.Models.Dto;
-using Cars.Models.Exceptions;
-using Cars.Services.Interfaces;
+using Core.DataModels;
+using Core.Dto;
+using Core.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Services.Interfaces;
+using Services.Managers.Interfaces;
 
 namespace Cars.Controllers;
 

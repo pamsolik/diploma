@@ -9,12 +9,13 @@
   constructor() {
   }
 
-  public resolve(path, obj = self, separator = '.') {
+  public resolve(path: string, obj = self, separator = '.') {
     let properties = Array.isArray(path) ? path : path.split(separator);
+    // @ts-ignore
     return properties.reduce((prev, curr) => prev && prev[curr], obj);
   }
 
-  public startSort(property: string, order, type = "") {
+  public startSort(property: string, order: string, type = "") {
     if (order === "desc") {
       this.sortOrder = -1;
     }

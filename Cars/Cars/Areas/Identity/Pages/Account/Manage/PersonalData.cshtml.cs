@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using Cars.Managers.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using Services.Managers.Interfaces;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage;
 

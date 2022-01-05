@@ -1,13 +1,11 @@
-﻿using System.Threading.Tasks;
-using Cars.Managers.Interfaces;
-using Cars.Models.Dto;
-using Cars.Models.Enums;
-using Cars.Models.View;
-using Cars.Services.Interfaces;
+﻿using Core.Dto;
+using Core.Enums;
+using Core.View;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Services.Interfaces;
+using Services.Managers.Interfaces;
 
 namespace Cars.Controllers;
 

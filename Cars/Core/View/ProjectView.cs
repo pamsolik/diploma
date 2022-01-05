@@ -1,0 +1,23 @@
+﻿using Core.DataModels;
+using Core.Enums;
+
+namespace Core.View;
+
+public class ProjectView
+{
+    public int Id { get; set; }
+
+    public string Description { get; set; }
+
+    public int ApplicationId { get; set; }
+
+    public string Title { get; set; }
+
+    public string Url { get; set; }
+
+    public Technology Technology { get; set; }
+
+    public int? CodeQualityAssessmentId { get; set; }
+
+    public virtual CodeQualityAssessment CodeQualityAssessment { get; set; }
+}

@@ -1,4 +1,4 @@
-﻿@using Cars.Models.DataModels
+﻿@using Core.DataModels 
 @inject SignInManager<ApplicationUser> _signInManager
 @{
     var hasExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).Any();

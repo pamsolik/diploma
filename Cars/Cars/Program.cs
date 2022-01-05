@@ -1,20 +1,13 @@
-using System;
-using System.IO;
-using Cars.Data;
-using Cars.Models.DataModels;
 using Cars.Services.Extensions;
-using Cars.Services.Other;
+using Core.DataModels;
+using Infrastructure;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Services.Extensions;
+using Services.Other;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -42,14 +35,10 @@ builder.Services.AddRequiredServices(builder.Configuration);
 
 builder.Services.AddRazorPages();
 
-// In production, the Angular files will be served from this directory
-builder.Services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
-
 builder.Services
     .AddControllersWithViews()
     .AddNewtonsoftJson(x =>
     {
-        //x.SerializerSettings.Converters.Add(new StringEnumConverter());
         x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     })
     .AddControllersAsServices();
@@ -83,11 +72,10 @@ app.ConfigureCustomExceptionMiddleware();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-if (!app.Environment.IsDevelopment()) app.UseSpaStaticFiles();
 
 app.UseRouting();
 
-//app.UseIdentityServer();
+app.UseIdentityServer();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
@@ -105,12 +93,15 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = new PathString("/Resources")
 });
 
-app.UseSpa(spa =>
-{
-    spa.Options.SourcePath = "ClientApp";
-    spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
-    if (app.Environment.IsDevelopment())
-        spa.UseAngularCliServer("start --disableHostCheck true");
-});
+// app.UseSpa(spa =>
+// {
+//     spa.Options.SourcePath = Path.Join(app.Environment.ContentRootPath, "ClientApp");
+//     spa.Options.StartupTimeout = TimeSpan.FromSeconds(120);
+//     if (app.Environment.IsDevelopment())
+//         spa.UseAngularCliServer("start --disableHostCheck true");
+//     // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+// });
+
+app.MapFallbackToFile("index.html"); 
 
 app.Run();

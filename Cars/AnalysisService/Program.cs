@@ -1,12 +1,13 @@
-using Cars.Data;
-using Cars.Managers.Implementations;
-using Cars.Managers.Interfaces;
-using Cars.Models.DataModels;
-using Cars.Services.Extensions;
+using Core.DataModels ;
 using Cars.Services.Implementations;
-using Cars.Services.Interfaces;
+using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Services.Extensions;
+using Services.Implementations;
+using Services.Interfaces;
+using Services.Managers.Implementations;
+using Services.Managers.Interfaces;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>

@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@angular-slider/ngx-slider": "^2.0.3",
-    "@angular/language-service": "^12.2.5",
-    "rxjs": "^7.4.0",
-    "webpack-dev-server": "^3.11.3"
-  }
-}

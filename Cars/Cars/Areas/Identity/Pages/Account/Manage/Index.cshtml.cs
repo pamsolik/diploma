@@ -1,18 +1,13 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Threading.Tasks;
-using Cars.Managers.Interfaces;
-using Cars.Models.DataModels;
-using Cars.Services.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using Core.DataModels ;
 using Duende.IdentityServer.Extensions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using static Cars.Services.Other.FileService;
-using static Cars.Models.Enums.ImgPath;
+using Services.Interfaces;
+using Services.Managers.Interfaces;
+using static Services.Other.FileService;
+using static Core.Enums.ImgPath;
 
 namespace Cars.Areas.Identity.Pages.Account.Manage;
 

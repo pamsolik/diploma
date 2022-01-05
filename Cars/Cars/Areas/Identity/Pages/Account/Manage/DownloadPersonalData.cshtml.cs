@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Cars.Managers.Interfaces;
-using Cars.Models.DataModels;
+using Services.Managers.Interfaces;
+using Core.DataModels ;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
