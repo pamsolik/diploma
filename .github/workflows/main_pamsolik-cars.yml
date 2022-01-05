@@ -17,6 +17,7 @@ jobs:
               working-directory: ./Cars
     steps:
       - uses: actions/checkout@v2
+      
       - name: Remove artifacts
         uses: c-hive/gha-remove-artifacts@v1.2.0
         with:
@@ -28,6 +29,7 @@ jobs:
            skip-tags: false
           # Keep the specified number of artifacts even if they are older than the age.
            skip-recent: 1
+           
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
