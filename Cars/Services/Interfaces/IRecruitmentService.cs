@@ -7,7 +7,7 @@ namespace Services.Interfaces;
 
 public interface IRecruitmentService
 {
-    Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId);
+    Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string? recruiterId);
     Task<int> EditRecruitment(EditRecruitmentDto editRecruitmentDto);
 
     Task<bool> CloseRecruitment(CloseRecruitmentDto closeRecruitmentDto);
@@ -19,9 +19,9 @@ public interface IRecruitmentService
     Task<RecruitmentDetailsView> GetRecruitmentDetails(int recruitmentId);
 
     PaginatedList<RecruitmentView> GetRecruitmentsFiltered(RecruitmentFilterDto filter,
-        RecruitmentMode recruitmentMode, string userId = "");
+        RecruitmentMode recruitmentMode, string? userId = "");
 
-    Task<RecruitmentApplication> AddApplication(AddApplicationDto addApplicationDto, string applicantId);
+    Task<RecruitmentApplication> AddApplication(AddApplicationDto addApplicationDto, string? applicantId);
 
     Task<List<ApplicationView>> GetApplications(int recruitmentId);
 }

@@ -5,9 +5,9 @@ namespace Cars.Areas.Identity.Pages.Account.Manage;
 
 public class ShowRecoveryCodesModel : PageModel
 {
-    [TempData] public string[] RecoveryCodes { get; set; }
+    [TempData] public string[] RecoveryCodes { get; set; } = Array.Empty<string>();
 
-    [TempData] public string StatusMessage { get; set; }
+    [TempData] public string StatusMessage { get; set; } = string.Empty;
 
     public IActionResult OnGet()
     {

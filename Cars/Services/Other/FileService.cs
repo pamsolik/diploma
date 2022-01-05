@@ -42,7 +42,7 @@ public static class FileService
         dirInfo.Delete(true);
     }
 
-    public static string MoveAndGetUrl(string file, string id, string path, string filename)
+    public static string? MoveAndGetUrl(string? file, string id, string path, string filename)
     {
         var basePath = Directory.GetCurrentDirectory();
         var ext = Path.GetExtension(file);

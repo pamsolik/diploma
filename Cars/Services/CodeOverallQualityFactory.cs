@@ -5,7 +5,7 @@ namespace Services;
 
 public static class CodeOverallQualityFactory
 {
-    public static CodeOverallQuality GetCodeOverallQuality(List<Project> projects,
+    public static CodeOverallQuality? GetCodeOverallQuality(List<Project> projects,
         IDateTimeProvider dateTimeProvider)
     {
         switch (projects.Count)

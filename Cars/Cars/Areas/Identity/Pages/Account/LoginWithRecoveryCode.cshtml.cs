@@ -20,11 +20,11 @@ public class LoginWithRecoveryCodeModel : PageModel
         _logger = logger;
     }
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
-    public string ReturnUrl { get; set; }
+    private string? ReturnUrl { get; set; } = string.Empty;
 
-    public async Task<IActionResult> OnGetAsync(string returnUrl = null)
+    public async Task<IActionResult> OnGetAsync(string? returnUrl = null)
     {
         // Ensure the user has gone through the username & password screen first
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -36,7 +36,7 @@ public class LoginWithRecoveryCodeModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         if (!ModelState.IsValid) return Page();
 
@@ -71,6 +71,6 @@ public class LoginWithRecoveryCodeModel : PageModel
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Kod odzyskiwania")]
-        public string RecoveryCode { get; set; }
+        public string RecoveryCode { get; set; } = string.Empty;
     }
 }

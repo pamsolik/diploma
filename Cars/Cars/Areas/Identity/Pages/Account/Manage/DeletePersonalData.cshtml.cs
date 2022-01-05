@@ -22,7 +22,7 @@ public class DeletePersonalDataModel : PageModel
         _logger = logger;
     }
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
     public bool RequirePassword { get; set; }
 
@@ -65,6 +65,6 @@ public class DeletePersonalDataModel : PageModel
         [Required]
         [Display(Name = "Hasło")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }

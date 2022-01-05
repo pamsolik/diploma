@@ -29,7 +29,7 @@ public class RecruitmentService : IRecruitmentService
         _recruitmentManager = recruitmentManager;
     }
 
-    public async Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string recruiterId)
+    public async Task<int> AddRecruitment(AddRecruitmentDto addRecruitmentDto, string? recruiterId)
     {
         addRecruitmentDto.Validate();
         var existingCity = await _recruitmentManager.FindOrCreateCity(addRecruitmentDto.City);
@@ -86,7 +86,7 @@ public class RecruitmentService : IRecruitmentService
     }
 
     public PaginatedList<RecruitmentView>
-        GetRecruitmentsFiltered(RecruitmentFilterDto filter, RecruitmentMode recruitmentMode, string userId = "")
+        GetRecruitmentsFiltered(RecruitmentFilterDto filter, RecruitmentMode recruitmentMode, string? userId = "")
     {
         var recruitments = _recruitmentManager.GetRecruitments(recruitmentMode, userId);
 
@@ -99,7 +99,7 @@ public class RecruitmentService : IRecruitmentService
     }
 
     public async Task<RecruitmentApplication> AddApplication(AddApplicationDto addApplicationDto,
-        string applicantId)
+        string? applicantId)
     {
         addApplicationDto.Validate();
 
@@ -144,7 +144,7 @@ public class RecruitmentService : IRecruitmentService
         recruitment.TeamSize = editRecruitmentDto.TeamSize;
     }
 
-    private string MoveRecruitmentAndGetUrl(AddRecruitmentDto addRecruitmentDto, EntityEntry<Recruitment> res)
+    private string? MoveRecruitmentAndGetUrl(AddRecruitmentDto addRecruitmentDto, EntityEntry<Recruitment> res)
     {
         if (string.IsNullOrEmpty(addRecruitmentDto.ImgUrl)) return ImgPath.PlaceHolder;
 

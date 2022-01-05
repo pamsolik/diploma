@@ -33,7 +33,7 @@ public class RecruitmentDetailsView
 
     public City City { get; set; }
 
-    public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
+    public string? ImgUrl { get; set; } = ImgPath.PlaceHolder;
 
     public string ClauseRequired { get; set; }
 

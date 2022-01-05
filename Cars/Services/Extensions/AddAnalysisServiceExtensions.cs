@@ -1,5 +1,4 @@
-﻿using Cars.Services.Extensions;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Implementations;
 

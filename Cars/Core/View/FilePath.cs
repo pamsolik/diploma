@@ -2,10 +2,10 @@
 
 public class FilePath
 {
-    public FilePath(string dbPath)
+    public FilePath(string? dbPath)
     {
         DbPath = dbPath;
     }
 
-    public string DbPath { get; set; }
+    public string? DbPath { get; set; }
 }

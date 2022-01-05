@@ -13,5 +13,5 @@ public interface IAnalysisManager
     public List<Project> GetAllProjects(RecruitmentApplication notExamined);
 
     public Task<RecruitmentApplication> SaveCodeOverallQuality(RecruitmentApplication notExamined,
-        CodeOverallQuality ass);
+        CodeOverallQuality? ass);
 }

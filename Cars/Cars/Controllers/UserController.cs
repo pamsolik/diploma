@@ -2,7 +2,6 @@
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RestSharp.Extensions;
 using Services.Managers.Interfaces;
 
 namespace Cars.Controllers;
@@ -23,7 +22,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetClientRoles()
     {
         var uId = _appUserManager.GetUserId(User);
-        if (!uId.HasValue()) return Ok(new List<string>());
+        if (uId is null) return Ok(new List<string>());
         var res = await _appUserManager.GetUserRoles(uId);
         return Ok(res);
     }

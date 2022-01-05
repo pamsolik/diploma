@@ -19,13 +19,13 @@ public class LoginWith2FaModel : PageModel
         _logger = logger;
     }
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
     public bool RememberMe { get; set; }
 
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 
-    public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null)
+    public async Task<IActionResult> OnGetAsync(bool rememberMe, string? returnUrl = null)
     {
         // Ensure the user has gone through the username & password screen first
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -40,7 +40,7 @@ public class LoginWith2FaModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync(bool rememberMe, string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(bool rememberMe, string? returnUrl = null)
     {
         if (!ModelState.IsValid) return Page();
 
@@ -80,7 +80,7 @@ public class LoginWith2FaModel : PageModel
         [StringLength(7, ErrorMessage = "{0} musi składać się z od {2} do {1} znaków.", MinimumLength = 6)]
         [DataType(DataType.Text)]
         [Display(Name = "Kod uwierzytelniający")]
-        public string TwoFactorCode { get; set; }
+        public string TwoFactorCode { get; set; } = string.Empty;
 
         [Display(Name = "Zapamiętaj to urządzenie")]
         public bool RememberMachine { get; set; }

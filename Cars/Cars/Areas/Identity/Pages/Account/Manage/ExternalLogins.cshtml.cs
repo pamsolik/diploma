@@ -19,13 +19,13 @@ public class ExternalLoginsModel : PageModel
         _signInManager = signInManager;
     }
 
-    public IList<UserLoginInfo> CurrentLogins { get; set; }
+    public IList<UserLoginInfo> CurrentLogins { get; set; } = new List<UserLoginInfo>();
 
-    public IList<AuthenticationScheme> OtherLogins { get; set; }
+    public IList<AuthenticationScheme> OtherLogins { get; set; } = new List<AuthenticationScheme>();
 
     public bool ShowRemoveButton { get; set; }
 
-    [TempData] public string StatusMessage { get; set; }
+    [TempData] public string StatusMessage { get; set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync()
     {

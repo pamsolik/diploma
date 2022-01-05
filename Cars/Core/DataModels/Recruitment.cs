@@ -9,7 +9,7 @@ public class Recruitment
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
-    public string RecruiterId { get; set; }
+    public string? RecruiterId { get; set; }
 
     [ForeignKey("RecruiterId")] public virtual ApplicationUser Recruiter { get; set; }
 
@@ -47,7 +47,7 @@ public class Recruitment
 
     [ForeignKey("CityId")] public virtual City City { get; set; }
 
-    public string ImgUrl { get; set; } = ImgPath.PlaceHolder;
+    public string? ImgUrl { get; set; } = ImgPath.PlaceHolder;
 
     public virtual ICollection<RecruitmentApplication> Applications { get; set; }
 

@@ -8,10 +8,10 @@ namespace Services.Implementations;
 public class CronJobService : IHostedService, IDisposable
 {
     private readonly CronExpression _expression;
-    private readonly TimeZoneInfo _timeZoneInfo;
-    private Timer _timer;
+    private readonly TimeZoneInfo? _timeZoneInfo;
+    private Timer? _timer;
 
-    protected CronJobService(string cronExpression, TimeZoneInfo timeZoneInfo)
+    protected CronJobService(string cronExpression, TimeZoneInfo? timeZoneInfo)
     {
         _expression = CronExpression.Parse(cronExpression);
         _timeZoneInfo = timeZoneInfo;
@@ -52,9 +52,9 @@ public class CronJobService : IHostedService, IDisposable
 
     private ElapsedEventHandler timerOnElapsed(CancellationToken cancellationToken)
     {
-        async void TimerOnElapsed(object sender, ElapsedEventArgs args)
+        async void TimerOnElapsed(object? sender, ElapsedEventArgs args)
         {
-            _timer.Dispose(); // reset and dispose timer
+            _timer?.Dispose(); // reset and dispose timer
             _timer = null;
 
             if (!cancellationToken.IsCancellationRequested) await DoWork(cancellationToken);

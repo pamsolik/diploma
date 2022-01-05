@@ -20,7 +20,7 @@ public class AppUserManager : IAppUserManager
         _userManager = userManager;
     }
 
-    public async Task<ApplicationUser> SetProfilePictureAsync(string userId, string profilePicture)
+    public async Task<ApplicationUser> SetProfilePictureAsync(string userId, string? profilePicture)
     {
         var user = _context.Users.FirstOrDefault(u => u.Id == userId);
 
@@ -33,7 +33,7 @@ public class AppUserManager : IAppUserManager
         return res.Entity;
     }
 
-    public async Task<List<string>> GetUserRoles(string userId)
+    public async Task<List<string>> GetUserRoles(string? userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user is null) throw new KeyNotFoundException($"User {userId} not found");
@@ -48,7 +48,7 @@ public class AppUserManager : IAppUserManager
         return roles;
     }
 
-    public string GetUserId(ClaimsPrincipal user)
+    public string? GetUserId(ClaimsPrincipal user)
     {
         return _userManager.GetUserId(user);
     }
@@ -58,7 +58,7 @@ public class AppUserManager : IAppUserManager
         return user.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 
-    public async Task<ApplicationUser> FindUser(string userId)
+    public async Task<ApplicationUser> FindUser(string? userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user is null) throw new AppBaseException(HttpStatusCode.NotFound, $"User {userId} not found");

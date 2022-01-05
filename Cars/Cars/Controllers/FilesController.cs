@@ -23,7 +23,7 @@ public class FilesController : ControllerBase
     //Limit: 25mb
     [HttpPost]
     [RequestSizeLimit(26214400L)]
-    public async Task<IActionResult> Upload()
+    public async Task<IActionResult?> Upload()
     {
         try
         {
@@ -42,7 +42,7 @@ public class FilesController : ControllerBase
         }
     }
 
-    private bool ValidateFile(IFormFile file, out IActionResult badRequest)
+    private bool ValidateFile(IFormFile file, out IActionResult? badRequest)
     {
         var name = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
 

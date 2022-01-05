@@ -8,7 +8,7 @@ namespace Services.Other;
 
 public static class FilterUtilities
 {
-    public static Expression<Func<City, bool>> CompareCities(CityDto city)
+    public static Expression<Func<City, bool>> CompareCities(CityDto? city)
     {
         return c => c.Name == city.Name;
     }

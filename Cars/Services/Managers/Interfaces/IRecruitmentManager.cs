@@ -7,7 +7,7 @@ namespace Services.Managers.Interfaces;
 
 public interface IRecruitmentManager
 {
-    public Task<City> FindOrCreateCity(CityDto city);
+    public Task<City> FindOrCreateCity(CityDto? city);
 
     public Task<EntityEntry<Recruitment>> UpdateRecruitment(Recruitment recruitment);
     public Task<EntityEntry<Recruitment>> SaveRecruitment(Recruitment recruitment);
@@ -23,11 +23,11 @@ public interface IRecruitmentManager
 
     public Task<List<RecruitmentApplication>> GetRecruitmentApplications(int recruitmentId);
 
-    public IQueryable<Recruitment> GetRecruitments(RecruitmentMode recruitmentMode, string userId = "");
+    public IQueryable<Recruitment> GetRecruitments(RecruitmentMode recruitmentMode, string? userId = "");
 
     public Task<EntityEntry<RecruitmentApplication>> CopyAndSaveApplicationFiles(
         AddApplicationDto applicationDto,
         EntityEntry<RecruitmentApplication> res);
 
-    public string MoveApplicationFileAndGetUrl(string parameter, int id, string subfolder);
+    public string? MoveApplicationFileAndGetUrl(string? parameter, int id, string subfolder);
 }

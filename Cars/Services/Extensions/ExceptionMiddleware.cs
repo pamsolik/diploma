@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Cars.Models.Exceptions;
 using Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 

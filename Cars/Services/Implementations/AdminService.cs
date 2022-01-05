@@ -29,7 +29,7 @@ public class AdminService : IAdminService
         return paginated;
     }
 
-    public async Task<bool> AddRoleToUser(string userId, string roleName)
+    public async Task<bool> AddRoleToUser(string? userId, string roleName)
     {
         _appUserManager.CheckIfRoleExists(roleName);
         var user = await _appUserManager.FindUser(userId);
@@ -37,7 +37,7 @@ public class AdminService : IAdminService
         return res.Succeeded;
     }
 
-    public async Task<bool> DeleteRoleFromUser(string userId, string roleName)
+    public async Task<bool> DeleteRoleFromUser(string? userId, string roleName)
     {
         _appUserManager.CheckIfRoleExists(roleName);
         var user = await _appUserManager.FindUser(userId);

@@ -36,7 +36,7 @@ public class SonarQubeRequestHandler
 
     private string CreateProjectUriBase => $"{BasePath}/api/projects/create";
 
-    private T GetResponse<T>(string url, Method method = Method.GET)
+    private T? GetResponse<T>(string url, Method method = Method.GET)
     {
         try
         {
@@ -55,22 +55,22 @@ public class SonarQubeRequestHandler
         }
     }
 
-    public Projects GetExistingProjects()
+    public Projects? GetExistingProjects()
     {
         return GetResponse<Projects>(GetProjectsUri());
     }
 
-    public CodeAnalysis GetCodeAnalysis(string projectKey)
+    public CodeAnalysis? GetCodeAnalysis(string projectKey)
     {
         return GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
     }
 
-    public string DeleteProject(string projectKey)
+    public string? DeleteProject(string projectKey)
     {
         return GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST);
     }
 
-    public object CreateProject(string projectKey)
+    public ProjectCreate? CreateProject(string projectKey)
     {
         return GetResponse<ProjectCreate>(
             GetCreateProjectUri(projectKey), Method.POST);

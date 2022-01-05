@@ -32,15 +32,15 @@ public class IndexModel : PageModel
         _appUserManager = appUserManager;
     }
 
-    [Display(Name = "Nazwa użytkownika")] public string Username { get; set; }
+    [Display(Name = "Nazwa użytkownika")] public string Username { get; set; } = string.Empty;
 
-    [TempData] public string StatusMessage { get; set; }
+    [TempData] public string StatusMessage { get; set; } = string.Empty;
 
-    public string Filename { get; set; }
+    public string? Filename { get; set; }
 
 
-    public string ProfileUrl { get; set; }
-    [BindProperty] public InputModel Input { get; set; }
+    public string ProfileUrl { get; set; } = string.Empty;
+    [BindProperty] public InputModel Input { get; set; } = new();
 
     [BindProperty] public IFormFile? Upload { get; set; }
 
@@ -139,12 +139,12 @@ public class IndexModel : PageModel
         if (Input.City != user.City) user.City = Input.City;
     }
 
-    private string CopyAndSaveProfilePicture(string imgUrl, string userId)
+    private string? CopyAndSaveProfilePicture(string? imgUrl, string userId)
     {
         return imgUrl == BaseProfilePic ? BaseProfilePic : MovePictureAndGetUrl(imgUrl, userId);
     }
 
-    private string MovePictureAndGetUrl(string imgUrl, string userId)
+    private string? MovePictureAndGetUrl(string? imgUrl, string userId)
     {
         if (imgUrl.IsNullOrEmpty()) return BaseProfilePic;
 
@@ -164,29 +164,29 @@ public class IndexModel : PageModel
     {
         [Phone]
         [Display(Name = "Numer telefonu")]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = string.Empty;
 
-        [Display(Name = "Imię")] public string Name { get; set; }
+        [Display(Name = "Imię")] public string? Name { get; set; }
 
-        [Display(Name = "Nazwisko")] public string Surname { get; set; }
+        [Display(Name = "Nazwisko")] public string? Surname { get; set; }
 
-        [Display(Name = "Opis")] public string Description { get; set; }
+        [Display(Name = "Opis")] public string? Description { get; set; }
 
-        [Display(Name = "Nazwisko")] public string ProfilePicture { get; set; }
+        [Display(Name = "Nazwisko")] public string? ProfilePicture { get; set; }
 
 
-        [Display(Name = "Lokalizacja")] public City City { get; set; }
+        [Display(Name = "Lokalizacja")] public City? City { get; set; }
 
         [Display(Name = "Link do profilu GitHub")]
-        public string Github { get; set; }
+        public string? Github { get; set; }
 
         [Display(Name = "Link do profilu LinkedIn")]
-        public string LinkedIn { get; set; }
+        public string? LinkedIn { get; set; }
 
         //TODO: add Skills/Education/Experience module
-        public ICollection<Skill> Skills { get; set; }
+        public ICollection<Skill>? Skills { get; set; }
 
-        public ICollection<Education> Education { get; set; }
-        public ICollection<Experience> Experience { get; set; }
+        public ICollection<Education>? Education { get; set; }
+        public ICollection<Experience>? Experience { get; set; }
     }
 }

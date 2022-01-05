@@ -30,22 +30,23 @@ public class ExternalLoginModel : PageModel
         _userManager = userManager;
         _logger = logger;
         _emailSender = emailSender;
+        Input = new InputModel();
     }
 
     [BindProperty] public InputModel Input { get; set; }
 
-    public string ProviderDisplayName { get; set; }
+    public string? ProviderDisplayName { get; set; }
 
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 
-    [TempData] public string ErrorMessage { get; set; }
+    [TempData] public string? ErrorMessage { get; set; }
 
     public IActionResult OnGetAsync()
     {
         return RedirectToPage("./Login");
     }
 
-    public IActionResult OnPost(string provider, string returnUrl = null)
+    public IActionResult OnPost(string provider, string? returnUrl = null)
     {
         // Request a redirect to the external login provider.
         var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl });
@@ -53,7 +54,7 @@ public class ExternalLoginModel : PageModel
         return new ChallengeResult(provider, properties);
     }
 
-    public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+    public async Task<IActionResult> OnGetCallbackAsync(string? returnUrl = null, string? remoteError = null)
     {
         returnUrl ??= Url.Content("~/");
         if (remoteError != null)
@@ -93,7 +94,7 @@ public class ExternalLoginModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostConfirmationAsync(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
         // Get the information about the user from the external login provider
@@ -106,7 +107,7 @@ public class ExternalLoginModel : PageModel
 
         if (ModelState.IsValid)
         {
-            var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+            var user = new ApplicationUser { UserName = Input?.Email, Email = Input?.Email };
 
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)
@@ -125,12 +126,13 @@ public class ExternalLoginModel : PageModel
                         new { area = "Identity", userId, code },
                         Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Potwierdź swój email",
-                        $"Potwierdź swój email <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
+                    if (callbackUrl != null)
+                        await _emailSender.SendEmailAsync(Input?.Email, "Potwierdź swój email",
+                            $"Potwierdź swój email <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
 
                     // If account confirmation is required, we need to show the link if we don't have a real email sender
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                        return RedirectToPage("./RegisterConfirmation", new { Input.Email });
+                        return RedirectToPage("./RegisterConfirmation", new { Input?.Email });
 
                     await _signInManager.SignInAsync(user, false, info.LoginProvider);
 
@@ -148,6 +150,6 @@ public class ExternalLoginModel : PageModel
 
     public class InputModel
     {
-        [Required] [EmailAddress] public string Email { get; set; }
+        [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
     }
 }

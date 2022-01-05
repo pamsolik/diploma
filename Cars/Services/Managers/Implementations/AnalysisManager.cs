@@ -41,7 +41,7 @@ public class AnalysisManager : IAnalysisManager
     }
 
     public async Task<RecruitmentApplication> SaveCodeOverallQuality(RecruitmentApplication application,
-        CodeOverallQuality ass)
+        CodeOverallQuality? ass)
     {
         application.CodeOverallQuality = ass;
         await _context.SaveChangesAsync();

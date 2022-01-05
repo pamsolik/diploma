@@ -18,9 +18,9 @@ public class ConfirmEmailModel : PageModel
         _userManager = userManager;
     }
 
-    [TempData] public string StatusMessage { get; set; }
+    [TempData] private string StatusMessage { get; set; } = string.Empty;
 
-    public async Task<IActionResult> OnGetAsync(string userId, string code)
+    public async Task<IActionResult> OnGetAsync(string? userId, string? code)
     {
         if (userId == null || code == null) return RedirectToPage("/Index");
 

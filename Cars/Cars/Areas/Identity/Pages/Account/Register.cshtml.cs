@@ -33,39 +33,39 @@ public class RegisterModel : PageModel
         _emailSender = emailSender;
     }
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 
-    public IList<AuthenticationScheme> ExternalLogins { get; set; }
+    public IList<AuthenticationScheme> ExternalLogins { get; set; } = new List<AuthenticationScheme>();
 
-    public async Task OnGetAsync(string returnUrl = null)
+    public async Task OnGetAsync(string? returnUrl = null)
     {
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
 
-    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         if (!ModelState.IsValid) return Page();
         var user = new ApplicationUser
         {
-            UserName = Input.Email,
-            Email = Input.Email,
-            Name = Input.Name,
-            Surname = Input.Surname,
+            UserName = Input?.Email,
+            Email = Input?.Email,
+            Name = Input?.Name,
+            Surname = Input?.Surname,
             ProfilePicture = ImgPath.BaseProfilePic
         };
 
-        var result = await _userManager.CreateAsync(user, Input.Password);
+        var result = await _userManager.CreateAsync(user, Input?.Password);
 
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(user, "User");
 
-            if (Input.IsRecruiter)
+            if (Input is not null && Input.IsRecruiter)
                 await _userManager.AddToRoleAsync(user, "Recruiter");
 
             _logger.LogInformation("User created a new account with password");
@@ -78,11 +78,12 @@ public class RegisterModel : PageModel
                 new { area = "Identity", userId = user.Id, code, returnUrl },
                 Request.Scheme);
 
-            await _emailSender.SendEmailAsync(Input.Email, "Potwierdź swój email",
-                $"Potwierdź swoje konto <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
+            if (callbackUrl != null)
+                await _emailSender.SendEmailAsync(Input?.Email, "Potwierdź swój email",
+                    $"Potwierdź swoje konto <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
 
             if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
+                return RedirectToPage("RegisterConfirmation", new { email = Input?.Email, returnUrl });
 
             await _signInManager.SignInAsync(user, false);
             return LocalRedirect(returnUrl);
@@ -99,26 +100,26 @@ public class RegisterModel : PageModel
         [Required]
         [EmailAddress]
         [Display(Name = "E-mail")]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [StringLength(200, ErrorMessage = "Imię nie może być dłuższe niż 200 znaków.")]
         [Display(Name = "Imię")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [StringLength(200, ErrorMessage = "Nazwisko nie może być dłuższe niż 200 znaków.")]
         [Display(Name = "Nazwisko")]
-        public string Surname { get; set; }
+        public string Surname { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} musi składać się z od {2} do {1} znaków.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Hasło")]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]
         [Display(Name = "Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "Hasła nie są identyczne.")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = string.Empty;
 
         [Display(Name = "Jestem rekruterem")] public bool IsRecruiter { get; set; }
     }

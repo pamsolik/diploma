@@ -3,7 +3,6 @@ using Core.Enums;
 using Core.SonarQubeDataModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SendGrid.Helpers.Errors.Model;
 using Services.Interfaces;
 using Services.Managers.Interfaces;
 using Services.Other;
@@ -61,12 +60,9 @@ public class AnalysisHostedService : CronJobService
         return t;
     }
 
-    private IAnalysisManager GetAnalysisManager(IServiceScope scope)
+    private static IAnalysisManager GetAnalysisManager(IServiceScope scope)
     {
-        var manager = scope.ServiceProvider.GetRequiredService<IAnalysisManager>();
-        if (manager != null) return manager;
-        _logger.LogWarning("No AnalysisManager found");
-        throw new ServiceNotAvailableException("No AnalysisManager found");
+        return scope.ServiceProvider.GetRequiredService<IAnalysisManager>();
     }
 
     private async Task PerformFullAnalysis()
@@ -82,7 +78,6 @@ public class AnalysisHostedService : CronJobService
         }
 
         var projects = _sonarQubeRequestHandler.GetExistingProjects();
-
         if (projects is not null)
             foreach (var application in notExamined)
             {
@@ -96,8 +91,6 @@ public class AnalysisHostedService : CronJobService
                 if (!projectsToExamine.Any())
                     await CalculateAndSaveCodeOverallQuality(manager, application);
             }
-        else
-            _logger.LogWarning("Cannot reach SonarQube on {BasePath}", _sonarQubeRequestHandler.BasePath);
     }
 
     private async Task CalculateAndSaveCodeOverallQuality(IAnalysisManager manager,

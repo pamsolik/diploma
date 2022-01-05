@@ -16,13 +16,13 @@ public class RegisterConfirmationModel : PageModel
         _userManager = userManager;
     }
 
-    private string Email { get; set; }
+    private string? Email { get; set; }
 
     public bool DisplayConfirmAccountLink { get; set; }
 
-    public string EmailConfirmationUrl { get; set; }
+    public string EmailConfirmationUrl { get; set; } = string.Empty;
 
-    public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
+    public async Task<IActionResult> OnGetAsync(string? email, string? returnUrl = null)
     {
         if (email == null) return RedirectToPage("/Index");
 

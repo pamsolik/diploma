@@ -19,9 +19,9 @@ public class SetPasswordModel : PageModel
         _signInManager = signInManager;
     }
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
-    [TempData] public string StatusMessage { get; set; }
+    [TempData] public string StatusMessage { get; set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync()
     {
@@ -62,11 +62,11 @@ public class SetPasswordModel : PageModel
         [StringLength(100, ErrorMessage = "{0} musi składać się z od {2} do {1} znaków.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nowe hasło")]
-        public string NewPassword { get; set; }
+        public string NewPassword { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]
         [Display(Name = "Potwierdź nowe hasło")]
         [Compare("NewPassword", ErrorMessage = "Hasła nie są takie same.")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

@@ -11,20 +11,20 @@ public class RecruitmentApplication
 
     [Required] public int RecruitmentId { get; set; }
 
-    [ForeignKey("RecruitmentId")] public virtual Recruitment Recruitment { get; set; }
+    [ForeignKey("RecruitmentId")] public virtual Recruitment? Recruitment { get; set; }
 
-    [Required] public string ApplicantId { get; set; }
+    [Required] public string? ApplicantId { get; set; }
 
-    [ForeignKey("ApplicantId")] public virtual ApplicationUser Applicant { get; set; }
+    [ForeignKey("ApplicantId")] public virtual ApplicationUser? Applicant { get; set; }
 
     [StringLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
-    public string CvFile { get; set; }
+    public string? CvFile { get; set; }
 
-    public string ClFile { get; set; }
+    public string? ClFile { get; set; }
 
-    public virtual ICollection<Project> Projects { get; set; }
+    public virtual ICollection<Project>? Projects { get; set; }
 
     [Required]
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -37,7 +37,7 @@ public class RecruitmentApplication
     //null if not calculated yet
     public int? CodeOverallQualityId { get; set; }
 
-    [ForeignKey("CodeOverallQualityId")] public virtual CodeOverallQuality CodeOverallQuality { get; set; }
+    [ForeignKey("CodeOverallQualityId")] public virtual CodeOverallQuality? CodeOverallQuality { get; set; }
 
     public bool Selected { get; set; } = false;
 }

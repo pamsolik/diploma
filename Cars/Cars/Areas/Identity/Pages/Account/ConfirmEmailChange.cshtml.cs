@@ -21,9 +21,9 @@ public class ConfirmEmailChangeModel : PageModel
         _signInManager = signInManager;
     }
 
-    [TempData] public string StatusMessage { get; set; }
+    [TempData] public string StatusMessage { get; set; } = string.Empty;
 
-    public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
+    public async Task<IActionResult> OnGetAsync(string? userId, string? email, string? code)
     {
         if (userId == null || email == null || code == null) return RedirectToPage("/Index");
 

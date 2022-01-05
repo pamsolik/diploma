@@ -7,7 +7,7 @@ public class EditRecruitmentDto
 {
     public int Id { get; set; }
 
-    [Required] public string RecruiterId { get; set; }
+    [Required] public string? RecruiterId { get; set; }
 
     [Required]
     [StringLength(200, ErrorMessage = "Title cannot be longer than 200 characters.")]
@@ -35,9 +35,9 @@ public class EditRecruitmentDto
     [StringLength(200, ErrorMessage = "Field cannot be longer than 200 characters.")]
     public string Field { get; set; }
 
-    [Required] public CityDto City { get; set; }
+    [Required] public CityDto? City { get; set; }
 
-    [Required] public string ImgUrl { get; set; }
+    [Required] public string? ImgUrl { get; set; }
 
     [Required]
     [StringLength(1000, ErrorMessage = "ClauseRequired cannot be longer than 1000 characters.")]

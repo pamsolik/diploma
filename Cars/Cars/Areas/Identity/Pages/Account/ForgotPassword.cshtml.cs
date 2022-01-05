@@ -23,7 +23,7 @@ public class ForgotPasswordModel : PageModel
         _emailSender = emailSender;
     }
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
     public async Task<IActionResult> OnPostAsync()
     {
@@ -43,16 +43,17 @@ public class ForgotPasswordModel : PageModel
             new { area = "Identity", code },
             Request.Scheme);
 
-        await _emailSender.SendEmailAsync(
-            Input.Email,
-            "Zresetuj hasło",
-            $"Zresetuj hasło <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
+        if (callbackUrl != null)
+            await _emailSender.SendEmailAsync(
+                Input.Email,
+                "Zresetuj hasło",
+                $"Zresetuj hasło <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
 
         return RedirectToPage("./ForgotPasswordConfirmation");
     }
 
     public class InputModel
     {
-        [Required] [EmailAddress] public string Email { get; set; }
+        [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
     }
 }

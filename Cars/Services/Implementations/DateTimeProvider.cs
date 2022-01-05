@@ -1,6 +1,6 @@
 ﻿using Services.Interfaces;
 
-namespace Cars.Services.Implementations;
+namespace Services.Implementations;
 
 public class DateTimeProvider : IDateTimeProvider
 

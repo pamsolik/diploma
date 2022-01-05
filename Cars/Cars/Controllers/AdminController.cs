@@ -72,7 +72,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("roles/{userId}")]
-    public async Task<IActionResult> GetClientRoles(string userId)
+    public async Task<IActionResult> GetClientRoles(string? userId)
     {
         var uId = await _userManager.FindByIdAsync(userId);
         if (uId is null) return NotFound($"User with ID {userId} not found.");
@@ -80,7 +80,7 @@ public class AdminController : ControllerBase
         return Ok(res);
     }
 
-    private void UserCannotEditHisRolesCheck(string userId)
+    private void UserCannotEditHisRolesCheck(string? userId)
     {
         if (_appUserManager.GetUserId(User) == userId)
             throw new AppBaseException(HttpStatusCode.Forbidden, "User cannot edit his own roles.");

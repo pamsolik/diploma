@@ -10,7 +10,7 @@ public class City
 
     [Required]
     [StringLength(1000, ErrorMessage = "City Name cannot be longer than 1000 characters.")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [Required] public double Latitude { get; set; }
 

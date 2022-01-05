@@ -23,15 +23,15 @@ public class EmailModel : PageModel
         _emailSender = emailSender;
     }
 
-    public string Username { get; set; }
+    public string Username { get; set; } = string.Empty;
 
-    [Display(Name = "E-mail")] public string Email { get; set; }
+    [Display(Name = "E-mail")] public string Email { get; set; } = string.Empty;
 
     public bool IsEmailConfirmed { get; set; }
 
-    [TempData] public string StatusMessage { get; set; }
+    [TempData] public string StatusMessage { get; set; } = string.Empty;
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
     private async Task LoadAsync(ApplicationUser user)
     {
@@ -86,10 +86,11 @@ public class EmailModel : PageModel
                 null,
                 new { userId, email = Input.NewEmail, code },
                 Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                Input.NewEmail,
-                "Potwierdź swój e-mail",
-                $"Potwierdź swój e-mail <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
+            if (callbackUrl != null)
+                await _emailSender.SendEmailAsync(
+                    Input.NewEmail,
+                    "Potwierdź swój e-mail",
+                    $"Potwierdź swój e-mail <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
 
             StatusMessage = "Wysłano link potwierdzający zmianę e-maila. Proszę sprawdzić e-mail.";
             return RedirectToPage();
@@ -119,10 +120,11 @@ public class EmailModel : PageModel
             null,
             new { area = "Identity", userId, code },
             Request.Scheme);
-        await _emailSender.SendEmailAsync(
-            email,
-            "Potwierdź swój email",
-            $"Potwierdź swój e-mail <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
+        if (callbackUrl != null)
+            await _emailSender.SendEmailAsync(
+                email,
+                "Potwierdź swój email",
+                $"Potwierdź swój e-mail <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>klikając tutaj</a>.");
 
         StatusMessage = "E-mail weryfikacyjny został wysłany. Proszę sprawdzić e-mail.";
         return RedirectToPage();
@@ -133,6 +135,6 @@ public class EmailModel : PageModel
         [Required]
         [EmailAddress]
         [Display(Name = "Nowy adres e-mail")]
-        public string NewEmail { get; set; }
+        public string NewEmail { get; set; } = string.Empty;
     }
 }

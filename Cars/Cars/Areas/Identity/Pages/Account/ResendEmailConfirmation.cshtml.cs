@@ -23,7 +23,7 @@ public class ResendEmailConfirmationModel : PageModel
         _emailSender = emailSender;
     }
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
 
     public async Task<IActionResult> OnPostAsync()
@@ -46,10 +46,11 @@ public class ResendEmailConfirmationModel : PageModel
             null,
             new { userId, code },
             Request.Scheme);
-        await _emailSender.SendEmailAsync(
-            Input.Email,
-            "Potwierdź e-mail",
-            $"Potwierdź swój e-mail <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>kikając tutaj</a>.");
+        if (callbackUrl != null)
+            await _emailSender.SendEmailAsync(
+                Input.Email,
+                "Potwierdź e-mail",
+                $"Potwierdź swój e-mail <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>kikając tutaj</a>.");
 
         ModelState.AddModelError(string.Empty, "E-mail weryfikacyjny został wysłany. Proszę sprawdź swój e-mail.");
         return Page();
@@ -57,6 +58,6 @@ public class ResendEmailConfirmationModel : PageModel
 
     public class InputModel
     {
-        [Required] [EmailAddress] public string Email { get; set; }
+        [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
     }
 }

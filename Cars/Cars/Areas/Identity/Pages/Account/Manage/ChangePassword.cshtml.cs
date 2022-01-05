@@ -22,9 +22,9 @@ public class ChangePasswordModel : PageModel
         _logger = logger;
     }
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
-    [TempData] public string StatusMessage { get; set; }
+    [TempData] public string StatusMessage { get; set; } = string.Empty;
 
     public async Task<IActionResult> OnGetAsync()
     {
@@ -65,17 +65,17 @@ public class ChangePasswordModel : PageModel
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Aktualne hasło")]
-        public string OldPassword { get; set; }
+        public string OldPassword { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} musi musi składać sie z od {2} do {1} znaków.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nowe hasło")]
-        public string NewPassword { get; set; }
+        public string NewPassword { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]
         [Display(Name = "Potwierdź nowe hasło")]
         [Compare("NewPassword", ErrorMessage = "Hasła nie są takie same.")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

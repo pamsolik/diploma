@@ -23,7 +23,7 @@ public class RecruitmentManager : IRecruitmentManager
         _context = context;
     }
 
-    public async Task<City> FindOrCreateCity(CityDto city)
+    public async Task<City> FindOrCreateCity(CityDto? city)
     {
         var existingCity = await _context.Cities.FirstOrDefaultAsync(CompareCities(city));
 
@@ -51,7 +51,8 @@ public class RecruitmentManager : IRecruitmentManager
 
     public async Task<Recruitment> FindById(int id)
     {
-        return await _context.Recruitments.FindAsync(id);
+        return await _context.Recruitments.FindAsync(id) ??
+               throw new AppBaseException(HttpStatusCode.NotFound, "Recruitment not found");
     }
 
     public async Task<Recruitment> CloseRecruitment(int recruitmentId, List<RecruitmentToClose> recruitmentsToClose)
@@ -81,7 +82,7 @@ public class RecruitmentManager : IRecruitmentManager
         var recruitment = await FindById(id);
 
         recruitment.Status = status;
-        var res = _context.Recruitments.Update(recruitment);
+        _ = _context.Recruitments.Update(recruitment);
         await _context.SaveChangesAsync();
     }
 
@@ -100,7 +101,7 @@ public class RecruitmentManager : IRecruitmentManager
     }
 
 
-    public IQueryable<Recruitment> GetRecruitments(RecruitmentMode recruitmentMode, string userId = "")
+    public IQueryable<Recruitment> GetRecruitments(RecruitmentMode recruitmentMode, string? userId = "")
     {
         return recruitmentMode switch
         {
@@ -127,7 +128,7 @@ public class RecruitmentManager : IRecruitmentManager
         return res;
     }
 
-    public string MoveApplicationFileAndGetUrl(string parameter, int id, string subfolder)
+    public string? MoveApplicationFileAndGetUrl(string? parameter, int id, string subfolder)
     {
         if (parameter.IsNullOrEmpty()) return "";
         var path = Path.Combine("Resources", "Files", subfolder);

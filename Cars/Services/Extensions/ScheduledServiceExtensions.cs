@@ -2,7 +2,7 @@
 using Services.Implementations;
 using Services.Interfaces;
 
-namespace Cars.Services.Extensions;
+namespace Services.Extensions;
 
 public static class ScheduledServiceExtensions
 {

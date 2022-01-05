@@ -25,15 +25,15 @@ public class EnableAuthenticatorModel : PageModel
         _urlEncoder = urlEncoder;
     }
 
-    public string SharedKey { get; set; }
+    public string SharedKey { get; set; } = string.Empty;
 
-    public string AuthenticatorUri { get; set; }
+    public string AuthenticatorUri { get; set; } = string.Empty;
 
-    [TempData] public string[] RecoveryCodes { get; set; }
+    [TempData] private string[]? RecoveryCodes { get; set; }
 
-    [TempData] public string StatusMessage { get; set; }
+    [TempData] public string StatusMessage { get; set; } = string.Empty;
 
-    [BindProperty] public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
     public async Task<IActionResult> OnGetAsync()
     {
@@ -128,6 +128,6 @@ public class EnableAuthenticatorModel : PageModel
         [StringLength(7, ErrorMessage = "{0} musi zawierać od {2} do {1} znaków.", MinimumLength = 6)]
         [DataType(DataType.Text)]
         [Display(Name = "Kod weryfikacyjny")]
-        public string Code { get; set; }
+        public string Code { get; set; } = string.Empty;
     }
 }
