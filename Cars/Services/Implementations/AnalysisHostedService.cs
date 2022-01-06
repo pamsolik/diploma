@@ -79,6 +79,7 @@ public class AnalysisHostedService : CronJobService
 
         var projects = _sonarQubeRequestHandler.GetExistingProjects();
         if (projects is not null)
+        {
             foreach (var application in notExamined)
             {
                 _logger.LogInformation("Scanning application {Id}", application.Id);
@@ -91,6 +92,12 @@ public class AnalysisHostedService : CronJobService
                 if (!projectsToExamine.Any())
                     await CalculateAndSaveCodeOverallQuality(manager, application);
             }
+        }
+        else
+        {
+            _logger.LogWarning("Cannot reach SonarQube on {Url}", _sonarQubeRequestHandler.BasePath);
+        }
+
     }
 
     private async Task CalculateAndSaveCodeOverallQuality(IAnalysisManager manager,
@@ -117,7 +124,7 @@ public class AnalysisHostedService : CronJobService
     }
 
     private async Task ExamineSingleProject(RecruitmentApplication application, Project project,
-        IAnalysisManager manager, Projects projects)
+        IAnalysisManager manager, Projects? projects)
     {
         try
         {
@@ -125,7 +132,7 @@ public class AnalysisHostedService : CronJobService
             var (projectDir, dirInfo, projectKey) = GetProjectConstants(application, project);
             var saved = false;
 
-            var projectCreated = projects.Components != null && projects.Components.Any(c => c.Key == projectKey);
+            var projectCreated = projects?.Components != null && projects.Components.Any(c => c.Key == projectKey);
 
             if (!projectCreated)
             {
@@ -149,7 +156,7 @@ public class AnalysisHostedService : CronJobService
                 var solutionsCnt = await PerformScan(projectDir, projectKey, project.Technology);
 
                 project.SolutionsCnt = solutionsCnt;
-                await TryToReadAnalysis(project, manager, projectKey);
+                //await TryToReadAnalysis(project, manager, projectKey);
                 DeleteWithoutPermissions(dirInfo);
             }
             else
@@ -178,9 +185,9 @@ public class AnalysisHostedService : CronJobService
     {
         var analysis = _sonarQubeRequestHandler.GetCodeAnalysis(projectKey);
 
-        var loaded = analysis?.Component?.Measures != null && analysis?.Component != null && analysis.Component.Measures.Any();
+        var loaded = analysis?.Component?.Measures != null && analysis.Component != null && analysis.Component.Measures.Any();
 
-        var ass = project.CodeQualityAssessmentId is null
+        var ass = project.CodeQualityAssessment is null
             ? CreateInstance(_dateTimeProvider, loaded, analysis)
             : project.CodeQualityAssessment.LoadMeasures(analysis, loaded);
 
@@ -188,7 +195,7 @@ public class AnalysisHostedService : CronJobService
 
         if (!loaded)
         {
-            if (project.Retries - 3 > project.SolutionsCnt)
+            if (project.Retries - 5 > project.SolutionsCnt)
                 if (ass != null)
                     ass.Success = true;
             project.Retries++;

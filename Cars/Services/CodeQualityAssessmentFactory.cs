@@ -43,7 +43,7 @@ public static class CodeQualityAssessmentFactory
 
     }
 
-    private static CodeQualityAssessment? CreateInstance(IDateTimeProvider dateTimeProvider, bool success)
+    private static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider, bool success)
     {
         return new CodeQualityAssessment
         {
@@ -52,7 +52,7 @@ public static class CodeQualityAssessmentFactory
         };
     }
 
-    public static CodeQualityAssessment? CreateInstance(IDateTimeProvider dateTimeProvider, bool success,
+    public static CodeQualityAssessment CreateInstance(IDateTimeProvider dateTimeProvider, bool success,
         CodeAnalysis? analysis)
     {
         var res = CreateInstance(dateTimeProvider, success);

@@ -23,14 +23,16 @@ public class AnalysisManager : IAnalysisManager
     public List<RecruitmentApplication> GetNotExaminedApplications()
     {
         return _context.Applications
-            .Where(a => a.CodeOverallQuality != null && (a.CodeOverallQualityId == null || !a.CodeOverallQuality.Success))
+            .Where(a => a.CodeOverallQuality == null || !a.CodeOverallQuality.Success)
             .ToList();
     }
 
     public List<Project> GetNotExaminedProjects(RecruitmentApplication notExamined)
     {
         return _context.Projects.Where(p =>
-                p.CodeQualityAssessment != null && p.ApplicationId == notExamined.Id && (p.CodeQualityAssessmentId == null || !p.CodeQualityAssessment.Success))
+                p.ApplicationId == notExamined.Id &&
+                (p.CodeQualityAssessmentId == null || p.CodeQualityAssessment != null && !p.CodeQualityAssessment.Success)
+            )
             .ToList();
     }
 
