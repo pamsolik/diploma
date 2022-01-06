@@ -15,22 +15,22 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
     }
 
-    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
 
-    public DbSet<RecruitmentApplication> Applications { get; set; }
+    public DbSet<RecruitmentApplication> Applications { get; set; } = null!;
 
-    public DbSet<City> Cities { get; set; }
+    public DbSet<City> Cities { get; set; } = null!;
 
-    public DbSet<CodeQualityAssessment> CodeQualityAssessments { get; set; }
+    public DbSet<CodeQualityAssessment> CodeQualityAssessments { get; set; } = null!;
 
-    public DbSet<CodeOverallQuality> CodeOverallQuality { get; set; }
-    public DbSet<Recruitment> Recruitments { get; set; }
+    public DbSet<CodeOverallQuality> CodeOverallQuality { get; set; } = null!;
+    public DbSet<Recruitment> Recruitments { get; set; } = null!;
 
-    public DbSet<Project> Projects { get; set; }
+    public DbSet<Project> Projects { get; set; } = null!;
 
-    public DbSet<Experience> Experiences { get; set; }
+    public DbSet<Experience> Experiences { get; set; } = null!;
 
-    public DbSet<Education> Educations { get; set; }
+    public DbSet<Education> Educations { get; set; } = null!;
 
-    public DbSet<Skill> Skills { get; set; }
+    public DbSet<Skill> Skills { get; set; } = null!;
 }

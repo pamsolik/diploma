@@ -166,22 +166,22 @@ public class IndexModel : PageModel
         [Display(Name = "Numer telefonu")]
         public string PhoneNumber { get; set; } = string.Empty;
 
-        [Display(Name = "Imię")] public string? Name { get; set; }
+        [Display(Name = "Imię")] public string Name { get; set; } = string.Empty;
 
-        [Display(Name = "Nazwisko")] public string? Surname { get; set; }
+        [Display(Name = "Nazwisko")] public string Surname { get; set; }  = string.Empty;
 
-        [Display(Name = "Opis")] public string? Description { get; set; }
+        [Display(Name = "Opis")] public string Description { get; set; }  = string.Empty;
 
-        [Display(Name = "Nazwisko")] public string? ProfilePicture { get; set; }
+        [Display(Name = "Nazwisko")] public string ProfilePicture { get; set; } = string.Empty;
 
 
         [Display(Name = "Lokalizacja")] public City? City { get; set; }
 
         [Display(Name = "Link do profilu GitHub")]
-        public string? Github { get; set; }
+        public string Github { get; set; } = string.Empty;
 
         [Display(Name = "Link do profilu LinkedIn")]
-        public string? LinkedIn { get; set; }
+        public string LinkedIn { get; set; } = string.Empty;
 
         //TODO: add Skills/Education/Experience module
         public ICollection<Skill>? Skills { get; set; }

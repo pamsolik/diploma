@@ -26,7 +26,8 @@ builder.Services.AddIdentityServer()
     .AddDeveloperSigningCredential()
     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
-builder.Services.AddAuthentication().AddIdentityServerJwt();
+builder.Services.AddAuthentication()
+    .AddIdentityServerJwt();
 
 builder.Services.AddRequiredServices(builder.Configuration);
 

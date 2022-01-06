@@ -52,10 +52,10 @@ public class RegisterModel : PageModel
         if (!ModelState.IsValid) return Page();
         var user = new ApplicationUser
         {
-            UserName = Input?.Email,
-            Email = Input?.Email,
-            Name = Input?.Name,
-            Surname = Input?.Surname,
+            UserName = Input.Email,
+            Email = Input.Email,
+            Name = Input.Name,
+            Surname = Input.Surname,
             ProfilePicture = ImgPath.BaseProfilePic
         };
 
