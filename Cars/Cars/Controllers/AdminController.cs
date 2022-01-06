@@ -38,7 +38,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("recruiters")]
-    public async Task<IActionResult> GetRecruiters([FromQuery] string searchTerm,
+    public async Task<IActionResult> GetRecruiters([FromQuery] string? searchTerm,
         [FromQuery] int pageSize, [FromQuery] int pageIndex)
     {
         var res = await _adminService.GetUsersInRole("Recruiter", searchTerm, pageSize, pageIndex);
@@ -46,7 +46,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("admins")]
-    public async Task<IActionResult> GetAdmins([FromQuery] string searchTerm,
+    public async Task<IActionResult> GetAdmins([FromQuery] string? searchTerm,
         [FromQuery] int pageSize, [FromQuery] int pageIndex)
     {
         var res = await _adminService.GetUsersInRole("Admin", searchTerm, pageSize, pageIndex);
