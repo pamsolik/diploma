@@ -11,11 +11,15 @@ public class SonarQubeRequestHandler
         "complexity,cognitive_complexity,duplicated_lines,duplicated_lines_density,violations,code_smells," +
         "sqale_index,sqale_rating,bugs,reliability_rating,coverage,tests,security_hotspots,security_rating,lines";
 
-    public const string SonarLoc = "D:/SonarScan";
+    public readonly string SonarLoc;
 
-    private const string MvnLoc = $"{SonarLoc}\\dependencies\\mvn\\bin\\mvn";
+    private string MvnLoc => $"{SonarLoc}\\dependencies\\mvn\\bin\\mvn";
+    
+    private string DotSonarScannerNetMsBuildLoc => $"{SonarLoc}\\dependencies\\dotnetFramework\\SonarScanner.MSBuild.exe";
+    private string DotNetMsBuildLoc => $"{SonarLoc}\\dependencies\\MSBuild\\Current\\Bin\\MSBuild.exe";
+    private string Nuget => $"{SonarLoc}\\dependencies\\nuget\\nuget";
 
-    private const string GradleLoc = $"{SonarLoc}\\dependencies\\gradle\\bin\\gradle";
+    private string GradleLoc => $"{SonarLoc}\\dependencies\\gradle\\bin\\gradle";
 
     private readonly string _key;
     private readonly string _password;
@@ -24,12 +28,13 @@ public class SonarQubeRequestHandler
 
     public readonly string BasePath;
 
-    public SonarQubeRequestHandler(string basePath, string key, string user, string pwd)
+    public SonarQubeRequestHandler(string basePath, string key, string user, string pwd, string sonarLoc)
     {
         _key = key;
         BasePath = basePath;
         _userName = user;
         _password = pwd;
+        SonarLoc = sonarLoc;
     }
 
     private string MetricsUriBase => $"{BasePath}/api/measures/component?metricKeys={Metrics}&component=";
@@ -107,6 +112,14 @@ public class SonarQubeRequestHandler
             $@"{MvnLoc} compile & {MvnLoc} sonar:sonar -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={_key}";
     }
 
+    public string GetDotNetFrameworkCommand(string projectKey)
+    {
+        return
+            $"{DotSonarScannerNetMsBuildLoc} begin /k:\"{projectKey}\" /d:sonar.host.url=\"{BasePath}\" /d:sonar.login=\"{_key}\" & " +
+            $"{Nuget} restore & {DotNetMsBuildLoc} /t:Rebuild  & " +
+            $"{DotSonarScannerNetMsBuildLoc} end /d:sonar.login=\"{_key}\"";
+    }
+    
     //Add plugin automatically
     // plugins {
     //     id "org.sonarqube" version "3.3"

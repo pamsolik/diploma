@@ -10,9 +10,9 @@ public static class AddAnalysisServiceExtensions
     {
         var sonarConn = configuration.GetConnectionString("SonarConn").Split(';');
         if (sonarConn.Length < 4)
-            throw new ArgumentException("SonarConn not configured properly 'basePath;sonarKey;user;password'");
+            throw new ArgumentException("SonarConn not configured properly 'basePath;sonarKey;user;password;sonarScanLocation'");
         services.AddSingleton(_ =>
-            new SonarQubeRequestHandler(sonarConn[0], sonarConn[1], sonarConn[2], sonarConn[3]));
+            new SonarQubeRequestHandler(sonarConn[0], sonarConn[1], sonarConn[2], sonarConn[3], sonarConn[4]));
 
         services.AddCronJob<AnalysisHostedService>(c =>
         {

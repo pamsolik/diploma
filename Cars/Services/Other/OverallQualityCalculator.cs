@@ -4,7 +4,7 @@ namespace Services.Other;
 
 public static class OverallQualityCalculator
 {
-    public static float CalculateOverallRating(CodeQualityAssessment? ass)
+    public static float? CalculateOverallRating(CodeQualityAssessment? ass)
     {
         var ratings = new List<float?>
         {
@@ -27,13 +27,13 @@ public static class OverallQualityCalculator
             ass?.SecurityHotspots * 1000
         };
 
-        var ratingsAvg = ratings.Sum().GetValueOrDefault(0) * 3;
+        var ratingsAvg = ratings.Sum() * 3;
 
-        var complexityAvg = complexity.Sum().GetValueOrDefault(0) / 50;
+        var complexityAvg = complexity.Sum() / 50;
 
-        var problemsAvg = (problems.Sum() / ass?.LinesOfCode).GetValueOrDefault(0);
+        var problemsAvg = problems.Sum() / ass?.LinesOfCode;
 
-        var debt = (ass?.TechnicalDebt / ass?.LinesOfCode).GetValueOrDefault(0) * 50;
+        var debt = ass?.TechnicalDebt / ass?.LinesOfCode * 50;
 
         return ratingsAvg + complexityAvg + problemsAvg + debt;
     }

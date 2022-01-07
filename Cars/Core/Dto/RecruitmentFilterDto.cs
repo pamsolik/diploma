@@ -7,15 +7,15 @@ public class RecruitmentFilterDto
 {
     [Required] public int PageSize { get; set; }
 
-    [Required] public int PageIndex { get; } = 0;
+    [Required] public int PageIndex { get; set; }
 
     public string SearchString { get; set; } = string.Empty;
 
-    public List<bool?> JobLevels { get; } = new();
+    public List<bool?> JobLevels { get; set; } = new();
 
-    public List<bool?> JobTypes { get; } = new();
+    public List<bool?> JobTypes { get; set; } = new();
 
-    public List<bool?> TeamSizes { get; } = new();
+    public List<bool?> TeamSizes { get; set;} = new();
 
     public CityDto? City { get; set; }
 

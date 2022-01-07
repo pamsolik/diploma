@@ -171,10 +171,10 @@ public class AnalysisHostedService : CronJobService
         }
     }
 
-    private static (string, DirectoryInfo, string) GetProjectConstants(RecruitmentApplication application,
+    private (string, DirectoryInfo, string) GetProjectConstants(RecruitmentApplication application,
         Project project)
     {
-        var projectDir = Path.Combine(SonarQubeRequestHandler.SonarLoc, "scans", application.ApplicantId ?? throw new InvalidOperationException("ApplicantId cannot be null"),
+        var projectDir = Path.Combine(_sonarQubeRequestHandler.SonarLoc, "scans", application.ApplicantId ?? throw new InvalidOperationException("ApplicantId cannot be null"),
             project.Id.ToString());
         var directoryInfo = new DirectoryInfo(projectDir);
         var projectKey = $"Project_{project.Id}";
@@ -214,6 +214,7 @@ public class AnalysisHostedService : CronJobService
             Technology.DotNet => FindAllFiles(projectDir, "*.sln"),
             Technology.Gradle => FindAllFiles(projectDir, "build.gradle"),
             Technology.Maven => FindAllFiles(projectDir, "pom.xml"),
+            Technology.DotNetFramework => FindAllFiles(projectDir, "*.sln"),
             _ => throw new ArgumentException("This technology isn't supported")
         };
 
@@ -223,6 +224,7 @@ public class AnalysisHostedService : CronJobService
             Technology.DotNet => _sonarQubeRequestHandler.GetDotNetScanCommand(projectKey),
             Technology.Gradle => _sonarQubeRequestHandler.GetGradleScanCommand(projectKey),
             Technology.Maven => _sonarQubeRequestHandler.GetMvnScanCommand(projectKey),
+            Technology.DotNetFramework => _sonarQubeRequestHandler.GetDotNetFrameworkCommand(projectKey),
             _ => throw new ArgumentException("This technology isn't supported")
         };
 

@@ -5,5 +5,6 @@ public enum Technology
     Other,
     DotNet,
     Gradle,
-    Maven
+    Maven,
+    DotNetFramework
 }
