@@ -77,7 +77,7 @@ public class AnalysisHostedService : CronJobService
             return;
         }
 
-        var projects = _sonarQubeRequestHandler.GetExistingProjects();
+        var projects = await _sonarQubeRequestHandler.GetExistingProjects();
         if (projects is not null)
         {
             foreach (var application in notExamined)
@@ -137,7 +137,7 @@ public class AnalysisHostedService : CronJobService
             if (!projectCreated)
             {
                 _logger.LogInformation("Creating project: {ProjectKey}", projectKey);
-                var sonarProject = _sonarQubeRequestHandler.CreateProject(projectKey);
+                var sonarProject = await _sonarQubeRequestHandler.CreateProject(projectKey);
                 projectCreated = sonarProject is not null;
             }
             else
@@ -183,7 +183,7 @@ public class AnalysisHostedService : CronJobService
 
     private async Task<bool> TryToReadAnalysis(Project project, IAnalysisManager manager, string projectKey)
     {
-        var analysis = _sonarQubeRequestHandler.GetCodeAnalysis(projectKey);
+        var analysis = await _sonarQubeRequestHandler.GetCodeAnalysis(projectKey);
 
         var loaded = analysis?.Component?.Measures != null && analysis.Component != null && analysis.Component.Measures.Any();
 
@@ -202,7 +202,7 @@ public class AnalysisHostedService : CronJobService
         }
 
         await manager.SaveCodeQualityAnalysis(project, ass);
-        _sonarQubeRequestHandler.DeleteProject(projectKey);
+        await _sonarQubeRequestHandler.DeleteProject(projectKey);
         return true;
     }
 

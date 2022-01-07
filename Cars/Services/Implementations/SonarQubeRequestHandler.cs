@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using Core.SonarQubeDataModels;
+using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Serialization.Json;
-
+    
 namespace Services.Implementations;
 
 public class SonarQubeRequestHandler
@@ -36,18 +36,17 @@ public class SonarQubeRequestHandler
 
     private string CreateProjectUriBase => $"{BasePath}/api/projects/create";
 
-    private T? GetResponse<T>(string url, Method method = Method.GET)
+    private async Task<T?> GetResponse<T>(string url, Method method = Method.Get)
     {
         try
         {
             var encoded =
                 Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{_userName}:{_password}"));
             var client = new RestClient(url);
-            var request = new RestRequest(method);
+            var request = new RestRequest(url ,method);
             request.AddHeader("Authorization", $"Basic {encoded}");
-            var response = client.Execute(request);
-            var serializer = new JsonSerializer();
-            return serializer.Deserialize<T>(response);
+            var response = await client.ExecuteAsync(request);
+            return response.Content is null ? default : JsonConvert.DeserializeObject<T>(response.Content);
         }
         catch
         {
@@ -55,25 +54,25 @@ public class SonarQubeRequestHandler
         }
     }
 
-    public Projects? GetExistingProjects()
+    public async Task<Projects?> GetExistingProjects()
     {
-        return GetResponse<Projects>(GetProjectsUri());
+        return await GetResponse<Projects>(GetProjectsUri());
     }
 
-    public CodeAnalysis? GetCodeAnalysis(string projectKey)
+    public async Task<CodeAnalysis?> GetCodeAnalysis(string projectKey)
     {
-        return GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
+        return await GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
     }
 
-    public string? DeleteProject(string projectKey)
+    public async Task<string?> DeleteProject(string projectKey)
     {
-        return GetResponse<string>(GetDeleteProjectUri(projectKey), Method.POST);
+        return await GetResponse<string>(GetDeleteProjectUri(projectKey), Method.Post);
     }
 
-    public ProjectCreate? CreateProject(string projectKey)
+    public async Task<ProjectCreate?> CreateProject(string projectKey)
     {
-        return GetResponse<ProjectCreate>(
-            GetCreateProjectUri(projectKey), Method.POST);
+        return await GetResponse<ProjectCreate>(
+            GetCreateProjectUri(projectKey), Method.Post);
     }
 
     private string GetMetricsUri(string project)

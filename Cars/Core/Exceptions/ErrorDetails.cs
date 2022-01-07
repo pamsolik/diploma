@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
 
 namespace Core.Exceptions;
 
@@ -9,6 +9,6 @@ public class ErrorDetails
 
     public override string ToString()
     {
-        return JsonSerializer.Serialize(this);
+        return JsonConvert.SerializeObject(this);
     }
 }
