@@ -1,12 +1,7 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
-    {
-        Layout = (string)parentLayout!;
-    }
-    else
-    {
-        Layout = "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
-    }
+    Layout = ViewData.TryGetValue("ParentLayout", out var parentLayout) ? 
+        parentLayout?.ToString() : 
+        "/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
 }
 
 <h2>Zarządzaj kontem</h2>

@@ -3,7 +3,7 @@
     <h4 class="card-header">{{details.applicant.email}}</h4>
     <div class="mt-2 card-body row">
       <!--      <form class="g-3 needs-validation" novalidate>-->
-      <div class="col-8 border-end">
+      <div class="col-md-8 border-end">
 
         <div class="row ">
           <div class="col-auto">
@@ -36,7 +36,7 @@
 
         <div class="border-top my-2"></div>
         <div class="row">
-          <div class="col-6 border-end">
+          <div class="col-md-6 border-end">
             <h5>CV:</h5>
             <p *ngIf="!details.cvFile else cv">Brak</p>
             <ng-template #cv>

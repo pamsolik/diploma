@@ -282,13 +282,3 @@ Thumbs.db
 .sonarqube
 *.sonarqube
 **/.scannerwork
-
-/Cars/Cars/Resources/Images/Profile/
-/Cars/Cars/Resources/Images/Thumbnails/
-/Cars/Cars/Resources/Files/CL
-/Cars/Cars/Resources/Files/CV
-
-**/Resouces/Images/Profile
-**/Resouces/Images/Thumbnails
-**/Resouces/Files/CL
-**/Resouces/Files/CV

@@ -1,3 +1,9 @@
 ﻿body {
     background-color: #EDF7F6;
 }
+
+main {
+    display: flex;
+    flex-direction: column;
+    min-height: 90vh;
+}

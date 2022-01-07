@@ -11,7 +11,6 @@ export class NavMenuComponent {
   isExpanded = false;
   isAuthenticated: Observable<boolean>;
 
-
   constructor(public authorizeService: AuthorizeService) {
     this.isAuthenticated = authorizeService.isAuthenticated();
     if (this.isAuthenticated) {
