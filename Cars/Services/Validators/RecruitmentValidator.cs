@@ -16,6 +16,9 @@ public static class RecruitmentValidator
 
     public static void Validate(this AddRecruitmentDto recruitment)
     {
+        if (string.IsNullOrEmpty(recruitment.Title))
+            throw new AppBaseException(HttpStatusCode.BadRequest,
+                "Description cannot be empty");
         if (string.IsNullOrEmpty(recruitment.Description))
             throw new AppBaseException(HttpStatusCode.BadRequest,
                 "Description cannot be empty");

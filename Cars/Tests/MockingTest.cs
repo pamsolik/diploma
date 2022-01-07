@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CarsTests.Base;
 using Core.DataModels;
 using Core.Enums;
 using Microsoft.EntityFrameworkCore;

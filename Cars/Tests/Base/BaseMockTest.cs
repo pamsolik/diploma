@@ -4,7 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace CarsTests;
+namespace CarsTests.Base;
 
 public class BaseUnitTest
 {
