@@ -25,7 +25,7 @@
         <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="75.0.3770.90" />
         <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-        <PackageReference Include="XunitXml.TestLogger" Version="2.1.26" />
+        <PackageReference Include="XunitXml.TestLogger" Version="3.0.70" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
