@@ -1,0 +1,2 @@
+Wrong version of Newtonsoft.Json is downloaded when publishing the website. This is a quick fix.
+copy C:\home\site\Newtonsoft.Json.dll C:\home\site\wwwroot\Newtonsoft.Json.dll -force
