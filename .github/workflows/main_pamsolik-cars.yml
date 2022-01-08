@@ -8,6 +8,13 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Publish to Azure'     
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Azure'
 
 jobs:
   build:
