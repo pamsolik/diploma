@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Remove artifacts
-      #  uses: c-hive/gha-remove-artifacts@v1.2.0
+        uses: c-hive/gha-remove-artifacts@v1.2.0
         with:
           # Artifacts older than this will be deleted (e.g. "2 months", "1 day"). Parsed by moment.
            age: "1 day"
