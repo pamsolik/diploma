@@ -1,6 +1,10 @@
 <ng-template #content class="" let-modal>
   <div class="card p-0 m-0">
-    <h4 class="card-header">{{details.applicant.email}}</h4>
+    <div class="row card-header">
+      <h4 class="col">{{details.applicant.email}}</h4>
+      <button (click)="close()" class="btn btn-danger col-auto me-2">×</button>
+    </div>
+
     <div class="mt-2 card-body row">
       <!--      <form class="g-3 needs-validation" novalidate>-->
       <div class="col-md-8 border-end">

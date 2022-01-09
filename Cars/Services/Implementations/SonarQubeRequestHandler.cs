@@ -2,7 +2,7 @@
 using Core.SonarQubeDataModels;
 using Newtonsoft.Json;
 using RestSharp;
-    
+
 namespace Services.Implementations;
 
 public class SonarQubeRequestHandler
@@ -14,8 +14,10 @@ public class SonarQubeRequestHandler
     public readonly string SonarLoc;
 
     private string MvnLoc => $"{SonarLoc}\\dependencies\\mvn\\bin\\mvn";
-    
-    private string DotSonarScannerNetMsBuildLoc => $"{SonarLoc}\\dependencies\\dotnetFramework\\SonarScanner.MSBuild.exe";
+
+    private string DotSonarScannerNetMsBuildLoc =>
+        $"{SonarLoc}\\dependencies\\dotnetFramework\\SonarScanner.MSBuild.exe";
+
     private string DotNetMsBuildLoc => $"{SonarLoc}\\dependencies\\MSBuild\\Current\\Bin\\MSBuild.exe";
     private string Nuget => $"{SonarLoc}\\dependencies\\nuget\\nuget";
 
@@ -48,7 +50,7 @@ public class SonarQubeRequestHandler
             var encoded =
                 Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{_userName}:{_password}"));
             var client = new RestClient(url);
-            var request = new RestRequest(url ,method);
+            var request = new RestRequest(url, method);
             request.AddHeader("Authorization", $"Basic {encoded}");
             var response = await client.ExecuteAsync(request);
             return response.Content is null ? default : JsonConvert.DeserializeObject<T>(response.Content);
@@ -59,58 +61,36 @@ public class SonarQubeRequestHandler
         }
     }
 
-    public async Task<Projects?> GetExistingProjects()
-    {
-        return await GetResponse<Projects>(GetProjectsUri());
-    }
+    public async Task<Projects?> GetExistingProjects() =>
+        await GetResponse<Projects>(GetProjectsUri());
 
-    public async Task<CodeAnalysis?> GetCodeAnalysis(string projectKey)
-    {
-        return await GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
-    }
+    public async Task<CodeAnalysis?> GetCodeAnalysis(string projectKey) =>
+        await GetResponse<CodeAnalysis>(GetMetricsUri(projectKey));
 
-    public async Task<string?> DeleteProject(string projectKey)
-    {
-        return await GetResponse<string>(GetDeleteProjectUri(projectKey), Method.Post);
-    }
+    public async Task<string?> DeleteProject(string projectKey) =>
+        await GetResponse<string>(GetDeleteProjectUri(projectKey), Method.Post);
 
-    public async Task<ProjectCreate?> CreateProject(string projectKey)
-    {
-        return await GetResponse<ProjectCreate>(
+    public async Task<ProjectCreate?> CreateProject(string projectKey) =>
+        await GetResponse<ProjectCreate>(
             GetCreateProjectUri(projectKey), Method.Post);
-    }
 
-    private string GetMetricsUri(string project)
-    {
-        return MetricsUriBase + project;
-    }
+    private string GetMetricsUri(string project) =>
+        MetricsUriBase + project;
 
-    private string GetProjectsUri()
-    {
-        return $"{BasePath}/api/projects/search";
-    }
+    private string GetProjectsUri() =>
+        $"{BasePath}/api/projects/search";
 
-    private string GetCreateProjectUri(string project)
-    {
-        return $"{CreateProjectUriBase}?name={project}&project={project}";
-    }
+    private string GetCreateProjectUri(string project) =>
+        $"{CreateProjectUriBase}?name={project}&project={project}";
 
-    private string GetDeleteProjectUri(string project)
-    {
-        return $"{BasePath}/api/projects/delete?project={project}";
-    }
+    private string GetDeleteProjectUri(string project) =>
+        $"{BasePath}/api/projects/delete?project={project}";
 
-    public string GetNormalScanCommand(string projectKey)
-    {
-        return
-            $"sonar-scanner.bat -D\"sonar.projectKey={projectKey}\" -D\"sonar.sources=.\" -D\"sonar.host.url={BasePath}\" -D\"sonar.login={_key}\"";
-    }
+    public string GetNormalScanCommand(string projectKey) =>
+        $"sonar-scanner.bat -D\"sonar.projectKey={projectKey}\" -D\"sonar.sources=.\" -D\"sonar.host.url={BasePath}\" -D\"sonar.login={_key}\"";
 
-    public string GetMvnScanCommand(string projectKey)
-    {
-        return
-            $@"{MvnLoc} compile & {MvnLoc} sonar:sonar -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={_key}";
-    }
+    public string GetMvnScanCommand(string projectKey) =>
+        $@"{MvnLoc} compile & {MvnLoc} sonar:sonar -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={_key}";
 
     public string GetDotNetFrameworkCommand(string projectKey)
     {
@@ -119,21 +99,15 @@ public class SonarQubeRequestHandler
             $"{Nuget} restore & {DotNetMsBuildLoc} /t:Rebuild  & " +
             $"{DotSonarScannerNetMsBuildLoc} end /d:sonar.login=\"{_key}\"";
     }
-    
+
     //Add plugin automatically
     // plugins {
     //     id "org.sonarqube" version "3.3"
     // }
-    public string GetGradleScanCommand(string projectKey)
-    {
-        return
-            $@"{GradleLoc} sonarqube -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={_key}";
-    }
+    public string GetGradleScanCommand(string projectKey) =>
+        $@"{GradleLoc} sonarqube -Dsonar.projectKey={projectKey} -Dsonar.host.url={BasePath} -Dsonar.login={_key}";
 
-    public string GetDotNetScanCommand(string projectKey)
-    {
-        return
-            $"dotnet sonarscanner begin /k:\"{projectKey}\" /d:sonar.host.url=\"{BasePath}\"  /d:sonar.login=\"{_key}\" & " +
-            $"dotnet build & dotnet sonarscanner end /d:sonar.login=\"{_key}\"";
-    }
+    public string GetDotNetScanCommand(string projectKey) =>
+        $"dotnet sonarscanner begin /k:\"{projectKey}\" /d:sonar.host.url=\"{BasePath}\"  /d:sonar.login=\"{_key}\" & " +
+        $"dotnet build & dotnet sonarscanner end /d:sonar.login=\"{_key}\"";
 }

@@ -8,7 +8,6 @@ import {Router} from '@angular/router';
 export class AlertService {
 
   constructor(private router: Router) {
-//private http: HttpClient, @Inject('BASE_URL') private baseUrl: string,
   }
 
   showLoading(message: string) {

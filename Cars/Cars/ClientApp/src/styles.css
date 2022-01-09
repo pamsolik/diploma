@@ -17,6 +17,9 @@ body {
 /*  background-color: #62727b;*/
 /*}*/
 
+body.modal-open {
+  overflow: hidden;
+}
 
 code {
   color: #e01a76;
