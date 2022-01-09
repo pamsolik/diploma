@@ -6,7 +6,7 @@ namespace Services.Extensions;
 
 public static class RolesExtensions
 {
-    public static void InitializeAsync(IServiceCollection services)
+    public static void InitializeUserRoles(this IServiceCollection services)
     {
         var provider = services.BuildServiceProvider();
         var roleManager = provider.GetRequiredService<RoleManager<IdentityRole>>();

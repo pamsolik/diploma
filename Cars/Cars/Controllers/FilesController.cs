@@ -25,40 +25,13 @@ public class FilesController : ControllerBase
     [RequestSizeLimit(26214400L)]
     public async Task<IActionResult?> Upload()
     {
-        try
+        var formCollection = await Request.ReadFormAsync();
         {
-            var formCollection = await Request.ReadFormAsync();
             var file = formCollection.Files[0];
-
-            if (ValidateFile(file, out var badRequest)) return badRequest;
-
-            var res = await _fileUploadService.SaveFile(file, User.FindFirstValue(ClaimTypes.NameIdentifier));
-
+            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _logger.LogInformation("Uploading file user: {User}", user);
+            var res = await _fileUploadService.SaveFile(file, user);
             return Ok(res);
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, $"Internal server error: {ex}");
-        }
-    }
-
-    private bool ValidateFile(IFormFile file, out IActionResult? badRequest)
-    {
-        var name = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
-
-        if (file.Length <= 0)
-        {
-            badRequest = BadRequest("File lenght is equal to 0");
-            return true;
-        }
-
-        if (name is null)
-        {
-            badRequest = BadRequest("File name cannot be empty");
-            return true;
-        }
-
-        badRequest = null;
-        return false;
     }
 }

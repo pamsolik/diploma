@@ -1,9 +1,9 @@
 ﻿using Core.DataModels;
 using Core.SonarQubeDataModels;
 using Services.Interfaces;
-using static Services.Other.OverallQualityCalculator;
+using static Services.CodeQuality.OverallQualityCalculator;
 
-namespace Services;
+namespace Services.CodeQuality;
 
 public static class CodeQualityAssessmentFactory
 {

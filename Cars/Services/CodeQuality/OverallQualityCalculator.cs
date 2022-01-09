@@ -1,6 +1,6 @@
 ﻿using Core.DataModels;
 
-namespace Services.Other;
+namespace Services.CodeQuality;
 
 public static class OverallQualityCalculator
 {

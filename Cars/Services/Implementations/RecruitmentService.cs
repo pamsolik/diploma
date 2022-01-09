@@ -105,10 +105,9 @@ public class RecruitmentService : IRecruitmentService
 
         var recruitment = await _recruitmentManager.FindById(addApplicationDto.RecruitmentId);
         if (recruitment is null) throw new AppBaseException(HttpStatusCode.NotFound, "Recruitment not found");
-        // if (recruitment.Applications != null && recruitment.Applications.Any(x => x.ApplicantId == applicantId))
-        //     throw new AppBaseException(HttpStatusCode.Conflict,
-        //         "Applicant has allready applied to this recruitment");
-        //TODO: UNCOMMENT
+        if (recruitment.Applications != null && recruitment.Applications.Any(x => x.ApplicantId == applicantId))
+            throw new AppBaseException(HttpStatusCode.Conflict,
+                "Applicant has allready applied to this recruitment");
         var dest = addApplicationDto.Adapt<RecruitmentApplication>();
         dest.ApplicantId = applicantId;
         dest.Time = _dateTimeProvider.GetTimeNow();

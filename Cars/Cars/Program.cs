@@ -49,7 +49,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddSwaggerDocument();
 
-RolesExtensions.InitializeAsync(builder.Services);
+builder.Services.InitializeUserRoles();
 
 var app = builder.Build();
 

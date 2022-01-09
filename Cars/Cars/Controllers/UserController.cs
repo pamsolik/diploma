@@ -19,7 +19,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("roles")]
-    public async Task<IActionResult> GetClientRoles()
+    public async Task<IActionResult> GetUserRoles()
     {
         var uId = _appUserManager.GetUserId(User);
         if (uId is null) return Ok(new List<string>());

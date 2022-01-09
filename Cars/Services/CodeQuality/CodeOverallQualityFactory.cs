@@ -1,7 +1,7 @@
 ﻿using Core.DataModels;
 using Services.Interfaces;
 
-namespace Services;
+namespace Services.CodeQuality;
 
 public static class CodeOverallQualityFactory
 {

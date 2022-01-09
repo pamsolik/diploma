@@ -7,9 +7,9 @@ using Services.Interfaces;
 using Services.Managers.Interfaces;
 using Services.Other;
 using static Services.Other.FileService;
-using static Services.Other.OverallQualityCalculator;
-using static Services.CodeOverallQualityFactory;
-using static Services.CodeQualityAssessmentFactory;
+using static Services.CodeQuality.OverallQualityCalculator;
+using static Services.CodeQuality.CodeOverallQualityFactory;
+using static Services.CodeQuality.CodeQualityAssessmentFactory;
 
 namespace Services.Implementations;
 
