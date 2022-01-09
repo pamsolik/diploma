@@ -1,7 +1,7 @@
 ﻿using Core.DataModels;
 using Core.Enums;
 
-namespace Core.View;
+namespace Core.ViewModels;
 
 public class ApplicationView
 {

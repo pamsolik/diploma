@@ -1,4 +1,4 @@
-﻿namespace Services.EmailSender;
+﻿namespace Infrastructure.EmailSender;
 
 public class AuthMessageSenderOptions
 {

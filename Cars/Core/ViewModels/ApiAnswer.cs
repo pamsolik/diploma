@@ -1,4 +1,4 @@
-﻿namespace Core.View;
+﻿namespace Core.ViewModels;
 
 public class ApiAnswer
 {

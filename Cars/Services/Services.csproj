@@ -7,17 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Cronos" Version="0.7.1"/>
-        <PackageReference Include="Geolocation" Version="1.2.1"/>
-        <PackageReference Include="LibGit2Sharp" Version="0.26.2"/>
-        <PackageReference Include="Mapster" Version="7.2.0"/>
-        <PackageReference Include="RestSharp" Version="107.0.1"/>
-        <PackageReference Include="SendGrid" Version="9.25.1"/>
+        <PackageReference Include="Cronos" Version="0.7.1" />
+        <PackageReference Include="Geolocation" Version="1.2.1" />
+        <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+        <PackageReference Include="Mapster" Version="7.2.0" />
+        <PackageReference Include="RestSharp" Version="107.0.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Core\Core.csproj"/>
-        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
+        <ProjectReference Include="..\Core\Core.csproj" />
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

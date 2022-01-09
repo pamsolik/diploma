@@ -1,6 +1,6 @@
 ﻿using Core.Dto;
 using Core.Enums;
-using Core.View;
+using Core.ViewModels;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

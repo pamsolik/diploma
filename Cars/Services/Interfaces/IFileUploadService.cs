@@ -1,4 +1,4 @@
-﻿using Core.View;
+﻿using Core.ViewModels;
 using Microsoft.AspNetCore.Http;
 
 namespace Services.Interfaces;

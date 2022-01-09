@@ -1,5 +1,5 @@
 ﻿using Core.DataModels;
-using Core.View;
+using Core.ViewModels;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Services.Interfaces;

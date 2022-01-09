@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Headers;
-using Core.View;
+using Core.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Services.Interfaces;
 

@@ -1,10 +1,10 @@
 ﻿using Core.DataModels;
+using Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Services.EmailSender;
 using Services.Implementations;
 using Services.Interfaces;
 using Services.Managers.Implementations;
@@ -30,7 +30,7 @@ public static class AddRequiredServicesExtensions
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
         //Email Sender
-        services.AddTransient<IEmailSender, EmailSender.EmailSender>();
+        services.AddTransient<IEmailSender, EmailSender>();
         services.Configure<AuthMessageSenderOptions>(configuration);
 
         services.Configure<FormOptions>(o =>

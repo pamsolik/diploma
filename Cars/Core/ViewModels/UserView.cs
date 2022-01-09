@@ -1,6 +1,6 @@
 ﻿using Core.DataModels;
 
-namespace Core.View;
+namespace Core.ViewModels;
 
 public class UserView
 {

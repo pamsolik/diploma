@@ -1,7 +1,7 @@
 ﻿using Core.DataModels;
 using Core.Dto;
 using Core.Enums;
-using Core.View;
+using Core.ViewModels;
 
 namespace Services.Interfaces;
 

@@ -1,4 +1,4 @@
-﻿using Core.View;
+﻿using Core.ViewModels;
 
 namespace Services.Interfaces;
 
