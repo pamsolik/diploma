@@ -18,8 +18,7 @@ public class PersonalDataModel : PageModel
     public async Task<IActionResult> OnGet()
     {
         var userId = _appUserManager.GetUserId(User);
-        var user = await _appUserManager.FindUser(userId);
-        if (user == null) return NotFound($"Unable to load user with ID '{userId}'.");
+        await _appUserManager.FindUser(userId);
         _logger.LogInformation("User information downloaded");
         return Page();
     }

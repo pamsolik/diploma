@@ -19,8 +19,14 @@ public static class FilterUtilities
         ref IQueryable<Recruitment> recruitments, RecruitmentFilterDto filter)
     {
         if (!string.IsNullOrEmpty(filter.SearchString))
+        {
+            filter.SearchString = filter.SearchString.ToUpper(); 
             recruitments = recruitments.Where(s =>
-                s.Title.Contains(filter.SearchString) || s.Description.Contains(filter.SearchString));
+                s.Title.ToUpper().Contains(filter.SearchString) ||
+                s.ShortDescription.ToUpper().Contains(filter.SearchString) ||
+                s.Description.ToUpper().Contains(filter.SearchString));
+        }
+           
 
         var filtered = recruitments.AsEnumerable();
 
