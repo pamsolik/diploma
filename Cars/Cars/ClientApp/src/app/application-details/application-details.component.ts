@@ -23,7 +23,6 @@ export class ApplicationDetailsComponent {
   @Input()
   recruitment: RecruitmentDetailsView;
 
-
   technologies: string[] = Object.values(Technology);
 
   constructor(private modalService: NgbModal,

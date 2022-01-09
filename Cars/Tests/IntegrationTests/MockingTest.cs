@@ -7,7 +7,7 @@ using Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace CarsTests;
+namespace CarsTests.IntegrationTests;
 
 public class MockingTest : BaseUnitTest
 {

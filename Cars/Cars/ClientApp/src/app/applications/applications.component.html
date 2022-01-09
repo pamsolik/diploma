@@ -29,104 +29,104 @@
           <h6 class="col-auto">Dla wszystkich parametrów im mniejsza wartość, tym lepiej.</h6>
         </section>
         <div class="table-responsive-lg">
-        <table aria-label="Applications" class="table table-hover table-bordered ">
-          <thead>
-          <tr>
-            <th [appSort]="recruitmentApplications" class="col-4 th-sm search" data-name="applicant.name"
-                id="th-name">Lista aplikacji
-            </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search" data-name="codeOverallQuality.bugs"
-                data-order="desc"
-                id="th-bugs">Ilość błędów
-            </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search" data-name="codeOverallQuality.securityRating"
-                data-order="desc"
-                id="th-securityRating">Ocena bezpieczeństwa
-            </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search" data-name="codeOverallQuality.codeSmells"
-                data-order="desc"
-                id="th-codeSmells">Ilość Code Smells
-            </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
-                data-name="codeOverallQuality.duplicatedLinesDensity"
-                data-order="desc"
-                id="th-duplicatedLinesDensity">Powtórzenia (%)
-            </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
-                data-name="codeOverallQuality.reliabilityRating"
-                data-order="desc"
-                id="th-reliabilityRating">Ocena niezawodności
-            </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search"
-                data-name="codeOverallQuality.maintainabilityRating"
-                data-order="desc"
-                id="th-maintainabilityRating">Ocena utrzymywalności
-            </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search" data-name="codeOverallQuality.technicalDebt"
-                data-order="desc"
-                id="th-technicalDebt">Dług techniczny (min)
-            </th>
-            <th [appSort]="recruitmentApplications" class="col-1 search" data-name="codeOverallQuality.overallRating"
-                data-order="desc" id="th-overallRating">Ogólna ocena
-            </th>
-          </tr>
-          </thead>
+          <table aria-label="Applications" class="table table-hover table-bordered ">
+            <thead>
+            <tr>
+              <th [appSort]="recruitmentApplications" class="th-sm search" data-name="applicant.name"
+                  id="th-name">Lista aplikacji
+              </th>
+              <th [appSort]="recruitmentApplications" class="search" data-name="codeOverallQuality.bugs"
+                  data-order="desc"
+                  id="th-bugs">Ilość błędów
+              </th>
+              <th [appSort]="recruitmentApplications" class="search" data-name="codeOverallQuality.securityRating"
+                  data-order="desc"
+                  id="th-securityRating">Ocena bezpieczeństwa
+              </th>
+              <th [appSort]="recruitmentApplications" class="search" data-name="codeOverallQuality.codeSmells"
+                  data-order="desc"
+                  id="th-codeSmells">Ilość Code Smells
+              </th>
+              <th [appSort]="recruitmentApplications" class="search"
+                  data-name="codeOverallQuality.duplicatedLinesDensity"
+                  data-order="desc"
+                  id="th-duplicatedLinesDensity">Powtórzenia (%)
+              </th>
+              <th [appSort]="recruitmentApplications" class="search"
+                  data-name="codeOverallQuality.reliabilityRating"
+                  data-order="desc"
+                  id="th-reliabilityRating">Ocena niezawodności
+              </th>
+              <th [appSort]="recruitmentApplications" class="search"
+                  data-name="codeOverallQuality.maintainabilityRating"
+                  data-order="desc"
+                  id="th-maintainabilityRating">Ocena utrzymywalności
+              </th>
+              <th [appSort]="recruitmentApplications" class="search" data-name="codeOverallQuality.technicalDebt"
+                  data-order="desc"
+                  id="th-technicalDebt">Dług techniczny (min)
+              </th>
+              <th [appSort]="recruitmentApplications" class="search" data-name="codeOverallQuality.overallRating"
+                  data-order="desc" id="th-overallRating">Ogólna ocena
+              </th>
+            </tr>
+            </thead>
 
-          <tbody>
-          <tr *ngFor="let application of recruitmentApplications"
-              class="{{application.selected ? 'selected' : 'base'}}">
-            <td id="no-center">
-              <div class="row">
-                <div class="col-6">
-                  <img [src]="authorizeService.createImgPath(application.applicant.profilePicture)"
-                       alt="Thumbnail image"
-                       class="img-fluid">
-                  <p class="mt-2"> {{application.time | date: 'dd-MM-yyyy HH:mm'}}</p>
-                </div>
+            <tbody>
+            <tr *ngFor="let application of recruitmentApplications"
+                class="{{application.selected ? 'selected' : 'base'}}">
+              <td id="no-center">
+                <div class="row">
+                  <div class="col-xl-6">
+                    <img [src]="authorizeService.createImgPath(application.applicant.profilePicture)"
+                         alt="Thumbnail image"
+                         class="img-fluid">
+                    <p class="mt-2"> {{application.time | date: 'dd-MM-yyyy HH:mm'}}</p>
+                  </div>
 
-                <div class="col-6 border-dark">
-                  <h5>{{application.applicant.name}}</h5>
-                  <p>{{application.description}}</p>
+                  <div class="col-xl-6 border-dark">
+                    <h5>{{application.applicant.name}}</h5>
+                    <p>{{application.description}}</p>
 
-                  <app-application-details [details]="application"
-                                           [recruitment]="recruitment"></app-application-details>
+                    <app-application-details [details]="application"
+                                             [recruitment]="recruitment"></app-application-details>
 
-                  <div class="form-check pt-2">
-                    <input [(ngModel)]="application.selected" [disabled]="recruitment.status == 1"
-                           class="form-check-input"
-                           id="flexSelected{{application.id}}" type="checkbox">
-                    <label class="form-check-label" for="flexSelected{{application.id}}">
-                      Wybrano
-                    </label>
+                    <div class="form-check pt-2">
+                      <input [(ngModel)]="application.selected" [disabled]="recruitment.status == 1"
+                             class="form-check-input"
+                             id="flexSelected{{application.id}}" type="checkbox">
+                      <label class="form-check-label" for="flexSelected{{application.id}}">
+                        Wybrano
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-
-            <td *ngIf="!application.codeOverallQuality else examined" class="pt-5"
-                colspan="8"><h4>Projekt nie został jeszcze zbadany</h4>
-            </td>
-
-            <ng-template #examined>
-              <td
-                *ngIf="!application.codeOverallQuality.success && application.codeOverallQuality.retries > 3 else success"
-                class="pt-5"
-                colspan="8"><h4>Badanie nie powiodło się</h4>
               </td>
-              <ng-template #success>
-                <td> {{getValue(application.codeOverallQuality.bugs)}}</td>
-                <td> {{getValue(application.codeOverallQuality.securityRating)}}</td>
-                <td> {{getValue(application.codeOverallQuality.codeSmells)}}</td>
-                <td> {{getValue(application.codeOverallQuality.duplicatedLinesDensity)}}</td>
-                <td> {{getValue(application.codeOverallQuality.reliabilityRating)}}</td>
-                <td> {{getValue(application.codeOverallQuality.maintainabilityRating)}}</td>
-                <td> {{getValue(application.codeOverallQuality.technicalDebt)}}</td>
-                <td> {{getValue(application.codeOverallQuality.overallRating)}}</td>
+
+              <td *ngIf="!application.codeOverallQuality else examined" class="pt-5"
+                  colspan="8"><h4>Projekt nie został jeszcze zbadany</h4>
+              </td>
+
+              <ng-template #examined>
+                <td
+                  *ngIf="!application.codeOverallQuality.success && application.codeOverallQuality.retries > 3 else success"
+                  class="pt-5"
+                  colspan="8"><h4>Badanie nie powiodło się</h4>
+                </td>
+                <ng-template #success>
+                  <td> {{getValue(application.codeOverallQuality.bugs)}}</td>
+                  <td> {{getValue(application.codeOverallQuality.securityRating)}}</td>
+                  <td> {{getValue(application.codeOverallQuality.codeSmells)}}</td>
+                  <td> {{getValue(application.codeOverallQuality.duplicatedLinesDensity)}}</td>
+                  <td> {{getValue(application.codeOverallQuality.reliabilityRating)}}</td>
+                  <td> {{getValue(application.codeOverallQuality.maintainabilityRating)}}</td>
+                  <td> {{getValue(application.codeOverallQuality.technicalDebt)}}</td>
+                  <td> {{getValue(application.codeOverallQuality.overallRating)}}</td>
+                </ng-template>
               </ng-template>
-            </ng-template>
-          </tr>
-          </tbody>
-        </table>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </ng-template>
     </div>

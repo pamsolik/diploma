@@ -39,8 +39,4 @@
         <ProjectReference Include="..\Cars\Cars.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="IntegrationTests" />
-    </ItemGroup>
-
 </Project>
