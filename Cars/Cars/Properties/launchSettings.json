@@ -15,7 +15,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
-        "ASPNETCORE_LAUNCHENVIRONMENT": "LOCAL"
+        "ASPNETCORE_LAUNCHENVIRONMENT": "LOCAL",
+        "ASPNETCORE_SENDGRIDKEY": "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"
       }
     },
     "IIS Express": {
