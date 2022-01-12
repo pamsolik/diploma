@@ -97,25 +97,28 @@ public class RegisterModel : PageModel
 
     public class InputModel
     {
-        [Required]
+        [Required(ErrorMessage = "Pole E-mail jest wymagane")]
         [EmailAddress]
         [Display(Name = "E-mail")]
         public string Email { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Pole imię jest wymagane")]
         [StringLength(200, ErrorMessage = "Imię nie może być dłuższe niż 200 znaków.")]
         [Display(Name = "Imię")]
         public string Name { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Pole nazwisko jest wymagane")]
         [StringLength(200, ErrorMessage = "Nazwisko nie może być dłuższe niż 200 znaków.")]
         [Display(Name = "Nazwisko")]
         public string Surname { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Pole hasło jest wymagane")]
         [StringLength(100, ErrorMessage = "{0} musi składać się z od {2} do {1} znaków.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Hasło")]
         public string Password { get; set; } = string.Empty;
-
+        
+        [Required(ErrorMessage = "Pole potwierdź hasło jest wymagane")]
         [DataType(DataType.Password)]
         [Display(Name = "Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "Hasła nie są identyczne.")]

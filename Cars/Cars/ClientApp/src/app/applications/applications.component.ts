@@ -64,7 +64,7 @@ export class ApplicationsComponent implements OnInit {
   }
 
   selectCandidates() {
-    this.alertService.showYesNo("Czy napewno chcesz zakończyć tą rekrutacje wybierając zaznaczonych kandydatów?").then(result => {
+    this.alertService.showYesNo("Czy napewno chcesz zakończyć tę rekrutacje wybierając zaznaczonych kandydatów?").then(result => {
       if (result.isConfirmed) {
         this.alertService.showLoading("Zamykanie rekrutacji");
         this.http.put<ApiAnswer>(`${this.baseUrl}api/recruitments/close`, this.createDto()).subscribe(result => {

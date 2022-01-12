@@ -5,7 +5,7 @@
       <div class="row">
         <h4 class="col">{{isCoq ? 'Ogólna ocena jakości kodu' : 'Projekt'}}
           użytkownika {{details.applicant.email}}</h4>
-        <button (click)="close()" class="btn btn-danger col-auto m-0 me-2">×</button>
+        <button (click)="close()" class="btn btn-secondary col-auto m-0 me-2">×</button>
       </div>
     </div>
 
@@ -14,7 +14,7 @@
         <h6 class="mb-2">Tytuł: {{project.title}}</h6>
         <p class="mb-2">{{project.description}}</p>
         <p class="mb-2">Technologia: {{technologies[project.technology]}}</p>
-        <a [href]="project.url" class="mb-2" target="_blank">Url: {{project.url}}</a>
+        <a [href]="project.url" class="mb-2" target="_blank" rel="noopener">Url: {{project.url}}</a>
       </div>
 
       <ng-template #coq>
@@ -23,18 +23,18 @@
 
       <div class="row border">
         <p class="col-4 border-end py-4 m-0">Błędy: {{getValue(codeQuality.bugs)}}</p>
-        <p class="col-4 border-end py-4 m-0">Ilość problemów z kodem źródłowym: {{getValue(codeQuality.violations)}}</p>
+        <p class="col-4 border-end py-4 m-0">Liczba problemów z kodem źródłowym: {{getValue(codeQuality.violations)}}</p>
         <p class="col-4 py-4 m-0">Ocena niezawodności: {{getValue(codeQuality.reliabilityRating)}}</p>
       </div>
 
       <div class="row border">
-        <p class="col-7 border-end py-4 m-0">Ilość luk w bezpieczeństwie: {{getValue(codeQuality.securityHotspots)}}</p>
+        <p class="col-7 border-end py-4 m-0">Liczba luk w bezpieczeństwie: {{getValue(codeQuality.securityHotspots)}}</p>
         <p class="col-5 py-4 m-0">Ocena bezpieczeństwa: {{getValue(codeQuality.securityRating)}}</p>
       </div>
 
       <div class="row border">
         <p class="col-4 border-end py-4 m-0">Dług techniczny: {{secondsToHms(codeQuality.technicalDebt)}}</p>
-        <p class="col-4 border-end py-4 m-0">Ilość Code Smells: {{getValue(codeQuality.codeSmells)}}</p>
+        <p class="col-4 border-end py-4 m-0">Liczba Code Smells: {{getValue(codeQuality.codeSmells)}}</p>
         <p class="col-4 py-4 m-0">Ocena utrzymywalności: {{getValue(codeQuality.maintainabilityRating)}}</p>
       </div>
 
@@ -52,7 +52,7 @@
             subtitle="Pokrycie testami"
           ></circle-progress>
         </div>
-        <div class="col-3 py-5 border-end">Ilość testów: {{getValue(codeQuality.tests)}}</div>
+        <div class="col-3 py-5 border-end">Liczba testów: {{getValue(codeQuality.tests)}}</div>
 
         <div class="col-3">
           <circle-progress
@@ -68,7 +68,7 @@
             subtitle="Gęstość duplikacji"
           ></circle-progress>
         </div>
-        <div class="col-3 py-5 border-end">Ilość zduplikowanych linii
+        <div class="col-3 py-5 border-end">Liczba zduplikowanych linii
           kodu: {{getValue(codeQuality.duplicatedLines)}}</div>
       </div>
 
@@ -76,9 +76,10 @@
         <p class="col-4 border-end py-4 m-0">Złożoność kodu źródłowego: {{getValue(codeQuality.complexity)}}</p>
         <p class="col-4 border-end py-4 m-0">Trudność w zrozumieniu kodu
           źródłowego: {{getValue(codeQuality.cognitiveComplexity)}}</p>
-        <p class="col-4 py-4 m-0">Ilość linii kodu: {{getValue(codeQuality.linesOfCode)}}</p>
+        <p class="col-4 py-4 m-0">Liczba linii kodu: {{getValue(codeQuality.linesOfCode)}}</p>
       </div>
 
+      <h6 class="py-2">Ogólna ocena jakości kodu: {{getValue(codeQuality.overallRating)}}</h6>
     </div>
   </div>
 </ng-template>
@@ -95,6 +96,6 @@
     <h6>{{p.title}}</h6>
     <p>{{p.description}}</p>
     <p>{{technologies[p.technology]}}</p>
-    <a [href]="p.url" target="_blank">{{p.url}}</a>
+    <a [href]="p.url" target="_blank" rel="noopener">{{p.url}}</a>
   </div>
 </div>

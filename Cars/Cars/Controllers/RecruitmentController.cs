@@ -72,7 +72,7 @@ public class RecruitmentController : ControllerBase
         return Ok(new ApiAnswer("UnHidden"));
     }
 
-
+    [AllowAnonymous]
     [HttpPost("public")]
     public IActionResult GetRecruitmentsPublic([FromBody] RecruitmentFilterDto recruitmentFilterDto)
     {

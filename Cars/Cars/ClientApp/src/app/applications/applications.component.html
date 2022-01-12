@@ -25,7 +25,7 @@
 
       <ng-template #any>
         <section class="row py-3">
-          <h6 class="col">Ilość aplikacji: {{recruitmentApplications.length}}</h6>
+          <h6 class="col">Liczba aplikacji: {{recruitmentApplications.length}}</h6>
           <h6 class="col-auto">Dla wszystkich parametrów im mniejsza wartość, tym lepiej.</h6>
         </section>
         <div class="table-responsive-lg">
@@ -37,7 +37,7 @@
               </th>
               <th [appSort]="recruitmentApplications" class="search" data-name="codeOverallQuality.bugs"
                   data-order="desc"
-                  id="th-bugs">Ilość błędów
+                  id="th-bugs">Liczba błędów
               </th>
               <th [appSort]="recruitmentApplications" class="search" data-name="codeOverallQuality.securityRating"
                   data-order="desc"
@@ -45,7 +45,7 @@
               </th>
               <th [appSort]="recruitmentApplications" class="search" data-name="codeOverallQuality.codeSmells"
                   data-order="desc"
-                  id="th-codeSmells">Ilość Code Smells
+                  id="th-codeSmells">Liczba Code Smells
               </th>
               <th [appSort]="recruitmentApplications" class="search"
                   data-name="codeOverallQuality.duplicatedLinesDensity"

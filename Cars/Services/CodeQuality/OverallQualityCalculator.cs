@@ -21,10 +21,10 @@ public static class OverallQualityCalculator
 
         var problems = new List<float?>
         {
-            ass?.CodeSmells * 50,
-            ass?.Violations * 250,
-            ass?.Bugs * 500,
-            ass?.SecurityHotspots * 1000
+            ass?.CodeSmells * 500,
+            ass?.Violations * 700,
+            ass?.Bugs * 2000,
+            ass?.SecurityHotspots * 5000
         };
 
         var ratingsAvg = ratings.Sum() * 3;
@@ -33,8 +33,10 @@ public static class OverallQualityCalculator
 
         var problemsAvg = problems.Sum() / ass?.LinesOfCode;
 
-        var debt = ass?.TechnicalDebt / ass?.LinesOfCode * 50;
+        //var debt = ass?.TechnicalDebt / ass?.LinesOfCode * 50;
+        
+        var coverage = ass?.Coverage / 5;
 
-        return ratingsAvg + complexityAvg + problemsAvg + debt;
+        return ratingsAvg + complexityAvg + problemsAvg + coverage;
     }
 }

@@ -2,7 +2,7 @@
   <div class="card p-0 m-0">
     <div class="row card-header">
       <h4 class="col">{{userAdminView.email}} | {{userAdminView.name}} {{userAdminView.surname}}</h4>
-      <button (click)="close()" class="btn btn-danger col-auto me-2">×</button>
+      <button (click)="close()" class="btn btn-secondary col-auto me-2">×</button>
     </div>
 
     <div class="mt-2 card-body row">
@@ -22,12 +22,12 @@
 
           <div *ngIf="userAdminView.github" class="mb-2 mt-5">
             <h5>Profil GitHub</h5>
-            <a [href]="userAdminView.github" target="_blank">{{userAdminView.github}}</a>
+            <a [href]="userAdminView.github" target="_blank" rel="noopener">{{userAdminView.github}}</a>
           </div>
 
           <div *ngIf="userAdminView.github" class="mb-2">
             <h5>Profil LinkedIn</h5>
-            <a [href]="userAdminView.linkedIn" target="_blank">{{userAdminView.linkedIn}}</a>
+            <a [href]="userAdminView.linkedIn" target="_blank" rel="noopener">{{userAdminView.linkedIn}}</a>
           </div>
         </div>
         <div class="col-2">
