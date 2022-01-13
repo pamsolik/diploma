@@ -202,7 +202,7 @@ public class AnalysisHostedService : CronJobService
         }
 
         await manager.SaveCodeQualityAnalysis(project, ass);
-        //await _sonarQubeRequestHandler.DeleteProject(projectKey);
+        await _sonarQubeRequestHandler.DeleteProject(projectKey);
         return true;
     }
 
