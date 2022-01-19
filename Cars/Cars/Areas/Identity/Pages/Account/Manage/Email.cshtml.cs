@@ -132,8 +132,8 @@ public class EmailModel : PageModel
 
     public class InputModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Pole E-mail jest wymagane")]
+        [EmailAddress(ErrorMessage = "E-mail nie jest poprawny")]
         [Display(Name = "Nowy adres e-mail")]
         public string NewEmail { get; set; } = string.Empty;
     }
