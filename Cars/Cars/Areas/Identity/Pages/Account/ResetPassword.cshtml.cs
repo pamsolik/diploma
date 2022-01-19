@@ -53,8 +53,12 @@ public class ResetPasswordModel : PageModel
         [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
 
         [Required]
-        [StringLength(100, ErrorMessage = "{0} musi zawierać od {2} do {1} znaków.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
+        [StringLength(100, ErrorMessage = "{0} musi składać się z od {2} do {1} znaków.", MinimumLength = 6)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$",
+            ErrorMessage =
+                "Hasło musi mieć conajmniej 8 znaków i posiadać conajmniej: 1 małą literę, 1 wielką literę, 1 cyfrę oraz znak specjalny")]
+        [DataType(DataType.Password, ErrorMessage = "Hasło nie spełnia wymagań")]
+        [Display(Name = "Nowe hasło")]
         public string Password { get; set; } = string.Empty;
 
         [DataType(DataType.Password)]

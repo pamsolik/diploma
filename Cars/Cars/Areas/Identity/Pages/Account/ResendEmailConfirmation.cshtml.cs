@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using Core.DataModels;
@@ -58,6 +59,9 @@ public class ResendEmailConfirmationModel : PageModel
 
     public class InputModel
     {
-        [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
+        [Required]
+        [EmailAddress(ErrorMessage = "Adres E-mail nie jest poprawny")]
+        [DisplayName("E-mail")]
+        public string Email { get; set; } = string.Empty;
     }
 }

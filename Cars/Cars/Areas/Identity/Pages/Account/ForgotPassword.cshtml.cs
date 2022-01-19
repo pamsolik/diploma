@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using Core.DataModels;
@@ -54,6 +55,9 @@ public class ForgotPasswordModel : PageModel
 
     public class InputModel
     {
-        [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
+        [Required]
+        [EmailAddress]
+        [DisplayName("E-mail")]
+        public string Email { get; set; } = string.Empty;
     }
 }

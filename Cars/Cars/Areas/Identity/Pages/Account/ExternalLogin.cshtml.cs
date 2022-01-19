@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -150,6 +151,9 @@ public class ExternalLoginModel : PageModel
 
     public class InputModel
     {
-        [Required] [EmailAddress] public string Email { get; set; } = string.Empty;
+        [Required]
+        [EmailAddress]
+        [DisplayName("E-mail")]
+        public string Email { get; set; } = string.Empty;
     }
 }
