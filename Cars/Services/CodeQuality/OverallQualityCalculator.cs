@@ -37,6 +37,6 @@ public static class OverallQualityCalculator
         
         var coverage = ass?.Coverage / 5;
 
-        return ratingsAvg + complexityAvg + problemsAvg;
+        return ratingsAvg + complexityAvg + problemsAvg + ass?.DuplicatedLinesDensity; 
     }
 }

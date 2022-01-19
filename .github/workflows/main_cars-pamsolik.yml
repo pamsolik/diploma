@@ -4,24 +4,45 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - cars-pamsolik
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Publish to Azure'     
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Azure'
 
 jobs:
   build:
     runs-on: windows-latest
-
+    defaults:
+            run:
+              working-directory: ./Cars
     steps:
       - uses: actions/checkout@v2
-
+      
+      - name: Remove artifacts
+        uses: c-hive/gha-remove-artifacts@v1.2.0
+        with:
+          # Artifacts older than this will be deleted (e.g. "2 months", "1 day"). Parsed by moment.
+           age: "1 day"
+          # Access token for the repository, available under the same name in secrets.
+           GITHUB_TOKEN: ${{ github.token }}
+          # true/false. If enabled, tag build artifacts (e.g. release artifacts) will be kept.
+           skip-tags: false
+          # Keep the specified number of artifacts even if they are older than the age.
+           skip-recent: 1
+           
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
           include-prerelease: true
-
+          
+     # - name: Restore packages
+     #   run: dotnet restore --locked-mode
+        
       - name: Build with dotnet
         run: dotnet build --configuration Release
 

@@ -23,6 +23,7 @@ public static class CodeOverallQualityFactory
                     CodeSmells = p?.CodeSmells,
                     MaintainabilityRating = p?.MaintainabilityRating,
                     Coverage = p?.Coverage,
+                    Tests = p?.Tests,
                     CognitiveComplexity = p?.CognitiveComplexity,
                     Violations = p?.Violations,
                     SecurityRating = p?.SecurityRating,
