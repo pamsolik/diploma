@@ -98,7 +98,7 @@ public class RegisterModel : PageModel
     public class InputModel
     {
         [Required(ErrorMessage = "Pole E-mail jest wymagane")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "E-mail nie jest poprawny")]
         [Display(Name = "E-mail")]
         public string Email { get; set; } = string.Empty;
 
@@ -114,10 +114,13 @@ public class RegisterModel : PageModel
 
         [Required(ErrorMessage = "Pole hasło jest wymagane")]
         [StringLength(100, ErrorMessage = "{0} musi składać się z od {2} do {1} znaków.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$",
+            ErrorMessage = 
+                "Hasło musi posiadać conajmniej: 1 małą literę, 1 wielką literę, 1 cyfrę oraz znak specjalny")]
+        [DataType(DataType.Password, ErrorMessage = "Hasło nie spełnia wymagań")]
         [Display(Name = "Hasło")]
         public string Password { get; set; } = string.Empty;
-        
+
         [Required(ErrorMessage = "Pole potwierdź hasło jest wymagane")]
         [DataType(DataType.Password)]
         [Display(Name = "Potwierdź hasło")]
