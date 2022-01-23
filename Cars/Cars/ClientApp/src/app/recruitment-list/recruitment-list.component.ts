@@ -9,6 +9,7 @@ import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 import {Options} from "@angular-slider/ngx-slider";
 import {RecruitmentList} from "../../models/RecruitmentList";
 import {GooglePlaceDirective} from "ngx-google-places-autocomplete";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-recruitment-list-component',
@@ -64,7 +65,6 @@ export class RecruitmentListComponent implements OnInit {
 
   loadData() {
     this.filters.sortOrder = getEnumKeyByEnumValue(SortOrder, this.sortOrder);
-    console.log(this.filters);
     this.http.post<RecruitmentList>(this.baseUrl + this.apiUrl, this.filters).subscribe(result => {
       this.offers = result;
     }, error => console.error(error));
