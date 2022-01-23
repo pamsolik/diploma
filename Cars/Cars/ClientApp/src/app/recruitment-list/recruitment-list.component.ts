@@ -23,6 +23,9 @@ export class RecruitmentListComponent implements OnInit {
   offers: RecruitmentList;
   filters: Filters;
   selectedCity: any;
+  lat: number;
+  lon: number;
+
 
   @Input()
   apiUrl: string;
@@ -48,18 +51,26 @@ export class RecruitmentListComponent implements OnInit {
     this.loadData();
 
     this.getPosition().subscribe(pos => {
-      this.filters.city.longitude = pos.coords.longitude;
-      this.filters.city.latitude = pos.coords.latitude;
+      console.log(pos);
+      this.lat = pos.coords.latitude;
+      this.lon = pos.coords.longitude;
+      this.filters.city.longitude = this.lon;
+      this.filters.city.latitude = this.lat;
     });
   }
 
   public placeSelect(place: any){
     this.selectedCity = place;
     console.log(place);
-    if (place.properties){
+    if (place){
       this.filters.city.name = place.properties.address_line1;
       this.filters.city.latitude = place.properties.lat;
       this.filters.city.longitude = place.properties.lon;
+    }
+    else {
+      this.filters.city.name = "";
+      this.filters.city.latitude = this.lat;
+      this.filters.city.longitude = this.lon;
     }
   }
 
