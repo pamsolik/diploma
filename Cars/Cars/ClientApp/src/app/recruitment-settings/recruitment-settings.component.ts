@@ -47,7 +47,6 @@ export class RecruitmentSettingsComponent {
   save() {
     this.enums.updateRecruitmentSettings(this.settings);
     console.log(this.settings);
-    this.settings.city.name = "Warszawa"; //TODO: add places autocomplete
     if (this.editMode) this.saveChanges();
     else this.saveNew();
   }
@@ -80,5 +79,14 @@ export class RecruitmentSettingsComponent {
     }, error => {
       this.alertService.showError(error);
     });
+  }
+
+  
+  public placeSelect(place: any){
+    if (place.properties){
+      this.settings.city.name = place.properties.address_line1;
+      this.settings.city.latitude = place.properties.lat;
+      this.settings.city.longitude = place.properties.lon;
+    }
   }
 }

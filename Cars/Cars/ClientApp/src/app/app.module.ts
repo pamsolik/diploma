@@ -41,6 +41,7 @@ import {UserDetailsComponent} from "./user-details/user-details.component";
 import {ProjectsDetailsComponent} from "./projects-details/projects-details.component";
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {GooglePlaceModule} from "ngx-google-places-autocomplete";
+import { GeoapifyGeocoderAutocompleteModule } from '@geoapify/angular-geocoder-autocomplete';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,7 @@ import {GooglePlaceModule} from "ngx-google-places-autocomplete";
     ApiAuthorizationModule,
     BrowserAnimationsModule,
     NgCircleProgressModule,
-    GooglePlaceModule,
+    GeoapifyGeocoderAutocompleteModule.withConfig('7f8147a4c77d4c519e057c1cda94409f'),
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,

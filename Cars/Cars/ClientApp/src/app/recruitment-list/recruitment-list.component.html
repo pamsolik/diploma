@@ -24,10 +24,7 @@
 
               <div class="form-group">
                 <label>Lokalizacja</label>
-
-                <!--                <input class="form-control" ngx-google-places-autocomplete (onAddressChange)="handleAddressChange($event)" />-->
-
-                <input class="form-control" placeholder="Wprowadź lokalizację" type="text">
+                <geoapify-geocoder-autocomplete placeholder="Podaj miasto" lang="pl" [(position)]="selectedCity" (placeSelect)="placeSelect($event)"></geoapify-geocoder-autocomplete>
               </div>
 
               <div class="form-group mt-2">
@@ -101,8 +98,11 @@
           <div class="job-desc col">
             <h5 class="card-title">{{offer.title}}</h5>
             <p>{{offer.shortDescription}}</p>
-
-            <p class="mt-1">{{offer.daysAgo}}</p>
+            <div class="row mt-1">
+              <p class="col">{{offer.city.name}} </p>
+              <p class="col-auto">{{offer.daysAgo}}</p>
+            </div>
+            
           </div>
         </div>
       </mat-card>

@@ -9,7 +9,6 @@ import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 import {Options} from "@angular-slider/ngx-slider";
 import {RecruitmentList} from "../../models/RecruitmentList";
 import {GooglePlaceDirective} from "ngx-google-places-autocomplete";
-import {Address} from "ngx-google-places-autocomplete/objects/address";
 
 @Component({
   selector: 'app-recruitment-list-component',
@@ -22,6 +21,7 @@ export class RecruitmentListComponent implements OnInit {
   sortOrder: string = SortOrder.NameAsc;
   offers: RecruitmentList;
   filters: Filters;
+  selectedCity: any;
 
   @Input()
   apiUrl: string;
@@ -36,8 +36,6 @@ export class RecruitmentListComponent implements OnInit {
     showTicks: false
   };
 
-  // @ViewChild('address-input') qElementRef: ElementRef;
-  // private places: any;
   @ViewChild("ngx-places") placesRef: GooglePlaceDirective;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
@@ -47,29 +45,16 @@ export class RecruitmentListComponent implements OnInit {
   ngOnInit() {
     this.clearFilters();
     this.loadData();
-    // let placesAutocomplete = places({
-    //   appId: 'WIIZS8MMO7',
-    //   apiKey: '72678c53476a1c91292a5c2ca7ee2139',
-    //   container: this.qElementRef.nativeElement
-    // });
-    // this.places = places({
-    //   appId: 'WIIZS8MMO7',
-    //   apiKey: '72678c53476a1c91292a5c2ca7ee2139',
-    //   container: this.qElementRef.nativeElement,
-    //
-    // });
-    //
-    // if (this.q) {
-    //   this.places.setVal(this.q);
-    // }
-    //
-    // this.places.on('change', function resultSelected(e) {
-    //   //...
-    // });
   }
 
-  public handleAddressChange(address: Address) {
-    // Do some stuff
+  public placeSelect(place: any){
+    this.selectedCity = place;
+    console.log(place);
+    if (place.properties){
+      this.filters.city.name = place.properties.address_line1;
+      this.filters.city.latitude = place.properties.lat;
+      this.filters.city.longitude = place.properties.lon;
+    }
   }
 
   applyFilter(pageEvent: PageEvent) {
@@ -79,7 +64,7 @@ export class RecruitmentListComponent implements OnInit {
 
   loadData() {
     this.filters.sortOrder = getEnumKeyByEnumValue(SortOrder, this.sortOrder);
-
+    console.log(this.filters);
     this.http.post<RecruitmentList>(this.baseUrl + this.apiUrl, this.filters).subscribe(result => {
       this.offers = result;
     }, error => console.error(error));
