@@ -72,7 +72,6 @@ export class AuthorizeService {
   }
 
   public checkRoles() {
-    console.log(`${this.baseUrl}api/user/auth/roles`)
     this.http.get<string[]>(`${this.baseUrl}api/user/auth/roles`).subscribe(result => {
       this.roles = result;
       this.isAdmin = this.roles.some(r => r == 'Admin');

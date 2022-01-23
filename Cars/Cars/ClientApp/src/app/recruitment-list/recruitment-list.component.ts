@@ -9,6 +9,7 @@ import {RecruitmentEnums} from "../../models/enums/RecruitmentEnums";
 import {Options} from "@angular-slider/ngx-slider";
 import {RecruitmentList} from "../../models/RecruitmentList";
 import {GooglePlaceDirective} from "ngx-google-places-autocomplete";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-recruitment-list-component',
@@ -22,6 +23,9 @@ export class RecruitmentListComponent implements OnInit {
   offers: RecruitmentList;
   filters: Filters;
   selectedCity: any;
+  lat: number;
+  lon: number;
+
 
   @Input()
   apiUrl: string;
@@ -45,15 +49,28 @@ export class RecruitmentListComponent implements OnInit {
   ngOnInit() {
     this.clearFilters();
     this.loadData();
+
+    this.getPosition().subscribe(pos => {
+      console.log(pos);
+      this.lat = pos.coords.latitude;
+      this.lon = pos.coords.longitude;
+      this.filters.city.longitude = this.lon;
+      this.filters.city.latitude = this.lat;
+    });
   }
 
   public placeSelect(place: any){
     this.selectedCity = place;
     console.log(place);
-    if (place.properties){
+    if (place){
       this.filters.city.name = place.properties.address_line1;
       this.filters.city.latitude = place.properties.lat;
       this.filters.city.longitude = place.properties.lon;
+    }
+    else {
+      this.filters.city.name = "";
+      this.filters.city.latitude = this.lat;
+      this.filters.city.longitude = this.lon;
     }
   }
 
@@ -64,7 +81,6 @@ export class RecruitmentListComponent implements OnInit {
 
   loadData() {
     this.filters.sortOrder = getEnumKeyByEnumValue(SortOrder, this.sortOrder);
-    console.log(this.filters);
     this.http.post<RecruitmentList>(this.baseUrl + this.apiUrl, this.filters).subscribe(result => {
       this.offers = result;
     }, error => console.error(error));
@@ -76,5 +92,15 @@ export class RecruitmentListComponent implements OnInit {
 
   createImgPath = (path: string) => {
     return `${this.baseUrl}${path}`;
+  }
+
+  getPosition(): Observable<any> {
+    return new Observable(observer => {
+      window.navigator.geolocation.getCurrentPosition(position => {
+          observer.next(position);
+          observer.complete();
+        },
+        error => observer.error(error));
+    });
   }
 }

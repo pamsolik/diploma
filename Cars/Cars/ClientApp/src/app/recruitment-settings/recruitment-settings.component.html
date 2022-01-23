@@ -76,9 +76,8 @@
 
         <div class="form-group mb-3">
           <label>Lokalizacja</label>
-          <geoapify-geocoder-autocomplete placeholder="Podaj miasto" lang="pl" [value]="settings.city.name" [(position)]="selectedCity" (placeSelect)="placeSelect($event)"></geoapify-geocoder-autocomplete>
+          <geoapify-geocoder-autocomplete placeholder="Wybierz miasto" lang="pl" [value]="settings.city.name" (placeSelect)="placeSelect($event)"></geoapify-geocoder-autocomplete>
         </div>
-
 
         <div class="border-top my-2"></div>
 

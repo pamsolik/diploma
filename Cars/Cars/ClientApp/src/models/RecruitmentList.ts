@@ -1,4 +1,6 @@
-﻿export interface RecruitmentList {
+﻿import {City} from "./City";
+
+export interface RecruitmentList {
   items: RecruitmentOffer[],
   totalItems: number,
   pageIndex: number,
@@ -14,5 +16,6 @@ export interface RecruitmentOffer {
   jobLevel: number,
   imgUrl: string,
   startDate: Date,
-  daysAgo: string
+  daysAgo: string,
+  city: City,
 }
