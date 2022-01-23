@@ -46,6 +46,11 @@ export class RecruitmentListComponent implements OnInit {
   ngOnInit() {
     this.clearFilters();
     this.loadData();
+
+    this.getPosition().subscribe(pos => {
+      this.filters.city.longitude = pos.coords.longitude;
+      this.filters.city.latitude = pos.coords.latitude;
+    });
   }
 
   public placeSelect(place: any){
@@ -76,5 +81,15 @@ export class RecruitmentListComponent implements OnInit {
 
   createImgPath = (path: string) => {
     return `${this.baseUrl}${path}`;
+  }
+
+  getPosition(): Observable<any> {
+    return new Observable(observer => {
+      window.navigator.geolocation.getCurrentPosition(position => {
+          observer.next(position);
+          observer.complete();
+        },
+        error => observer.error(error));
+    });
   }
 }
