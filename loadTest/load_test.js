@@ -13,8 +13,8 @@ export default function() {
         pageSize: 5,
         pageIndex: 0
       })
-    //const url = "https://cars-pamsolik.azurewebsites.net/api/recruitments/public"
-    const url = "https://localhost:7187/api/recruitments/public"
+    const url = "https://cars-pamsolik.azurewebsites.net/api/recruitments/public"
+    //const url = "https://localhost:7187/api/recruitments/public"
     let response = http.post(url, b, options);
     //console.log(response.body)
 };

@@ -18,26 +18,28 @@ public static class RecruitmentValidator
     {
         if (string.IsNullOrEmpty(recruitment.Title))
             throw new AppBaseException(HttpStatusCode.BadRequest,
-                "Description cannot be empty");
+                "Title cannot be empty");
         if (string.IsNullOrEmpty(recruitment.Description))
             throw new AppBaseException(HttpStatusCode.BadRequest,
                 "Description cannot be empty");
         if (string.IsNullOrEmpty(recruitment.ShortDescription))
             throw new AppBaseException(HttpStatusCode.BadRequest,
-                "Description cannot be empty");
+                "ShortDescription cannot be empty");
     }
 
-    public static void Validate(this EditRecruitmentDto recruitmentDto, Recruitment recruitment)
+    public static void Validate(this EditRecruitmentDto recruitmentDto, Recruitment? recruitment)
     {
         if (recruitment is null)
             throw new AppBaseException(HttpStatusCode.NotFound, $"Recruitment {recruitmentDto.Id} not found.");
-
+        if (string.IsNullOrEmpty(recruitmentDto.Title))
+            throw new AppBaseException(HttpStatusCode.BadRequest,
+                "Title cannot be empty");
         if (string.IsNullOrEmpty(recruitmentDto.Description))
             throw new AppBaseException(HttpStatusCode.BadRequest,
                 "Description cannot be empty");
         if (string.IsNullOrEmpty(recruitmentDto.ShortDescription))
             throw new AppBaseException(HttpStatusCode.BadRequest,
-                "Description cannot be empty");
+                "ShortDescription cannot be empty");
         if (recruitment.RecruiterId != recruitmentDto.RecruiterId)
             throw new AppBaseException(HttpStatusCode.Forbidden,
                 "User is not authorised to edit this recruitment.");

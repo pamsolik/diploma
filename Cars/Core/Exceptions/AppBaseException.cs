@@ -15,6 +15,5 @@ public class AppBaseException : Exception
     public override string ToString()
     {
         return JsonSerializer.Serialize(this);
-        ;
     }
 }
