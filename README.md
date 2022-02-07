@@ -2,7 +2,7 @@
 
 # Projekt do pracy inżynierskiej - Cars (Code Analysis Recruitment System)
 
-[Pogląd strony opublikowanej na platformie Azure](https://pamsolik-cars.azurewebsites.net/)
+[Pogląd strony opublikowanej na platformie Azure](https://cars-pamsolik.azurewebsites.net/)
 
 ## Politechnika Łódzka Wydział Fizyki Technicznej Informatyki i Matematyki Stosowanej
 
