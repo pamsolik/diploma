@@ -9,6 +9,7 @@ using Services.Managers.Implementations;
 using Services.Managers.Interfaces;
 
 var host = Host.CreateDefaultBuilder(args)
+    .UseWindowsService()
     .ConfigureServices((hostContext, services) =>
     {
         services.AddDbContext<ApplicationDbContext>(options =>
@@ -32,6 +33,7 @@ var host = Host.CreateDefaultBuilder(args)
 
         services.AddAnalysisService(hostContext.Configuration);
     })
+
     .Build();
 
 await host.RunAsync();
