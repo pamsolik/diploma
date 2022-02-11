@@ -11,7 +11,7 @@
         <PackageReference Include="Geolocation" Version="1.2.1" />
         <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
         <PackageReference Include="Mapster" Version="7.2.0" />
-        <PackageReference Include="RestSharp" Version="107.0.3" />
+        <PackageReference Include="RestSharp" Version="107.3.0" />
     </ItemGroup>
 
     <ItemGroup>
