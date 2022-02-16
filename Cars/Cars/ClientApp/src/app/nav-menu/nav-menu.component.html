@@ -37,6 +37,11 @@
             >Rekruter</a
             >
           </li>
+          <li *ngIf="authorizeService.isRecruiter" [routerLinkActive]="['link-active']" class="nav-item">
+            <a [routerLink]="['/projects']" class="nav-link text-dark"
+            >Projekty</a
+            >
+          </li>
           <li *ngIf="authorizeService.isAdmin" [routerLinkActive]="['link-active']" class="nav-item">
             <a [routerLink]="['/admin']" class="nav-link text-dark"
             >Administrator</a

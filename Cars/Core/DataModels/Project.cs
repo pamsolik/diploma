@@ -13,7 +13,7 @@ public class Project
     [StringLength(1000, ErrorMessage = "Description cannot be longer than 1000 characters.")]
     public string Description { get; set; } = string.Empty;
 
-    [Required] public int ApplicationId { get; set; }
+    public int? ApplicationId { get; set; }
 
     [ForeignKey("ApplicationId")] public virtual RecruitmentApplication? Application { get; set; }
 

@@ -1,0 +1,17 @@
+.job-desc {
+  flex: 1;
+}
+
+img {
+  width: 200px;
+  height: 200px;
+
+  margin: auto;
+  object-fit: contain;
+}
+
+.bottom {
+  position : absolute;
+  bottom : 0;
+}
+

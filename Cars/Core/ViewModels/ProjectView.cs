@@ -9,13 +9,17 @@ public class ProjectView
 
     public string Description { get; set; } = string.Empty;
 
-    public int ApplicationId { get; set; }
+    public int? ApplicationId { get; set; }
 
     public string Title { get; set; } = string.Empty;
 
     public string Url { get; set; } = string.Empty;
 
     public Technology Technology { get; set; }
+
+    public int Retries { get; set; }
+
+    public int SolutionsCnt { get; set; } = 1;
 
     public int? CodeQualityAssessmentId { get; set; }
 

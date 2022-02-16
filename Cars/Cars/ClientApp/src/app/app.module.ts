@@ -42,6 +42,8 @@ import {ProjectsDetailsComponent} from "./projects-details/projects-details.comp
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 import { GeoapifyGeocoderAutocompleteModule } from '@geoapify/angular-geocoder-autocomplete';
+import { ProjectsListComponent } from './projects-list/projects-list.component';
+import { ProjectsAddComponent } from './projects-add/projects-add.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,8 @@ import { GeoapifyGeocoderAutocompleteModule } from '@geoapify/angular-geocoder-a
     ApplicationDetailsComponent,
     SortDirective,
     UserListComponent,
+    ProjectsListComponent,
+    ProjectsAddComponent,
     UserDetailsComponent,
     ProjectsDetailsComponent
   ],
@@ -88,6 +92,7 @@ import { GeoapifyGeocoderAutocompleteModule } from '@geoapify/angular-geocoder-a
       {path: 'recruitments', component: RecruitmentComponent, canActivate: [AuthorizeGuard]},
       {path: 'recruitment-details/:id', component: RecruitmentDetailsComponent, canActivate: [AuthorizeGuard]},
 
+      {path: 'projects', component: ProjectsListComponent, canActivate: [AuthorizeGuard]},
       {path: 'recruiter', component: RecruiterComponent, canActivate: [AuthorizeGuard]},
       {path: 'recruiter/:id', component: RecruitmentSettingsComponent, canActivate: [AuthorizeGuard]},
       {path: 'recruitment-settings/:id', component: RecruitmentSettingsComponent, canActivate: [AuthorizeGuard]},

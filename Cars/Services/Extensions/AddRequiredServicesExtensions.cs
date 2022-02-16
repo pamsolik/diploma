@@ -20,12 +20,14 @@ public static class AddRequiredServicesExtensions
             UserClaimsPrincipalFactory<ApplicationUser, IdentityRole>>();
 
         services.AddScoped<IRecruitmentService, RecruitmentService>();
+        services.AddScoped<IProjectsService, ProjectsService>();
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IFileUploadService, FileUploadService>();
 
         services.AddScoped<IAppUserManager, AppUserManager>();
         services.AddScoped<IAnalysisManager, AnalysisManager>();
         services.AddScoped<IRecruitmentManager, RecruitmentManager>();
+        services.AddScoped<IProjectsManager, ProjectsManager>();
 
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 

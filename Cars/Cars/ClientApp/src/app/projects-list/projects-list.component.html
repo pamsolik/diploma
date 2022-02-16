@@ -1,0 +1,135 @@
+<div class="card mb-4 box-shadow page-content container-lg p-0">
+  <div class="card-header">
+    <h4 class="my-0 font-weight-normal">Projekty</h4>
+  </div>
+  <div class="card-body">
+    <article class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="my-0 font-weight-normal">Wyszukaj</h5>
+          </div>
+
+          <div class="card-body">
+            <article class="card-group-item">
+              <div class="filter-content">
+                <div class="form-row">
+                  <a (click)="clearFilters(); loadData()" class="btn btn-warning mb-2 w-100" role="button">Wyczyść
+                    filtry
+                    &raquo;</a>
+                  <a (click)="loadData()" class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry &raquo;</a>
+
+                  <div class="form-group">
+                    <label>Oferta</label>
+                    <input [(ngModel)]="filters.searchString" class="form-control" placeholder="Wyszukaj oferty"
+                      type="text">
+                  </div>
+
+                  <div class="border-top my-3"></div>
+
+                  <div class="form-group">
+                    <label>Technologia</label>
+                    <select [(ngModel)]="technology" class="form-control">
+                      <option *ngFor="let level of technologies">{{level}}</option>
+                    </select>
+                  </div>
+                  <div class="border-top my-3"></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md">
+        <div class="row">
+          <app-projects-add class="col"> </app-projects-add>
+          <button class="col-auto btn btn-success me-3" (click)="loadCsv()">Pobierz jako plik csv</button>
+        </div>
+
+        <select [(ngModel)]="sortOrder" class="form-control my-2 ">
+          <option *ngFor="let order of sortOrders">{{order}}</option>
+        </select>
+      </div>
+
+    </article>
+
+    <div class="row">
+      <h1 *ngIf="!projects else loaded">Wczytywanie</h1>
+
+      <ng-template #loaded>
+        <h1 *ngIf="projects.length == 0 else any">Brak projektów</h1>
+
+
+
+        <div class="table-responsive-lg">
+          <table aria-label="Projects" class="table table-hover table-bordered ">
+            <thead>
+              <tr>
+                <th [appSort]="projects" class="th-sm search" data-name="title" id="th-name">Nazwa projektu
+                </th>
+                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.bugs" data-order="desc"
+                  id="th-bugs">Liczba błędów
+                </th>
+                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.securityRating"
+                  data-order="desc" id="th-securityRating">Ocena bezpieczeństwa
+                </th>
+                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.codeSmells" data-order="desc"
+                  id="th-codeSmells">Liczba Code Smells
+                </th>
+                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.duplicatedLinesDensity"
+                  data-order="desc" id="th-duplicatedLinesDensity">Powtórzenia (%)
+                </th>
+                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.reliabilityRating"
+                  data-order="desc" id="th-reliabilityRating">Ocena niezawodności
+                </th>
+                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.maintainabilityRating"
+                  data-order="desc" id="th-maintainabilityRating">Ocena utrzymywalności
+                </th>
+                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.technicalDebt"
+                  data-order="desc" id="th-technicalDebt">Dług techniczny (min)
+                </th>
+                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.overallRating"
+                  data-order="desc" id="th-overallRating">Ogólna ocena
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let proj of projects.items">
+                <td> {{proj.title}}</td>
+                <td *ngIf="!proj.codeQualityAssessment else examined" class="" colspan="8">
+                  <h7>Projekt nie został jeszcze zbadany</h7>
+                </td>
+
+                <ng-template #examined>
+                  <td *ngIf="proj.codeQualityAssessment.success && proj.retries - proj.solutionsCnt > 5 else success"
+                    class="" colspan="8">
+                    <h7>Badanie nie powiodło się</h7>
+                  </td>
+                  <ng-template #success>
+                    
+                    <td> {{getValue(proj.codeQualityAssessment.bugs)}}</td>
+                    <td> {{getValue(proj.codeQualityAssessment.securityRating)}}</td>
+                    <td> {{getValue(proj.codeQualityAssessment.codeSmells)}}</td>
+                    <td> {{getValue(proj.codeQualityAssessment.duplicatedLinesDensity)}}</td>
+                    <td> {{getValue(proj.codeQualityAssessment.reliabilityRating)}}</td>
+                    <td> {{getValue(proj.codeQualityAssessment.maintainabilityRating)}}</td>
+                    <td> {{getValue(proj.codeQualityAssessment.technicalDebt)}}</td>
+                    <td> {{getValue(proj.codeQualityAssessment.overallRating)}}</td>
+                  </ng-template>
+                </ng-template>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <mat-paginator (page)="applyFilter($event); loadData()" [length]="projects.totalItems" [pageIndex]="0"
+          [pageSizeOptions]="[2, 5, 10, 25, 100]" [pageSize]="filters.pageSize" aria-label="Wybierz stronę"
+          id="paginator">
+        </mat-paginator>
+      </ng-template>
+    </div>
+  </div>
+</div>

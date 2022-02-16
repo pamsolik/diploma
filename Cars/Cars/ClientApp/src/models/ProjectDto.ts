@@ -5,6 +5,8 @@ export interface ProjectDto {
   description: string,
   url: string,
   technology: number,
+  retries: number,
+  solutionsCnt: number,
   codeQualityAssessment: CodeQualityAssessment
 }
 

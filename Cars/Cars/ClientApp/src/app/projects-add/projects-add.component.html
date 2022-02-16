@@ -1,0 +1,85 @@
+<ng-template #content class="" let-modal>
+  <div class="card p-0 m-0">
+
+    <div class="row card-header">
+      <h4 class="col">Podaj listę projektów do zbadania</h4>
+
+      <button (click)="apply()" class="btn btn-success px-2 me-4 col-auto" type="submit">Zatwierdź</button>
+      <button (click)="close()" class="btn btn-secondary col-auto m-0 me-2">×</button>
+    </div>
+
+    <div class="mt-2 card-body row">
+      <div class="col-md-6 border-end">
+
+        <textarea class="form-control my-2" placeholder="Lista Url do projektów" rows="5"></textarea>
+        <button class="btn btn-primary">Dodaj wiele projetków</button>
+
+        <div class="border-top my-2"></div>
+
+        <div class="form-check">
+          <input [(ngModel)]="autoTitle" class="form-check-input" id="autoTitle" required type="checkbox" value="">
+          <label class="form-check-label" for="autoTitle">Automatyczne tworzenie tytułów do projektów</label>
+        </div>
+
+        <div class="border-top my-2"></div>
+
+        <div class="form-group">
+          <div class="form-check">
+            <input [(ngModel)]="sameDesc" class="form-check-input" id="sameDesc" required type="checkbox" value="">
+            <label class="form-check-label" for="sameDesc">Taki sam opis dla wszystkich projektów</label>
+          </div>
+
+          <textarea [disabled]="!sameDesc" class="form-control" placeholder="Opis dla wszystkich projektów"
+            rows="5"></textarea>
+          <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
+        </div>
+
+        <div class="border-top my-2"></div>
+
+        <div class="form-check">
+          <input [(ngModel)]="sameTech" class="form-check-input" id="sameTech" required type="checkbox" value="">
+          <label class="form-check-label" for="sameTech">Taka sama technologia dla wszystkich projektów</label>
+        </div>
+
+        <select [(ngModel)]="technology" class="form-control" [disabled]="!sameTech">
+          <option *ngFor="let level of technologies">{{level}}</option>
+        </select>
+      </div>
+
+      <div class="col-md scroll-content">
+        <h5>Projekty:</h5>
+        <div class="mx-3 form-group">
+          <p *ngIf="projects.length == 0" class="alert alert-warning">Brak projektów</p>
+          <div *ngFor="let proj of projects; let i = index" class="card mb-2 card-body">
+            <input [(ngModel)]="proj.title" class="form-control col ms-0 mb-1" placeholder="Podaj tytuł" type="text"
+              [disabled]="autoTitle">
+            <input [(ngModel)]="proj.description" class="form-control col ms-0 mb-1" placeholder="Opis projektu"
+              type="text" [disabled]="sameDesc">
+            <input [(ngModel)]="proj.url" class="form-control col ms-0 mb-1" placeholder="Url GitHub projektu"
+              type="text">
+
+            <div class="form-group mb-2 row">
+              <div class="col">
+                <label>Technologia</label>
+                <select [(ngModel)]="technology[i]" class="form-control" [disabled]="sameTech">
+                  <option *ngFor="let level of technologies">{{level}}</option>
+                </select>
+              </div>
+
+              <div class="col-auto">
+                <button (click)="deleteProject(i)" class="btn btn-danger col-auto mx-2 mt-4">×</button>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <button (click)="addProject()" class="btn btn-success">Dodaj kolejny projekt</button>
+      </div>
+
+    </div>
+  </div>
+</ng-template>
+
+<button (click)="open(content)" class="btn btn-primary">Dodaj projekty do zbadania</button>
