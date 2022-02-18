@@ -76,17 +76,17 @@ public class AnalysisHostedService : CronJobService
             return;
         }
 
-        var notExamined = manager.GetNotExaminedApplications();
+        var notExaminedApplications = manager.GetNotExaminedApplications();
         var notExaminedProjects = manager.GetNotExaminedProjects();
-        if (!notExamined.Any() && !notExaminedProjects.Any())
+        if (!notExaminedApplications.Any() && !notExaminedProjects.Any())
         {
             _logger.LogInformation("No projects to scan found");
             return;
         }
 
-        var cnt = notExamined.Count;
+        var cnt = notExaminedApplications.Count;
 
-        foreach (var application in notExamined)
+        foreach (var application in notExaminedApplications)
         {
             _logger.LogInformation("Scanning application {Id}", application.Id);
             var projectsToExamine = manager.GetNotExaminedProjects(application);
