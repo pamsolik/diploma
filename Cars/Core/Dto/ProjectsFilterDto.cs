@@ -15,5 +15,4 @@ public class ProjectsFilterDto
     public DateTime? DateFrom { get; set; }
     public DateTime? DateTo { get; set; }
 
-    public SortOrder SortOrder { get; set; } = SortOrder.NameAsc;
 }

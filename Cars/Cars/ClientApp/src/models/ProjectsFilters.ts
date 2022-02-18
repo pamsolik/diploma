@@ -1,22 +1,20 @@
 ﻿
-export interface RecruitmentsFilters {
+export interface ProjectsFilters {
   pageSize: number,
   pageIndex: number,
   searchString: string,
   technology: number,
   dateFrom: Date,
   dateTo: Date,
-  sortOrder: number,
 }
 
-export function FiltersDefault(): RecruitmentsFilters {
+export function FiltersDefault(): ProjectsFilters {
   return {
-    pageSize: 25,
+    pageSize: 50,
     pageIndex: 0,
     searchString: "",
-    technology: 0,
+    technology: null,
     dateFrom: null,
     dateTo: null,
-    sortOrder: 0,
   }
 }

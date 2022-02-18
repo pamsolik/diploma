@@ -71,33 +71,33 @@
 
 
         <div class="table-responsive-lg">
-          <table aria-label="Projects" class="table table-hover table-bordered ">
+          <table aria-label="projects.items" class="table table-hover table-bordered ">
             <thead>
               <tr>
-                <th [appSort]="projects" class="th-sm search" data-name="title" id="th-name">Nazwa projektu
+                <th [appSort]="projects.items" class="th-sm search" data-name="title" id="th-name">Nazwa projektu
                 </th>
-                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.bugs" data-order="desc"
+                <th [appSort]="projects.items" class="search" data-name="codeQualityAssessment.bugs" data-order="desc"
                   id="th-bugs">Liczba błędów
                 </th>
-                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.securityRating"
+                <th [appSort]="projects.items" class="search" data-name="codeQualityAssessment.securityRating"
                   data-order="desc" id="th-securityRating">Ocena bezpieczeństwa
                 </th>
-                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.codeSmells" data-order="desc"
+                <th [appSort]="projects.items" class="search" data-name="codeQualityAssessment.codeSmells" data-order="desc"
                   id="th-codeSmells">Liczba Code Smells
                 </th>
-                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.duplicatedLinesDensity"
+                <th [appSort]="projects.items" class="search" data-name="codeQualityAssessment.duplicatedLinesDensity"
                   data-order="desc" id="th-duplicatedLinesDensity">Powtórzenia (%)
                 </th>
-                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.reliabilityRating"
+                <th [appSort]="projects.items" class="search" data-name="codeQualityAssessment.reliabilityRating"
                   data-order="desc" id="th-reliabilityRating">Ocena niezawodności
                 </th>
-                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.maintainabilityRating"
+                <th [appSort]="projects.items" class="search" data-name="codeQualityAssessment.maintainabilityRating"
                   data-order="desc" id="th-maintainabilityRating">Ocena utrzymywalności
                 </th>
-                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.technicalDebt"
+                <th [appSort]="projects.items" class="search" data-name="codeQualityAssessment.technicalDebt"
                   data-order="desc" id="th-technicalDebt">Dług techniczny (min)
                 </th>
-                <th [appSort]="projects" class="search" data-name="codeQualityAssessment.overallRating"
+                <th [appSort]="projects.items" class="search" data-name="codeQualityAssessment.overallRating"
                   data-order="desc" id="th-overallRating">Ogólna ocena
                 </th>
               </tr>
@@ -133,7 +133,7 @@
         </div>
 
         <mat-paginator (page)="applyFilter($event); loadData()" [length]="projects.totalItems" [pageIndex]="0"
-          [pageSizeOptions]="[2, 5, 10, 25, 100]" [pageSize]="filters.pageSize" aria-label="Wybierz stronę"
+          [pageSizeOptions]="[10, 25, 50, 100, 1000]" [pageSize]="filters.pageSize" aria-label="Wybierz stronę"
           id="paginator">
         </mat-paginator>
       </ng-template>

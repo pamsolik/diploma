@@ -1,9 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-
-import {RecruitmentsFilters, FiltersDefault} from "../../models/RecruitmentsFilters";
+import {ProjectsFilters, FiltersDefault} from "../../models/ProjectsFilters";
 import {PageEvent} from "@angular/material/paginator";
-import {SortOrder} from "../../models/enums/SortOrder";
 import {getEnumKeyByEnumValue} from "../../components/EnumTool";
 import {Observable} from "rxjs";
 import { ProjectList } from 'src/models/ProjectList';
@@ -12,7 +10,6 @@ import { CustomSort } from 'src/util/CustomSort';
 import { Technology } from 'src/models/enums/Technology';
 import { ApiAnswer } from 'src/models/ApiAnswer';
 import { saveAs } from 'file-saver';
-import {FormGroup, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-projects-list-component',
@@ -22,12 +19,10 @@ import {FormGroup, FormControl} from '@angular/forms';
 export class ProjectsListComponent implements OnInit {
 
   sort: CustomSort = new CustomSort();
-  sortOrders = Object.values(SortOrder);
-  sortOrder: string = SortOrder.NameAsc;
   projects: ProjectList;
-  filters: RecruitmentsFilters;
+  filters: ProjectsFilters;
   technologies: string[] = Object.values(Technology);
-  technology: string[] = [];
+  technology: string = "";
   
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
@@ -43,27 +38,38 @@ export class ProjectsListComponent implements OnInit {
     this.filters.pageSize = pageEvent.pageSize;
     this.filters.pageIndex = pageEvent.pageIndex;
   }
+  applyTech(){
+    this.filters.technology = getEnumKeyByEnumValue(Technology, this.technology);
+  }
 
   loadData() {
-    this.filters.sortOrder = getEnumKeyByEnumValue(SortOrder, this.sortOrder);
+    this.applyTech();
+    if (this.filters.technology == -1) this.filters.technology = null;
+    console.log(this.filters);
     this.http.post<ProjectList>(this.baseUrl + 'api/projects', this.filters).subscribe(result => {
       this.projects = result;
+      this.baseSort();
     }, error => console.error(error));
   }
 
   loadCsv() {
-    this.filters.sortOrder = getEnumKeyByEnumValue(SortOrder, this.sortOrder);
+    this.applyTech();
     this.http.post<ApiAnswer>(this.baseUrl + 'api/projects/csv', this.filters).subscribe(result => {
-      let res = result;
-      const blob = new Blob([res.message], {type: "text/plain;charset=utf-8"});
+      const blob = new Blob([result.message], {type: "text/plain;charset=utf-8"});
       saveAs(blob, "projects.csv");
     }, error => console.error(error));
   }
 
   clearFilters() {
+    this.technology = "";
     this.filters = FiltersDefault();
   }
 
+  baseSort() {
+    if (!this.projects) return;
+    this.projects.items.sort(this.sort.startSort('id', 'asc', null));
+  }
+  
   getPosition(): Observable<any> {
     return new Observable(observer => {
       window.navigator.geolocation.getCurrentPosition(position => {

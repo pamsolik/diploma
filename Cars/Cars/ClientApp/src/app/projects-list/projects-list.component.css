@@ -2,6 +2,10 @@
   flex: 1;
 }
 
+.search {
+  cursor: pointer;
+}
+
 img {
   width: 200px;
   height: 200px;
