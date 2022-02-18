@@ -10,18 +10,18 @@
 
     <ItemGroup>
         <PackageReference Include="AutoFixture" Version="4.17.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.2" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.2" />
         <PackageReference Include="Moq" Version="4.16.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.2" />
         <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.14" />
         <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
         <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="98.0.4758.10200" />
         <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
         <PackageReference Include="XunitXml.TestLogger" Version="3.0.70" />
