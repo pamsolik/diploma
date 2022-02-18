@@ -21,6 +21,12 @@ export class ProjectsAddComponent implements OnInit {
   sameDesc: boolean = false;
   sameTech: boolean = false;
 
+  aTitle: string = "";
+  sDesc: string = "";
+  sTech: string = "";
+
+  projectsToAdd: string = "";
+
   technologies: string[] = Object.values(Technology);
   technology: string[] = [];
 
@@ -34,15 +40,13 @@ export class ProjectsAddComponent implements OnInit {
   }
 
   apply() {
-    // this.projects.recruitmentId = this.details.id;
-    // this.projects.projects.forEach((value, index) =>
-    //   value.technology = getEnumKeyByEnumValue(Technology, this.technology[index]));
+    this.projects.forEach((value, index) =>
+       value.technology = getEnumKeyByEnumValue(Technology, this.technology[index]));
 
+    this.updateAllProjects();
     this.alertService.showLoading("Dodawanie projektów");
-    console.log(this.projects);
     this.http.put<ApiAnswer>(`${this.baseUrl}api/projects`, this.projects).subscribe(result => {
       this.close();
-      console.log(result);
       this.alertService.showResultAndRedirect("Gratulacje", "Dodano projekty", '/projects');
     }, error => {
       this.alertService.showError(error);
@@ -68,8 +72,48 @@ export class ProjectsAddComponent implements OnInit {
     this.technology.splice(i, 1);
   }
 
+  addProjects(){
+    let urls = this.projectsToAdd.split(/\r?\n/);
+
+    for (let p of urls){
+      if (p.trim().length > 0){
+        let sp = p.split(';');
+        if (sp.length < 2){
+          this.projects.push({description: '', title: '', url: p, technology: 0} as ProjectDto);
+          this.technology.push('');
+        }
+        else{
+          let n = Number(sp[1]);
+          if (n > this.technologies.length || n < 0) n = 0;          
+          this.projects.push({description: '', title: '', url: sp[0], technology: Number(sp[1])} as ProjectDto);
+          this.technology.push(this.technologies[n]);
+        }
+      }
+    }
+    
+    this.projectsToAdd = '';
+    this.updateAllProjects();
+  }
+
   addProject() {
-      this.projects.push({description: '', title: '', url: '', technology: 0} as ProjectDto);
-      this.technology.push('');
+    this.projects.push({description: '', title: '', url: '', technology: 0} as ProjectDto);
+    this.technology.push('');
+    this.updateAllProjects();
+  }
+
+  updateAllProjects() {
+    for (let i = 0; i < this.projects.length; i++) {
+      if (this.sameDesc)
+        this.projects[i].description = this.sDesc;
+      if (this.autoTitle)
+        this.projects[i].title = this.getAutoTitle(this.projects[i].url);
+      if (this.sameTech){
+          this.technology[i] = this.sTech;
+      }
+    }
+  }
+
+  getAutoTitle(url : string) : string {
+    return url.replace('https://github.com/', '');;
   }
 }

@@ -12,6 +12,7 @@ import { CustomSort } from 'src/util/CustomSort';
 import { Technology } from 'src/models/enums/Technology';
 import { ApiAnswer } from 'src/models/ApiAnswer';
 import { saveAs } from 'file-saver';
+import {FormGroup, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-projects-list-component',
@@ -28,6 +29,7 @@ export class ProjectsListComponent implements OnInit {
   technologies: string[] = Object.values(Technology);
   technology: string[] = [];
   
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     this.filters = FiltersDefault();
   }
@@ -46,7 +48,6 @@ export class ProjectsListComponent implements OnInit {
     this.filters.sortOrder = getEnumKeyByEnumValue(SortOrder, this.sortOrder);
     this.http.post<ProjectList>(this.baseUrl + 'api/projects', this.filters).subscribe(result => {
       this.projects = result;
-      console.log(this.projects);
     }, error => console.error(error));
   }
 
@@ -54,15 +55,10 @@ export class ProjectsListComponent implements OnInit {
     this.filters.sortOrder = getEnumKeyByEnumValue(SortOrder, this.sortOrder);
     this.http.post<ApiAnswer>(this.baseUrl + 'api/projects/csv', this.filters).subscribe(result => {
       let res = result;
-      console.log(res);
       const blob = new Blob([res.message], {type: "text/plain;charset=utf-8"});
       saveAs(blob, "projects.csv");
     }, error => console.error(error));
   }
-
-  saveFile() {
-    
-}
 
   clearFilters() {
     this.filters = FiltersDefault();

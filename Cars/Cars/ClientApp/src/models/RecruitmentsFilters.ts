@@ -4,6 +4,8 @@ export interface RecruitmentsFilters {
   pageIndex: number,
   searchString: string,
   technology: number,
+  dateFrom: Date,
+  dateTo: Date,
   sortOrder: number,
 }
 
@@ -13,6 +15,8 @@ export function FiltersDefault(): RecruitmentsFilters {
     pageIndex: 0,
     searchString: "",
     technology: 0,
+    dateFrom: null,
+    dateTo: null,
     sortOrder: 0,
   }
 }

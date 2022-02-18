@@ -69,35 +69,42 @@ public class AnalysisHostedService : CronJobService
     {
         using var scope = _scopeFactory.CreateScope();
         var manager = GetAnalysisManager(scope);
+        var projects = await _sonarQubeRequestHandler.GetExistingProjects();
+        if (projects is null)
+        {
+            _logger.LogWarning("Cannot reach SonarQube on {Url}", _sonarQubeRequestHandler.BasePath);
+            return;
+        }
 
         var notExamined = manager.GetNotExaminedApplications();
-        if (!notExamined.Any())
+        var notExaminedProjects = manager.GetNotExaminedProjects();
+        if (!notExamined.Any() && !notExaminedProjects.Any())
         {
             _logger.LogInformation("No projects to scan found");
             return;
         }
 
-        var projects = await _sonarQubeRequestHandler.GetExistingProjects();
-        if (projects is not null)
+        var cnt = notExamined.Count;
+
+        foreach (var application in notExamined)
         {
-            foreach (var application in notExamined)
+            _logger.LogInformation("Scanning application {Id}", application.Id);
+            var projectsToExamine = manager.GetNotExaminedProjects(application);
+
+            foreach (var project in projectsToExamine)
+                await ExamineSingleProject(application, project, manager, projects);
+
+            projectsToExamine = manager.GetNotExaminedProjects(application);
+            if (!projectsToExamine.Any())
             {
-                _logger.LogInformation("Scanning application {Id}", application.Id);
-                var projectsToExamine = manager.GetNotExaminedProjects(application);
-
-                foreach (var project in projectsToExamine)
-                    await ExamineSingleProject(application, project, manager, projects);
-
-                projectsToExamine = manager.GetNotExaminedProjects(application);
-                if (!projectsToExamine.Any())
-                    await CalculateAndSaveCodeOverallQuality(manager, application);
+                cnt -= 1;
+                await CalculateAndSaveCodeOverallQuality(manager, application);
             }
         }
-        else
-        {
-            _logger.LogWarning("Cannot reach SonarQube on {Url}", _sonarQubeRequestHandler.BasePath);
-        }
 
+        if (cnt == 0)
+            foreach (var project in notExaminedProjects)
+                await ExamineSingleProject(null, project, manager, projects);
     }
 
     private async Task CalculateAndSaveCodeOverallQuality(IAnalysisManager manager,
@@ -123,7 +130,7 @@ public class AnalysisHostedService : CronJobService
         }
     }
 
-    private async Task ExamineSingleProject(RecruitmentApplication application, Project project,
+    private async Task ExamineSingleProject(RecruitmentApplication? application, Project project,
         IAnalysisManager manager, Projects? projects)
     {
         try
@@ -171,13 +178,14 @@ public class AnalysisHostedService : CronJobService
         }
     }
 
-    private (string, DirectoryInfo, string) GetProjectConstants(RecruitmentApplication application,
+    private (string, DirectoryInfo, string) GetProjectConstants(RecruitmentApplication? application,
         Project project)
     {
-        var projectDir = Path.Combine(_sonarQubeRequestHandler.SonarLoc, "scans", application.ApplicantId ?? throw new InvalidOperationException("ApplicantId cannot be null"),
+        var projectDir = Path.Combine(_sonarQubeRequestHandler.SonarLoc, "scans", application is null ? "Projects" : application.ApplicantId ?? "XXX",
             project.Id.ToString());
         var directoryInfo = new DirectoryInfo(projectDir);
         var projectKey = $"Project_{project.Id}";
+        
         return (projectDir, directoryInfo, projectKey);
     }
 

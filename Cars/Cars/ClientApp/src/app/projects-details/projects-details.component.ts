@@ -38,6 +38,13 @@ export class ProjectsDetailsComponent {
     this.codeQuality = this.details.codeOverallQuality;
   }
 
+  openProjectAlone(content: any, project: ProjectDto) {
+    this.openModal(content);
+    this.isCoq = false;
+    this.project = project;
+    this.codeQuality = project.codeQualityAssessment;
+  }
+
   getValue(value: number): string {
     return value === null || value === undefined ? "N/A" : formatNumber(value).toString();
   }

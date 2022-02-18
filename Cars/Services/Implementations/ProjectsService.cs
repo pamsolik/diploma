@@ -38,7 +38,7 @@ public class ProjectsService : IProjectsService
     {
         var projects = await _projectManager.GetProjects(filter);
         var dest = projects.Adapt<List<ProjectView>>();
-        return dest.ToCsv<ProjectView>();
+        return dest.ToCsv();
     }
 
 }

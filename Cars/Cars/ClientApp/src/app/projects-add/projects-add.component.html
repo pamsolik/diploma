@@ -11,13 +11,16 @@
     <div class="mt-2 card-body row">
       <div class="col-md-6 border-end">
 
-        <textarea class="form-control my-2" placeholder="Lista Url do projektów" rows="5"></textarea>
-        <button class="btn btn-primary">Dodaj wiele projetków</button>
+        <textarea class="form-control my-2"
+          placeholder="Lista Url do projektów (dzielona znakami nowej linii z opcjonalną technologią jako numer (0-4) po znaku ';')"
+          rows="5" [(ngModel)]="projectsToAdd" ></textarea>
+        <button class="btn btn-primary" (click)="addProjects()">Dodaj wiele projetków</button>
 
         <div class="border-top my-2"></div>
 
         <div class="form-check">
-          <input [(ngModel)]="autoTitle" class="form-check-input" id="autoTitle" required type="checkbox" value="">
+          <input [(ngModel)]="autoTitle" class="form-check-input" id="autoTitle" required type="checkbox" value=""
+            (change)="updateAllProjects()">
           <label class="form-check-label" for="autoTitle">Automatyczne tworzenie tytułów do projektów</label>
         </div>
 
@@ -25,23 +28,25 @@
 
         <div class="form-group">
           <div class="form-check">
-            <input [(ngModel)]="sameDesc" class="form-check-input" id="sameDesc" required type="checkbox" value="">
+            <input [(ngModel)]="sameDesc" class="form-check-input" id="sameDesc" required type="checkbox" value=""
+              (change)="updateAllProjects()">
             <label class="form-check-label" for="sameDesc">Taki sam opis dla wszystkich projektów</label>
           </div>
 
-          <textarea [disabled]="!sameDesc" class="form-control" placeholder="Opis dla wszystkich projektów"
-            rows="5"></textarea>
-          <small class="form-text text-muted">Maksymalnie 1000 znaków.</small>
+          <textarea [disabled]="!sameDesc" class="form-control" placeholder="Opis dla wszystkich projektów" rows="5"
+            [(ngModel)]="sDesc" (change)="updateAllProjects()"></textarea>
+          <small class="form-text text-muted">Maksymalnie 200 znaków.</small>
         </div>
 
         <div class="border-top my-2"></div>
 
         <div class="form-check">
-          <input [(ngModel)]="sameTech" class="form-check-input" id="sameTech" required type="checkbox" value="">
+          <input [(ngModel)]="sameTech" class="form-check-input" id="sameTech" required type="checkbox" value=""
+            (change)="updateAllProjects()">
           <label class="form-check-label" for="sameTech">Taka sama technologia dla wszystkich projektów</label>
         </div>
 
-        <select [(ngModel)]="technology" class="form-control" [disabled]="!sameTech">
+        <select [(ngModel)]="sTech" class="form-control" [disabled]="!sameTech" (change)="updateAllProjects()">
           <option *ngFor="let level of technologies">{{level}}</option>
         </select>
       </div>
@@ -56,7 +61,7 @@
             <input [(ngModel)]="proj.description" class="form-control col ms-0 mb-1" placeholder="Opis projektu"
               type="text" [disabled]="sameDesc">
             <input [(ngModel)]="proj.url" class="form-control col ms-0 mb-1" placeholder="Url GitHub projektu"
-              type="text">
+              type="text" (change)="updateAllProjects()">
 
             <div class="form-group mb-2 row">
               <div class="col">

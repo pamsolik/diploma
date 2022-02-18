@@ -4,7 +4,7 @@
   </div>
   <div class="card-body">
     <article class="row">
-      <div class="col-md-4">
+      <div class="col-md-8">
         <div class="card">
           <div class="card-header">
             <h5 class="my-0 font-weight-normal">Wyszukaj</h5>
@@ -14,26 +14,39 @@
             <article class="card-group-item">
               <div class="filter-content">
                 <div class="form-row">
-                  <a (click)="clearFilters(); loadData()" class="btn btn-warning mb-2 w-100" role="button">Wyczyść
-                    filtry
-                    &raquo;</a>
-                  <a (click)="loadData()" class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry &raquo;</a>
-
-                  <div class="form-group">
-                    <label>Oferta</label>
-                    <input [(ngModel)]="filters.searchString" class="form-control" placeholder="Wyszukaj oferty"
-                      type="text">
+                  <div class="row">
+                    <div class="col-6">
+                      <a (click)="clearFilters(); loadData()" class="btn btn-warning mb-2 w-100" role="button">Wyczyść
+                        filtry
+                        &raquo;</a>
+                      <a (click)="loadData()" class="btn btn-primary mb-2 w-100" role="button">Zastosuj filtry &raquo;</a>
+    
+                      <div class="form-group">
+                        <label>Oferta</label>
+                        <input [(ngModel)]="filters.searchString" class="form-control" placeholder="Wyszukaj oferty"
+                          type="text">
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group">
+                        <label>Technologia</label>
+                        <select [(ngModel)]="technology" class="form-control">
+                          <option *ngFor="let level of technologies">{{level}}</option>
+                        </select>
+                      </div>
+                      <div class="border-top my-2"></div>
+    
+                      <mat-form-field appearance="fill" class="date-picker">
+                        <mat-label>Podaj zakres dat</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                          <input matStartDate placeholder="Data od" [(ngModel)]="filters.dateFrom">
+                          <input matEndDate placeholder="Data do" [(ngModel)]="filters.dateTo">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                      </mat-form-field>
+                    </div>
                   </div>
-
-                  <div class="border-top my-3"></div>
-
-                  <div class="form-group">
-                    <label>Technologia</label>
-                    <select [(ngModel)]="technology" class="form-control">
-                      <option *ngFor="let level of technologies">{{level}}</option>
-                    </select>
-                  </div>
-                  <div class="border-top my-3"></div>
                 </div>
               </div>
             </article>
@@ -41,21 +54,15 @@
         </div>
       </div>
 
-
       <div class="col-md">
-        <div class="row">
+        <div class="row h-25">
           <app-projects-add class="col"> </app-projects-add>
           <button class="col-auto btn btn-success me-3" (click)="loadCsv()">Pobierz jako plik csv</button>
         </div>
-
-        <select [(ngModel)]="sortOrder" class="form-control my-2 ">
-          <option *ngFor="let order of sortOrders">{{order}}</option>
-        </select>
       </div>
-
     </article>
 
-    <div class="row">
+    <div class="row mt-2">
       <h1 *ngIf="!projects else loaded">Wczytywanie</h1>
 
       <ng-template #loaded>

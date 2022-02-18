@@ -27,6 +27,13 @@ public class AnalysisManager : IAnalysisManager
             .ToList();
     }
 
+    public List<Project> GetNotExaminedProjects()
+    {
+        return _context.Projects
+            .Where(a => a.ApplicationId == null && (a.CodeQualityAssessment == null || !a.CodeQualityAssessment.Success))
+            .ToList();
+    }
+
     public List<Project> GetNotExaminedProjects(RecruitmentApplication notExamined)
     {
         return _context.Projects.Where(p =>

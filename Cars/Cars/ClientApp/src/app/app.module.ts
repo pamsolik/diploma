@@ -44,6 +44,7 @@ import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 import { GeoapifyGeocoderAutocompleteModule } from '@geoapify/angular-geocoder-autocomplete';
 import { ProjectsListComponent } from './projects-list/projects-list.component';
 import { ProjectsAddComponent } from './projects-add/projects-add.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { ProjectsAddComponent } from './projects-add/projects-add.component';
     MatTabsModule,
     MatPaginatorModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     MatSelectModule,
     MatInputModule,
     MatSliderModule,
