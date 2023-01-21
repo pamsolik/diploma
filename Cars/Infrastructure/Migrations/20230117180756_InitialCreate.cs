@@ -4,9 +4,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Cars.Migrations
+namespace Infrastructure.Migrations
 {
-    public partial class BetaNet6Migration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -154,13 +154,13 @@ namespace Cars.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    Surname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    ProfilePicture = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Surname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    ProfilePicture = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     CityId = table.Column<int>(type: "integer", nullable: true),
-                    Github = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    LinkedIn = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    Github = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    LinkedIn = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -336,11 +336,11 @@ namespace Cars.Migrations
                     JobLevel = table.Column<int>(type: "integer", nullable: false),
                     TeamSize = table.Column<int>(type: "integer", nullable: false),
                     Field = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    CityId = table.Column<int>(type: "integer", nullable: false),
+                    CityId = table.Column<int>(type: "integer", nullable: true),
                     ImgUrl = table.Column<string>(type: "text", nullable: true),
                     ClauseRequired = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    ClauseOpt1 = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    ClauseOpt2 = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true)
+                    ClauseOpt1 = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    ClauseOpt2 = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -354,8 +354,7 @@ namespace Cars.Migrations
                         name: "FK_Recruitments_Cities_CityId",
                         column: x => x.CityId,
                         principalTable: "Cities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -424,7 +423,7 @@ namespace Cars.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Description = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    ApplicationId = table.Column<int>(type: "integer", nullable: false),
+                    ApplicationId = table.Column<int>(type: "integer", nullable: true),
                     Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Url = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     Technology = table.Column<int>(type: "integer", nullable: false),
@@ -439,8 +438,7 @@ namespace Cars.Migrations
                         name: "FK_Projects_Applications_ApplicationId",
                         column: x => x.ApplicationId,
                         principalTable: "Applications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Projects_CodeQualityAssessments_CodeQualityAssessmentId",
                         column: x => x.CodeQualityAssessmentId,

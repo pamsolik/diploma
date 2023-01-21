@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Cars.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -17,12 +17,12 @@ namespace Cars.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Cars.Models.DataModels.ApplicationUser", b =>
+            modelBuilder.Entity("Core.DataModels.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -38,6 +38,7 @@ namespace Cars.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
@@ -49,10 +50,12 @@ namespace Cars.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Github")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
                     b.Property<string>("LinkedIn")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
@@ -63,6 +66,7 @@ namespace Cars.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
@@ -84,6 +88,7 @@ namespace Cars.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("ProfilePicture")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
@@ -91,6 +96,7 @@ namespace Cars.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Surname")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
@@ -115,7 +121,7 @@ namespace Cars.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.City", b =>
+            modelBuilder.Entity("Core.DataModels.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -139,7 +145,7 @@ namespace Cars.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.CodeQualityAssessment", b =>
+            modelBuilder.Entity("Core.DataModels.CodeQualityAssessment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -212,7 +218,7 @@ namespace Cars.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("CodeQualityAssessment");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Education", b =>
+            modelBuilder.Entity("Core.DataModels.Education", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -254,7 +260,7 @@ namespace Cars.Migrations
                     b.ToTable("Educations");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Experience", b =>
+            modelBuilder.Entity("Core.DataModels.Experience", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -296,7 +302,7 @@ namespace Cars.Migrations
                     b.ToTable("Experiences");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Project", b =>
+            modelBuilder.Entity("Core.DataModels.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -304,7 +310,7 @@ namespace Cars.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ApplicationId")
+                    b.Property<int?>("ApplicationId")
                         .HasColumnType("integer");
 
                     b.Property<int?>("CodeQualityAssessmentId")
@@ -343,7 +349,7 @@ namespace Cars.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Recruitment", b =>
+            modelBuilder.Entity("Core.DataModels.Recruitment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -351,14 +357,16 @@ namespace Cars.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CityId")
+                    b.Property<int?>("CityId")
                         .HasColumnType("integer");
 
                     b.Property<string>("ClauseOpt1")
+                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
                     b.Property<string>("ClauseOpt2")
+                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
@@ -420,7 +428,7 @@ namespace Cars.Migrations
                     b.ToTable("Recruitments");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.RecruitmentApplication", b =>
+            modelBuilder.Entity("Core.DataModels.RecruitmentApplication", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -471,7 +479,7 @@ namespace Cars.Migrations
                     b.ToTable("Applications");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Skill", b =>
+            modelBuilder.Entity("Core.DataModels.Skill", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -768,9 +776,9 @@ namespace Cars.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.CodeOverallQuality", b =>
+            modelBuilder.Entity("Core.DataModels.CodeOverallQuality", b =>
                 {
-                    b.HasBaseType("Cars.Models.DataModels.CodeQualityAssessment");
+                    b.HasBaseType("Core.DataModels.CodeQualityAssessment");
 
                     b.Property<int>("ProjectsCount")
                         .HasColumnType("integer");
@@ -778,18 +786,18 @@ namespace Cars.Migrations
                     b.HasDiscriminator().HasValue("CodeOverallQuality");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.ApplicationUser", b =>
+            modelBuilder.Entity("Core.DataModels.ApplicationUser", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.City", "City")
+                    b.HasOne("Core.DataModels.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId");
 
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Education", b =>
+            modelBuilder.Entity("Core.DataModels.Education", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Core.DataModels.ApplicationUser", "ApplicationUser")
                         .WithMany("Education")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -798,9 +806,9 @@ namespace Cars.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Experience", b =>
+            modelBuilder.Entity("Core.DataModels.Experience", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Core.DataModels.ApplicationUser", "ApplicationUser")
                         .WithMany("Experience")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -809,15 +817,13 @@ namespace Cars.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Project", b =>
+            modelBuilder.Entity("Core.DataModels.Project", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.RecruitmentApplication", "Application")
+                    b.HasOne("Core.DataModels.RecruitmentApplication", "Application")
                         .WithMany("Projects")
-                        .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationId");
 
-                    b.HasOne("Cars.Models.DataModels.CodeQualityAssessment", "CodeQualityAssessment")
+                    b.HasOne("Core.DataModels.CodeQualityAssessment", "CodeQualityAssessment")
                         .WithMany()
                         .HasForeignKey("CodeQualityAssessmentId");
 
@@ -826,15 +832,13 @@ namespace Cars.Migrations
                     b.Navigation("CodeQualityAssessment");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Recruitment", b =>
+            modelBuilder.Entity("Core.DataModels.Recruitment", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.City", "City")
+                    b.HasOne("Core.DataModels.City", "City")
                         .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CityId");
 
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", "Recruiter")
+                    b.HasOne("Core.DataModels.ApplicationUser", "Recruiter")
                         .WithMany()
                         .HasForeignKey("RecruiterId");
 
@@ -843,19 +847,19 @@ namespace Cars.Migrations
                     b.Navigation("Recruiter");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.RecruitmentApplication", b =>
+            modelBuilder.Entity("Core.DataModels.RecruitmentApplication", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", "Applicant")
+                    b.HasOne("Core.DataModels.ApplicationUser", "Applicant")
                         .WithMany()
                         .HasForeignKey("ApplicantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cars.Models.DataModels.CodeOverallQuality", "CodeOverallQuality")
+                    b.HasOne("Core.DataModels.CodeOverallQuality", "CodeOverallQuality")
                         .WithMany()
                         .HasForeignKey("CodeOverallQualityId");
 
-                    b.HasOne("Cars.Models.DataModels.Recruitment", "Recruitment")
+                    b.HasOne("Core.DataModels.Recruitment", "Recruitment")
                         .WithMany("Applications")
                         .HasForeignKey("RecruitmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -868,9 +872,9 @@ namespace Cars.Migrations
                     b.Navigation("Recruitment");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Skill", b =>
+            modelBuilder.Entity("Core.DataModels.Skill", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Core.DataModels.ApplicationUser", "ApplicationUser")
                         .WithMany("Skills")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -890,7 +894,7 @@ namespace Cars.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", null)
+                    b.HasOne("Core.DataModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -899,7 +903,7 @@ namespace Cars.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", null)
+                    b.HasOne("Core.DataModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -914,7 +918,7 @@ namespace Cars.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", null)
+                    b.HasOne("Core.DataModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -923,14 +927,14 @@ namespace Cars.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Cars.Models.DataModels.ApplicationUser", null)
+                    b.HasOne("Core.DataModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.ApplicationUser", b =>
+            modelBuilder.Entity("Core.DataModels.ApplicationUser", b =>
                 {
                     b.Navigation("Education");
 
@@ -939,12 +943,12 @@ namespace Cars.Migrations
                     b.Navigation("Skills");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.Recruitment", b =>
+            modelBuilder.Entity("Core.DataModels.Recruitment", b =>
                 {
                     b.Navigation("Applications");
                 });
 
-            modelBuilder.Entity("Cars.Models.DataModels.RecruitmentApplication", b =>
+            modelBuilder.Entity("Core.DataModels.RecruitmentApplication", b =>
                 {
                     b.Navigation("Projects");
                 });

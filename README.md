@@ -2,7 +2,7 @@
 
 # Projekt do pracy inżynierskiej - Cars (Code Analysis Recruitment System)
 
-[Pogląd strony opublikowanej na platformie Azure](https://cars-pamsolik.azurewebsites.net/)
+[Strona została opublikowana na platformie Azure (Aktualnie jest nieaktywna - brak bazy danych)](https://cars-pamsolik.azurewebsites.net/)
 
 ## Politechnika Łódzka Wydział Fizyki Technicznej Informatyki i Matematyki Stosowanej
 
@@ -42,6 +42,13 @@ dr inż. Łukasz Chomątek
 * [SonarQube](https://www.sonarqube.org/)
 * [Azure](https://azure.microsoft.com/en-us/)
 
+## Diagramy, projekt i testy
+![Infrastructure](./img/infrastructure.jpg)
+![CIDC](./img/CIDC.jpg)
+![performance](./img/performance.jpg)
+![metrics](./img/metrics.jpg)
+![ERD](./img/ERD.jpg)
+![sonar](./img/sonar.jpg)
 
 ## Galeria
 ![Main](./img/Main.jpg)
