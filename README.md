@@ -28,7 +28,7 @@ dr inż. Łukasz Chomątek
 | ------------ | ------------ |
 | Semestr: | VII |
 | Specjalizacja: | IOAD |
-| Termin: | TODO |
+| Termin: | 2022-02-08 |
 | Języki: | C#, TS, JS |
 
 ## Technologie
